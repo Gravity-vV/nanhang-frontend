@@ -6,72 +6,437 @@
   <title>网络层</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
+
+    html,
+    body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
       font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
       background: #ffffff;
       color: #1f2937;
     }
+
     .page {
       height: 100%;
       display: grid;
       grid-template-rows: 3fr 2fr;
     }
+
     .section {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 8px;
+      padding: 16px;
+      min-height: 0;
     }
-    .section + .section { border-top: 1px dashed #cbd5e1; }
-    .bottom-split {
+
+    .section + .section {
+      border-top: 1px dashed #cbd5e1;
+    }
+
+    .image-wrap {
       width: 100%;
-      display: grid;
-      grid-template-columns: 4.5fr 5.5fr;
-      gap: 12px;
-    }
-    .split-card {
+      height: 100%;
       border: 1px solid #e5e7eb;
       border-radius: 10px;
+      overflow: hidden;
       background: #f8fafc;
-      padding: 14px;
-      min-height: 120px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 6px;
     }
-    h2 { margin: 0; font-size: 20px; color: #111827; }
-    h3 { margin: 0; font-size: 16px; color: #111827; }
-    p { margin: 0; font-size: 14px; line-height: 1.6; color: #6b7280; max-width: 60ch; }
-    @media (max-width: 520px) {
-      .bottom-split { grid-template-columns: 1fr; }
-      .section { padding: 16px; }
-      h2 { font-size: 18px; }
+
+    .image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .bottom-layout {
+      display: grid;
+      grid-template-columns: 4.5fr 5.5fr;
+      gap: 16px;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .left-panel {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      background: #f9fafb;
+      padding: 14px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .mode-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .mode-btn {
+      border: 1px solid #0f5f82;
+      border-radius: 8px;
+      background: #186487;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 12px 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .mode-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(24, 100, 135, 0.25);
+    }
+
+    .mode-btn.is-active {
+      background: #0d4f6d;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+    }
+
+    .flow-wrap {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 10px;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .flow-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .flow-base {
+      fill: none;
+      stroke: #8ab8de;
+      stroke-width: 20;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .flow-active {
+      fill: none;
+      stroke: #2563eb;
+      stroke-width: 30;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 4px rgba(37, 99, 235, 0.6));
+    }
+
+    .flow-node {
+      fill: #ffffff;
+      stroke: #93a4b5;
+      stroke-width: 3;
+      transition: fill 0.3s ease, stroke 0.3s ease, r 0.3s ease;
+    }
+
+    .flow-node.is-visited {
+      fill: #ffffff;
+      stroke: #2563eb;
+    }
+
+    .flow-node.is-active {
+      fill: #ffffff;
+      stroke: #1d4ed8;
+      stroke-width: 4;
+    }
+
+    .flow-label {
+      fill: #111827;
+      font-size: 24px;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .flow-label-small {
+      fill: #111827;
+      font-size: 22px;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .flow-status {
+      margin: 0;
+      min-height: 22px;
+      font-size: 14px;
+      color: #1d4ed8;
+      font-weight: 600;
+    }
+
+    .right-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .log-box {
+      border: 1px solid #111827;
+      border-radius: 10px;
+      background: #05070a;
+      color: #3cff84;
+      padding: 12px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 0;
+      overflow: hidden;
+      font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .log-title {
+      margin: 0;
+      font-size: 16px;
+      color: #7dffab;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 8px;
+    }
+
+    .log-content {
+      margin: 10px 0 0;
+      padding-left: 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 1000px) {
+      .bottom-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .right-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .mode-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-label {
+        font-size: 19px;
+      }
+
+      .flow-label-small {
+        font-size: 17px;
+      }
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <section class="section">
-      <h2>网络层 - 上部区域</h2>
-      <p>用于展示网络拓扑、链路质量、访问控制策略等信息。</p>
-    </section>
-    <section class="section">
-      <h2>网络层 - 下部区域</h2>
-      <div class="bottom-split">
-        <article class="split-card">
-          <h3>左侧区域</h3>
-          <p>用于展示流量趋势与链路异常事件。</p>
-        </article>
-        <article class="split-card">
-          <h3>右侧区域</h3>
-          <p>用于展示策略命中日志与访问行为统计。</p>
-        </article>
+    <div class="image-wrap">
+        <img src="../assets/network.png" alt="网络层接入示意图" />
       </div>
-    </section>
-  </main>
-</body>
+    <section class="section">
+  <div class="bottom-layout">
+    <div class="left-panel">
+      <div class="mode-buttons">
+        <button class="mode-btn" type="button" data-mode="centralized">单模态接入</button>
+        <button class="mode-btn" type="button" data-mode="distributed">区块链增强的多模态接入</button>
+      </div>
+
+      <div class="flow-wrap">
+        <svg class="flow-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" aria-label="物理层接入流程图">
+          <!-- 基础灰色底线路 -->
+          <path class="flow-base" d="M50 180 L240 180" />
+          <path class="flow-base" d="M240 180 C320 180 320 80 440 80 L620 80" />
+          <path class="flow-base" d="M440 80 C520 80 520 80 680 80" />
+          <path class="flow-base" d="M240 180 C320 180 320 280 440 280 L620 280" />
+          <path class="flow-base" d="M440 280 C520 280 520 280 680 280" />
+
+          <!-- 动画高亮线路 -->
+          <path id="active-seg-1" class="flow-active" d="M50 180 L240 180" />
+          <path id="active-seg-top" class="flow-active" d="M240 180 C320 180 320 80 440 80 L680 80" />
+          <path id="active-seg-bottom" class="flow-active" d="M240 180 C320 180 320 280 440 280 L680 280" />
+
+          <!-- 流程节点 -->
+          <circle id="node-start" class="flow-node" cx="240" cy="180" r="10" />
+          <circle id="node-multi" class="flow-node" cx="440" cy="80" r="10" />
+          <circle id="node-switch" class="flow-node" cx="680" cy="80" r="10" />
+          <circle id="node-single" class="flow-node" cx="440" cy="280" r="10" />
+          <circle id="node-backoff" class="flow-node" cx="680" cy="280" r="10" />
+
+          <!-- 文字标签 -->
+          <text class="flow-label" x="120" y="220">模拟网络攻击</text>
+          <text class="flow-label" x="380" y="50">多模态接入</text>
+          <text class="flow-label" x="620" y="50">接入区块链节点反馈</text>
+          <text class="flow-label" x="380" y="320">单模态接入</text>
+          <text class="flow-label" x="620" y="320">接入认证节点反馈</text>
+        </svg>
+      </div>
+
+      <p class="flow-status" id="flow-status">点击上方按钮，开始认证流程演示</p>
+    </div>
+
+    <div class="right-panel">
+      <article class="log-box">
+        <h3 class="log-title">单模态接入网络层日志</h3>
+        <ul class="log-content">
+          <li>[22:33:10] 认证中心连接成功</li>
+          <li>[22:33:14] 接收设备证书请求 #A1024</li>
+          <li>[22:33:16] 证书校验通过，开始签发</li>
+          <li>[22:33:21] 签发完成，已回传接入结果</li>
+        </ul>
+      </article>
+      <article class="log-box">
+        <h3 class="log-title">多模态接入网络层日志</h3>
+        <ul class="log-content">
+          <li>[22:33:11] 共识节点已就绪，共 8 节点</li>
+          <li>[22:33:15] 提交认证交易 tx:0x8f4...aa1</li>
+          <li>[22:33:20] 区块确认高度 +1，状态有效</li>
+          <li>[22:33:24] 认证结果广播至边缘网关</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const statusEl = document.getElementById('flow-status');
+    const buttons = document.querySelectorAll('.mode-btn');
+    const paths = {
+      seg1: document.getElementById('active-seg-1'),
+      top: document.getElementById('active-seg-top'),
+      bottom: document.getElementById('active-seg-bottom')
+    };
+    const nodes = {
+      start: document.getElementById('node-start'),
+      multi: document.getElementById('node-multi'),
+      switchNode: document.getElementById('node-switch'),
+      single: document.getElementById('node-single'),
+      backoff: document.getElementById('node-backoff')
+    };
+
+    const PAUSE_MS = 900;
+    const NODE_BASE_R = 10;
+    const NODE_ACTIVE_R = 17;
+    const DURATION_MS = {
+      seg1: 1200,
+      branchPart1: 1000,
+      branchPart2: 1000
+    };
+
+    let animationToken = 0;
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function setButtonState(mode) {
+      buttons.forEach((button) => {
+        button.classList.toggle('is-active', button.dataset.mode === mode);
+      });
+    }
+
+    function initPath(path) {
+      const total = path.getTotalLength();
+      path.dataset.total = String(total);
+      path.style.transition = 'none';
+      path.style.strokeDasharray = String(total);
+      path.style.strokeDashoffset = String(total);
+    }
+
+    function resetPaths() {
+      Object.values(paths).forEach(initPath);
+    }
+
+    function resetNodes() {
+      Object.values(nodes).forEach((node) => {
+        node.classList.remove('is-active', 'is-visited');
+        node.setAttribute('r', String(NODE_BASE_R));
+      });
+    }
+
+    function revealPathSegment(path, startOffset, endOffset, duration) {
+      return new Promise((resolve) => {
+        path.style.transition = 'none';
+        path.style.strokeDashoffset = startOffset;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            path.style.transition = `stroke-dashoffset ${duration}ms linear`;
+            path.style.strokeDashoffset = endOffset;
+          });
+        });
+        setTimeout(resolve, duration + 40);
+      });
+    }
+
+    async function pauseAtNode(node, label, token) {
+      if (token !== animationToken) return;
+      node.classList.add('is-visited', 'is-active');
+      node.setAttribute('r', String(NODE_ACTIVE_R));
+      statusEl.textContent = '已到达环节：' + label;
+      await sleep(PAUSE_MS);
+      if (token !== animationToken) return;
+      node.classList.remove('is-active');
+      node.setAttribute('r', String(NODE_BASE_R));
+    }
+
+    async function runFlow(mode) {
+      animationToken++;
+      const token = animationToken;
+
+      setButtonState(mode);
+      resetPaths();
+      resetNodes();
+
+      const flowName = mode === 'distributed' ? '多模态接入' : '单模态接入';
+      statusEl.textContent = '流程启动：' + flowName;
+      await sleep(300);
+
+      // ====================== 第一段：通信屏蔽罩 ======================
+      await revealPathSegment(paths.seg1, paths.seg1.dataset.total, 0, DURATION_MS.seg1);
+      await pauseAtNode(nodes.start, '通信屏蔽罩', token);
+      if (token !== animationToken) return;
+
+      if (mode === 'distributed') {
+        // ====================== 多模态：多模态接入 ======================
+        const totalTop = Number(paths.top.dataset.total);
+        const offset1 = totalTop * 0.5;
+        await revealPathSegment(paths.top, totalTop, offset1, DURATION_MS.branchPart1);
+        await pauseAtNode(nodes.multi, '多模态接入', token);
+        if (token !== animationToken) return;
+
+        // ====================== 多模态：切换接入方式重接入 ======================
+        await revealPathSegment(paths.top, offset1, 0, DURATION_MS.branchPart2);
+        await pauseAtNode(nodes.switchNode, '切换接入方式重接入', token);
+      } else {
+        // ====================== 单模态：单模态接入 ======================
+        const totalBot = Number(paths.bottom.dataset.total);
+        const offset2 = totalBot * 0.5;
+        await revealPathSegment(paths.bottom, totalBot, offset2, DURATION_MS.branchPart1);
+        await pauseAtNode(nodes.single, '单模态接入', token);
+        if (token !== animationToken) return;
+
+        // ====================== 单模态：随机退避接入 ======================
+        await revealPathSegment(paths.bottom, offset2, 0, DURATION_MS.branchPart2);
+        await pauseAtNode(nodes.backoff, '随机退避接入', token);
+      }
+
+      if (token === animationToken) {
+        statusEl.textContent = '流程完成：' + flowName;
+      }
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        runFlow(button.dataset.mode);
+      });
+    });
+
+    resetPaths();
+    resetNodes();
+  })();
+</script>
+  </body>
 </html>

@@ -214,7 +214,8 @@
 
       function setActivePage(pageKey) {
         activePage = pageKey;
-        contentFrame.src = pageMap[pageKey];
+        // ✅ 正确：每次加载都加新时间戳
+        contentFrame.src = pageMap[pageKey] + '?v=' + Date.now();
 
         mainTabs.forEach((tab) => tab.classList.remove('is-active'));
         subTabs.forEach((tab) => tab.classList.remove('is-active'));
