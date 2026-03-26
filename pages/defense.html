@@ -1,76 +1,198 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>安全防御</title>
   <style>
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    :root {
+      --bg-panel: rgba(10, 24, 56, 0.92);
+      --bg-item: rgba(12, 34, 78, 0.78);
+      --line: rgba(76, 176, 255, 0.35);
+      --text-main: #e6f4ff;
+      --text-sub: #9ec5ff;
+      --accent: #4cc8ff;
+      --accent-2: #00f7d2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
-      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      font-family: "Bahnschrift", "Microsoft YaHei UI", "PingFang SC", sans-serif;
       background: #ffffff;
-      color: #1f2937;
+      color: #0f172a;
+      overflow: auto;
     }
+
     .page {
       height: 100%;
+      padding: 16px;
       display: grid;
       grid-template-rows: 3fr 2fr;
+      gap: 14px;
     }
-    .section {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 8px;
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(8px);
     }
-    .section + .section { border-top: 1px dashed #cbd5e1; }
-    .bottom-split {
+
+    .top-panel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-panel img {
       width: 100%;
-      display: grid;
-      grid-template-columns: 4.5fr 5.5fr;
-      gap: 12px;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      background: #ffffff;
     }
-    .split-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      background: #f8fafc;
-      padding: 14px;
-      min-height: 120px;
+
+    .bottom {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .panel {
+      min-height: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      padding: 14px 14px 10px;
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 17px;
+      color: #cbe8ff;
+      letter-spacing: 0.5px;
+    }
+
+    .panel-note {
+      margin-top: 5px;
+      color: var(--text-sub);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      overflow: auto;
+    }
+
+    .list-item {
+      border: 1px solid rgba(76, 200, 255, 0.28);
+      border-radius: 10px;
+      background: var(--bg-item);
+      padding: 10px;
+      display: grid;
       gap: 6px;
     }
-    h2 { margin: 0; font-size: 20px; color: #111827; }
-    h3 { margin: 0; font-size: 16px; color: #111827; }
-    p { margin: 0; font-size: 14px; line-height: 1.6; color: #6b7280; max-width: 60ch; }
-    @media (max-width: 520px) {
-      .bottom-split { grid-template-columns: 1fr; }
-      .section { padding: 16px; }
-      h2 { font-size: 18px; }
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      color: #e7f5ff;
+    }
+
+    .line span {
+      color: var(--text-sub);
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      color: #021325;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        overflow: auto;
+      }
+
+      .page {
+        min-height: 100%;
+        grid-template-rows: auto auto;
+      }
+
+      .top-panel {
+        min-height: 300px;
+      }
+
+      .bottom {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .top-panel.card {
+      border-color: #e9edf3;
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <section class="section">
-      <h2>安全防御 - 上部区域</h2>
-      <p>用于展示实时防护态势、威胁等级与响应状态等信息。</p>
+    <section class="top-panel card">
+      <img src="../assets/fangyu.png" alt="安全防御态势图" />
     </section>
-    <section class="section">
-      <h2>安全防御 - 下部区域</h2>
-      <div class="bottom-split">
-        <article class="split-card">
-          <h3>左侧区域</h3>
-          <p>用于展示攻击分析与威胁事件明细。</p>
-        </article>
-        <article class="split-card">
-          <h3>右侧区域</h3>
-          <p>用于展示处置记录与策略优化建议。</p>
-        </article>
-      </div>
+
+    <section class="bottom">
+      <article class="panel card">
+        <h2 class="panel-title">攻击分析与威胁事件明细</h2>
+        <p class="panel-note"></p>
+        <ul class="list">
+          <li class="list-item">
+            <div class="line"><strong>高频重接入攻击</strong><i class="tag">高危</i></div>
+            <div class="line"><span>无人机 ID</span><b>UAV-1007</b></div>
+            <div class="line"><span>公钥</span><b>03A9F12C8D7E44B1</b></div>
+          </li>
+          <li class="list-item">
+            <div class="line"><strong>自私接入攻击</strong><i class="tag">高危</i></div>
+            <div class="line"><span>无人机 ID</span><b>UAV-2033</b></div>
+            <div class="line"><span>公钥</span><b>021BC77DE90AF5C4</b></div>
+          </li>
+        </ul>
+      </article>
+
+      <article class="panel card">
+        <h2 class="panel-title">处置记录</h2>
+        <p class="panel-note"></p>
+        <ul class="list">
+          <li class="list-item">
+            <div class="line"><span>无人机 ID</span><b>UAV-1007</b></div>
+            <div class="line"><span>公钥</span><b>03A9F12C8D7E44B1</b></div>
+            <div class="line"><span>处置原因</span><b>高频重接入攻击</b></div>
+          </li>
+          <li class="list-item">
+            <div class="line"><span>无人机 ID</span><b>UAV-2033</b></div>
+            <div class="line"><span>公钥</span><b>021BC77DE90AF5C4</b></div>
+            <div class="line"><span>处置原因</span><b>自私接入攻击</b></div>
+          </li>
+        </ul>
+      </article>
     </section>
   </main>
 </body>
