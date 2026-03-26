@@ -6,13 +6,8 @@
   <title>安全防御</title>
   <style>
     :root {
-      --bg-panel: rgba(10, 24, 56, 0.92);
-      --bg-item: rgba(12, 34, 78, 0.78);
-      --line: rgba(76, 176, 255, 0.35);
-      --text-main: #e6f4ff;
-      --text-sub: #9ec5ff;
-      --accent: #4cc8ff;
-      --accent-2: #00f7d2;
+      --bg-panel: #f8fafc;
+      --line: #e5e7eb;
     }
 
     * {
@@ -42,9 +37,8 @@
 
     .card {
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 10px;
       background: var(--bg-panel);
-      backdrop-filter: blur(8px);
     }
 
     .top-panel {
@@ -62,7 +56,7 @@
 
     .bottom {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
       min-height: 0;
     }
@@ -71,62 +65,73 @@
       min-height: 0;
       display: flex;
       flex-direction: column;
-      padding: 14px 14px 10px;
+      padding: 12px 12px 10px;
+    }
+
+    .bottom .card {
+      background: #020810;
+      border: 1px solid #1e3047;
+      border-radius: 10px;
     }
 
     .panel-title {
       margin: 0;
-      font-size: 17px;
-      color: #cbe8ff;
+      font-size: 16px;
+      color: #2ef8a2;
       letter-spacing: 0.5px;
+      border-bottom: 1px solid #1a2f45;
+      padding-bottom: 8px;
+      font-family: "Consolas", "Courier New", monospace;
+      font-weight: 600;
     }
 
-    .panel-note {
-      margin-top: 5px;
-      color: var(--text-sub);
-      font-size: 12px;
-      line-height: 1.8;
+    .terminal {
+      margin-top: 10px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      overflow: hidden;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
     }
 
-    .list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
+    .terminal-body {
+      padding: 4px 2px 6px;
       display: grid;
-      gap: 8px;
+      gap: 14px;
       overflow: auto;
     }
 
-    .list-item {
-      border: 1px solid rgba(76, 200, 255, 0.28);
-      border-radius: 10px;
-      background: var(--bg-item);
-      padding: 10px;
-      display: grid;
-      gap: 6px;
-    }
-
-    .line {
+    .log-row {
       display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 13px;
-      color: #e7f5ff;
-    }
-
-    .line span {
-      color: var(--text-sub);
-    }
-
-    .tag {
-      display: inline-block;
+      gap: 8px;
+      align-items: flex-start;
+      font-family: "Consolas", "Courier New", monospace;
       font-size: 12px;
-      color: #021325;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      border-radius: 999px;
-      padding: 3px 9px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
+      color: #23f58f;
+      line-height: 1.9;
+      word-break: break-all;
+    }
+
+    .log-row::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2dff95;
+      margin-top: 6px;
+      flex: 0 0 auto;
+    }
+
+    .log-time {
+      color: #22f78f;
+      flex: 0 0 auto;
+      font-weight: 600;
+    }
+
+    .log-text {
+      color: #1df08a;
     }
 
     @media (max-width: 900px) {
@@ -162,36 +167,34 @@
     <section class="bottom">
       <article class="panel card">
         <h2 class="panel-title">攻击分析与威胁事件明细</h2>
-        <p class="panel-note"></p>
-        <ul class="list">
-          <li class="list-item">
-            <div class="line"><strong>高频重接入攻击</strong><i class="tag">高危</i></div>
-            <div class="line"><span>无人机 ID</span><b>UAV-1007</b></div>
-            <div class="line"><span>公钥</span><b>03A9F12C8D7E44B1</b></div>
-          </li>
-          <li class="list-item">
-            <div class="line"><strong>自私接入攻击</strong><i class="tag">高危</i></div>
-            <div class="line"><span>无人机 ID</span><b>UAV-2033</b></div>
-            <div class="line"><span>公钥</span><b>021BC77DE90AF5C4</b></div>
-          </li>
-        </ul>
+        <div class="terminal">
+          <div class="terminal-body">
+            <div class="log-row">
+              <span class="log-time">[22:33:10]</span>
+              <span class="log-text">高频重接入攻击 | 无人机ID=UAV-1007 | 公钥=03A9F12C8D7E44B1</span>
+            </div>
+            <div class="log-row">
+              <span class="log-time">[22:33:14]</span>
+              <span class="log-text">自私接入攻击 | 无人机ID=UAV-2033 | 公钥=021BC77DE90AF5C4</span>
+            </div>
+          </div>
+        </div>
       </article>
 
       <article class="panel card">
         <h2 class="panel-title">处置记录</h2>
-        <p class="panel-note"></p>
-        <ul class="list">
-          <li class="list-item">
-            <div class="line"><span>无人机 ID</span><b>UAV-1007</b></div>
-            <div class="line"><span>公钥</span><b>03A9F12C8D7E44B1</b></div>
-            <div class="line"><span>处置原因</span><b>高频重接入攻击</b></div>
-          </li>
-          <li class="list-item">
-            <div class="line"><span>无人机 ID</span><b>UAV-2033</b></div>
-            <div class="line"><span>公钥</span><b>021BC77DE90AF5C4</b></div>
-            <div class="line"><span>处置原因</span><b>自私接入攻击</b></div>
-          </li>
-        </ul>
+        <div class="terminal">
+          <div class="terminal-body">
+            <div class="log-row">
+              <span class="log-time">[22:33:21]</span>
+              <span class="log-text">无人机ID=UAV-1007 | 公钥=03A9F12C8D7E44B1 | 因高频重接入攻击加入黑名单</span>
+            </div>
+            <div class="log-row">
+              <span class="log-time">[22:33:24]</span>
+              <span class="log-text">无人机ID=UAV-2033 | 公钥=021BC77DE90AF5C4 | 因自私接入攻击加入黑名单</span>
+            </div>
+          </div>
+        </div>
       </article>
     </section>
   </main>
