@@ -1,11 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>网络层</title>
+  <title>网络层接入测试</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     html,
     body {
@@ -17,12 +19,14 @@
       font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
       background: #ffffff;
       color: #1f2937;
+      overflow: auto;
     }
 
     .page {
       height: 100%;
       display: grid;
       grid-template-rows: 3fr 2fr;
+      gap: 0;
     }
 
     .section {
@@ -54,129 +58,204 @@
     }
 
     .bottom-layout {
-      display: grid;
-      grid-template-columns: 4.5fr 5.5fr;
-      gap: 16px;
       height: 100%;
       min-height: 0;
+      display: grid;
+      grid-template-columns: 5.5fr 4.5fr;
+      gap: 16px;
     }
 
     .left-panel {
       border: 1px solid #e5e7eb;
       border-radius: 10px;
       background: #f9fafb;
-      padding: 14px;
+      padding: 12px;
       display: grid;
-      grid-template-rows: auto 1fr auto;
+      grid-template-rows: auto 1fr;
       gap: 12px;
       min-height: 0;
     }
 
-    .mode-buttons {
+    .controls {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .mode-btn {
-      border: 1px solid #0f5f82;
-      border-radius: 8px;
-      background: #186487;
-      color: #ffffff;
-      font-size: 16px;
+    .option-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .option-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: #334155;
       font-weight: 600;
-      padding: 12px 10px;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      user-select: none;
     }
 
-    .mode-btn:hover {
+    .option-item input {
+      width: 16px;
+      height: 16px;
+      accent-color: #0f766e;
+      cursor: pointer;
+    }
+
+    .count-label {
+      font-size: 13px;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .count-input {
+      width: 96px;
+      height: 30px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 12px;
+      padding: 0 8px;
+      outline: none;
+    }
+
+    .count-input:focus {
+      border-color: #0f766e;
+      box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.14);
+    }
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .start-btn {
+      border: 1px solid #0a7661;
+      border-radius: 8px;
+      background: #0f8a72;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 18px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .start-btn:hover:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(24, 100, 135, 0.25);
+      box-shadow: 0 6px 16px rgba(15, 138, 114, 0.24);
     }
 
-    .mode-btn.is-active {
-      background: #0d4f6d;
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+    .start-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
-    .flow-wrap {
+    .gauge-row {
       border: 1px solid #d1d5db;
       border-radius: 8px;
       background: #ffffff;
       padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
       min-height: 0;
-      overflow: hidden;
-      display: flex;
     }
 
-    .flow-svg {
-      width: 100%;
-      height: 100%;
+    .gauge-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 6px;
+      display: grid;
+      grid-template-rows: auto auto auto;
+      justify-items: center;
+      align-content: start;
+      gap: 2px;
     }
 
-    .flow-base {
-      fill: none;
-      stroke: #8ab8de;
-      stroke-width: 20;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .flow-active {
-      fill: none;
-      stroke: #2563eb;
-      stroke-width: 30;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      filter: drop-shadow(0 0 4px rgba(37, 99, 235, 0.6));
-    }
-
-    .flow-node {
-      fill: #ffffff;
-      stroke: #93a4b5;
-      stroke-width: 3;
-      transition: fill 0.3s ease, stroke 0.3s ease, r 0.3s ease;
-    }
-
-    .flow-node.is-visited {
-      fill: #ffffff;
-      stroke: #2563eb;
-    }
-
-    .flow-node.is-active {
-      fill: #ffffff;
-      stroke: #1d4ed8;
-      stroke-width: 4;
-    }
-
-    .flow-label {
-      fill: #111827;
-      font-size: 24px;
-      font-weight: 600;
-      user-select: none;
-    }
-
-    .flow-label-small {
-      fill: #111827;
-      font-size: 22px;
-      font-weight: 600;
-      user-select: none;
-    }
-
-    .flow-status {
+    .gauge-title {
       margin: 0;
-      min-height: 22px;
-      font-size: 14px;
-      color: #1d4ed8;
-      font-weight: 600;
+      font-size: 12px;
+      color: #334155;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.35;
+      min-height: 28px;
+    }
+
+    .gauge-svg {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      display: block;
+    }
+
+    .gauge-track {
+      fill: none;
+      stroke: #d5dee9;
+      stroke-width: 14;
+      stroke-linecap: round;
+    }
+
+    .gauge-progress {
+      fill: none;
+      stroke: #0ea5e9;
+      stroke-width: 14;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.35s ease;
+    }
+
+    .gauge-needle {
+      stroke: #0f172a;
+      stroke-width: 4;
+      stroke-linecap: round;
+      transform-origin: 110px 110px;
+      transition: transform 0.35s ease;
+    }
+
+    .gauge-center {
+      fill: #0f172a;
+    }
+
+    .gauge-mark {
+      fill: #64748b;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .gauge-value {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
     }
 
     .right-panel {
+      min-height: 0;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      min-height: 0;
     }
 
     .log-box {
@@ -184,9 +263,10 @@
       border-radius: 10px;
       background: #05070a;
       color: #3cff84;
-      padding: 12px;
+      padding: 10px;
       display: grid;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 8px;
       min-height: 0;
       overflow: hidden;
       font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -194,23 +274,63 @@
 
     .log-title {
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       color: #7dffab;
       border-bottom: 1px solid #1f2937;
       padding-bottom: 8px;
     }
 
     .log-content {
-      margin: 10px 0 0;
-      padding-left: 16px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
       font-size: 12px;
       line-height: 1.6;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
       white-space: pre-wrap;
     }
 
-    @media (max-width: 1000px) {
+    .log-content li {
+      margin: 0 0 8px;
+      word-break: break-word;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2dff95;
+      margin-top: 6px;
+      flex: 0 0 auto;
+      box-shadow: 0 0 6px rgba(45, 255, 149, 0.75);
+    }
+
+    .log-metric {
+      margin: 0;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(125, 255, 171, 0.35);
+      font-size: 12px;
+      font-weight: 700;
+      color: #93c5fd;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 1180px) {
       .bottom-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .right-panel {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .gauge-row {
         grid-template-columns: 1fr;
       }
 
@@ -220,226 +340,345 @@
     }
 
     @media (max-width: 700px) {
-      .mode-buttons {
+      .option-row {
         grid-template-columns: 1fr;
-      }
-
-      .flow-label {
-        font-size: 19px;
-      }
-
-      .flow-label-small {
-        font-size: 17px;
+        gap: 10px;
       }
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <div class="image-wrap">
-        <img src="../assets/network2.png" alt="网络层接入示意图" />
-      </div>
     <section class="section">
-  <div class="bottom-layout">
-    <div class="left-panel">
-      <div class="mode-buttons">
-        <button class="mode-btn" type="button" data-mode="centralized">单模态接入</button>
-        <button class="mode-btn" type="button" data-mode="distributed">区块链增强的多模态接入</button>
+      <div class="image-wrap">
+        <img src="../assets/network.png" alt="网络层接入示意图" />
       </div>
+    </section>
 
-      <div class="flow-wrap">
-        <svg class="flow-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" aria-label="物理层接入流程图">
-          <!-- 基础灰色底线路 -->
-          <path class="flow-base" d="M50 180 L240 180" />
-          <path class="flow-base" d="M240 180 C320 180 320 80 440 80 L620 80" />
-          <path class="flow-base" d="M440 80 C520 80 520 80 680 80" />
-          <path class="flow-base" d="M240 180 C320 180 320 280 440 280 L620 280" />
-          <path class="flow-base" d="M440 280 C520 280 520 280 680 280" />
+    <section class="section">
+      <div class="bottom-layout">
+        <article class="left-panel">
+          <div class="controls">
+            <div class="option-row">
+              <div class="option-line">
+                <label class="option-item"><input id="single-option" type="checkbox" checked /> 单模态接入测试</label>
+                <label class="count-label" for="single-count">测试次数</label>
+                <input id="single-count" class="count-input" type="text" inputmode="numeric" placeholder="默认20" />
+              </div>
+              <div class="option-line">
+                <label class="option-item"><input id="multi-option" type="checkbox" checked /> 多模态接入测试</label>
+                <label class="count-label" for="multi-count">测试次数</label>
+                <input id="multi-count" class="count-input" type="text" inputmode="numeric" placeholder="默认20" />
+              </div>
+            </div>
+            <div class="action-row">
+              <button class="start-btn" id="start-test-btn" type="button">开始测试</button>
+            </div>
+          </div>
 
-          <!-- 动画高亮线路 -->
-          <path id="active-seg-1" class="flow-active" d="M50 180 L240 180" />
-          <path id="active-seg-top" class="flow-active" d="M240 180 C320 180 320 80 440 80 L680 80" />
-          <path id="active-seg-bottom" class="flow-active" d="M240 180 C320 180 320 280 440 280 L680 280" />
+          <div class="gauge-row">
+            <section class="gauge-card">
+              <h3 class="gauge-title">单模态接入成功率</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="单模态接入成功率仪表盘">
+                <path class="gauge-track" d="M30 110 A80 80 0 0 1 190 110" />
+                <path class="gauge-progress" id="single-progress" d="M30 110 A80 80 0 0 1 190 110" />
+                <line class="gauge-needle" id="single-needle" x1="110" y1="110" x2="110" y2="42" />
+                <circle class="gauge-center" cx="110" cy="110" r="5" />
+                <text class="gauge-mark" x="26" y="128">0%</text>
+                <text class="gauge-mark" x="183" y="128">100%</text>
+              </svg>
+              <p class="gauge-value" id="single-value">--</p>
+            </section>
 
-          <!-- 流程节点 -->
-          <circle id="node-start" class="flow-node" cx="240" cy="180" r="10" />
-          <circle id="node-multi" class="flow-node" cx="440" cy="80" r="10" />
-          <circle id="node-switch" class="flow-node" cx="680" cy="80" r="10" />
-          <circle id="node-single" class="flow-node" cx="440" cy="280" r="10" />
-          <circle id="node-backoff" class="flow-node" cx="680" cy="280" r="10" />
+            <section class="gauge-card">
+              <h3 class="gauge-title">多模态接入成功率</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="多模态接入成功率仪表盘">
+                <path class="gauge-track" d="M30 110 A80 80 0 0 1 190 110" />
+                <path class="gauge-progress" id="multi-progress" d="M30 110 A80 80 0 0 1 190 110" />
+                <line class="gauge-needle" id="multi-needle" x1="110" y1="110" x2="110" y2="42" />
+                <circle class="gauge-center" cx="110" cy="110" r="5" />
+                <text class="gauge-mark" x="26" y="128">0%</text>
+                <text class="gauge-mark" x="183" y="128">100%</text>
+              </svg>
+              <p class="gauge-value" id="multi-value">--</p>
+            </section>
 
-          <!-- 文字标签 -->
-          <text class="flow-label" x="120" y="220">模拟网络攻击</text>
-          <text class="flow-label" x="380" y="50">多模态接入</text>
-          <text class="flow-label" x="620" y="50">接入区块链节点反馈</text>
-          <text class="flow-label" x="380" y="320">单模态接入</text>
-          <text class="flow-label" x="620" y="320">接入认证节点反馈</text>
-        </svg>
+            <section class="gauge-card">
+              <h3 class="gauge-title">多模态相较单模态提升</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="多模态提升仪表盘">
+                <path class="gauge-track" d="M30 110 A80 80 0 0 1 190 110" />
+                <path class="gauge-progress" id="boost-progress" d="M30 110 A80 80 0 0 1 190 110" />
+                <line class="gauge-needle" id="boost-needle" x1="110" y1="110" x2="110" y2="42" />
+                <circle class="gauge-center" cx="110" cy="110" r="5" />
+                <text class="gauge-mark" x="26" y="128">0%</text>
+                <text class="gauge-mark" x="176" y="128">100%</text>
+              </svg>
+              <p class="gauge-value" id="boost-value">--</p>
+            </section>
+          </div>
+        </article>
+
+        <article class="right-panel">
+          <section class="log-box">
+            <h3 class="log-title">单模态接入网络层日志</h3>
+            <ul class="log-content" id="single-log"></ul>
+            <p class="log-metric" id="single-metric">单模态当前成功率：--</p>
+          </section>
+
+          <section class="log-box">
+            <h3 class="log-title">多模态接入网络层日志</h3>
+            <ul class="log-content" id="multi-log"></ul>
+            <p class="log-metric" id="multi-metric">多模态当前成功率：--</p>
+          </section>
+        </article>
       </div>
+    </section>
+  </main>
 
-      <p class="flow-status" id="flow-status">点击上方按钮，开始认证流程演示</p>
-    </div>
+  <script>
+    (function () {
+      const DEFAULT_ROUNDS = 20;
+      const MIN_ROUNDS = 1;
+      const MAX_ROUNDS = 200;
+      const STEP_DELAY_MS = 280;
 
-    <div class="right-panel">
-      <article class="log-box">
-        <h3 class="log-title">单模态接入网络层日志</h3>
-        <ul class="log-content">
-          <li>[22:33:10] 认证中心连接成功</li>
-          <li>[22:33:14] 接收设备证书请求 #A1024</li>
-          <li>[22:33:16] 证书校验通过，开始签发</li>
-          <li>[22:33:21] 签发完成，已回传接入结果</li>
-        </ul>
-      </article>
-      <article class="log-box">
-        <h3 class="log-title">多模态接入网络层日志</h3>
-        <ul class="log-content">
-          <li>[22:33:11] 共识节点已就绪，共 8 节点</li>
-          <li>[22:33:15] 提交认证交易 tx:0x8f4...aa1</li>
-          <li>[22:33:20] 区块确认高度 +1，状态有效</li>
-          <li>[22:33:24] 认证结果广播至边缘网关</li>
-        </ul>
-      </article>
-    </div>
-  </div>
-</section>
+      const singleOption = document.getElementById('single-option');
+      const multiOption = document.getElementById('multi-option');
+      const singleCountInput = document.getElementById('single-count');
+      const multiCountInput = document.getElementById('multi-count');
+      const startBtn = document.getElementById('start-test-btn');
 
-<script>
-  (function () {
-    const statusEl = document.getElementById('flow-status');
-    const buttons = document.querySelectorAll('.mode-btn');
-    const paths = {
-      seg1: document.getElementById('active-seg-1'),
-      top: document.getElementById('active-seg-top'),
-      bottom: document.getElementById('active-seg-bottom')
-    };
-    const nodes = {
-      start: document.getElementById('node-start'),
-      multi: document.getElementById('node-multi'),
-      switchNode: document.getElementById('node-switch'),
-      single: document.getElementById('node-single'),
-      backoff: document.getElementById('node-backoff')
-    };
+      const singleLog = document.getElementById('single-log');
+      const multiLog = document.getElementById('multi-log');
+      const singleMetric = document.getElementById('single-metric');
+      const multiMetric = document.getElementById('multi-metric');
 
-    const PAUSE_MS = 900;
-    const NODE_BASE_R = 10;
-    const NODE_ACTIVE_R = 17;
-    const DURATION_MS = {
-      seg1: 1200,
-      branchPart1: 1000,
-      branchPart2: 1000
-    };
+      const gauges = {
+        single: {
+          progress: document.getElementById('single-progress'),
+          needle: document.getElementById('single-needle'),
+          value: document.getElementById('single-value'),
+          min: 0,
+          max: 100,
+          format: function (v) { return v.toFixed(1) + '%'; }
+        },
+        multi: {
+          progress: document.getElementById('multi-progress'),
+          needle: document.getElementById('multi-needle'),
+          value: document.getElementById('multi-value'),
+          min: 0,
+          max: 100,
+          format: function (v) { return v.toFixed(1) + '%'; }
+        },
+        boost: {
+          progress: document.getElementById('boost-progress'),
+          needle: document.getElementById('boost-needle'),
+          value: document.getElementById('boost-value'),
+          min: 0,
+          max: 100,
+          format: function (v) {
+            return v.toFixed(1) + '%';
+          }
+        }
+      };
 
-    let animationToken = 0;
+      let running = false;
 
-    function sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
+      function nowTime() {
+        return new Date().toLocaleTimeString('zh-CN', { hour12: false });
+      }
 
-    function setButtonState(mode) {
-      buttons.forEach((button) => {
-        button.classList.toggle('is-active', button.dataset.mode === mode);
-      });
-    }
-
-    function initPath(path) {
-      const total = path.getTotalLength();
-      path.dataset.total = String(total);
-      path.style.transition = 'none';
-      path.style.strokeDasharray = String(total);
-      path.style.strokeDashoffset = String(total);
-    }
-
-    function resetPaths() {
-      Object.values(paths).forEach(initPath);
-    }
-
-    function resetNodes() {
-      Object.values(nodes).forEach((node) => {
-        node.classList.remove('is-active', 'is-visited');
-        node.setAttribute('r', String(NODE_BASE_R));
-      });
-    }
-
-    function revealPathSegment(path, startOffset, endOffset, duration) {
-      return new Promise((resolve) => {
-        path.style.transition = 'none';
-        path.style.strokeDashoffset = startOffset;
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            path.style.transition = `stroke-dashoffset ${duration}ms linear`;
-            path.style.strokeDashoffset = endOffset;
-          });
+      function sleep(ms) {
+        return new Promise(function (resolve) {
+          window.setTimeout(resolve, ms);
         });
-        setTimeout(resolve, duration + 40);
-      });
-    }
-
-    async function pauseAtNode(node, label, token) {
-      if (token !== animationToken) return;
-      node.classList.add('is-visited', 'is-active');
-      node.setAttribute('r', String(NODE_ACTIVE_R));
-      statusEl.textContent = '已到达环节：' + label;
-      await sleep(PAUSE_MS);
-      if (token !== animationToken) return;
-      node.classList.remove('is-active');
-      node.setAttribute('r', String(NODE_BASE_R));
-    }
-
-    async function runFlow(mode) {
-      animationToken++;
-      const token = animationToken;
-
-      setButtonState(mode);
-      resetPaths();
-      resetNodes();
-
-      const flowName = mode === 'distributed' ? '多模态接入' : '单模态接入';
-      statusEl.textContent = '流程启动：' + flowName;
-      await sleep(300);
-
-      // ====================== 第一段：通信屏蔽罩 ======================
-      await revealPathSegment(paths.seg1, paths.seg1.dataset.total, 0, DURATION_MS.seg1);
-      await pauseAtNode(nodes.start, '通信屏蔽罩', token);
-      if (token !== animationToken) return;
-
-      if (mode === 'distributed') {
-        // ====================== 多模态：多模态接入 ======================
-        const totalTop = Number(paths.top.dataset.total);
-        const offset1 = totalTop * 0.5;
-        await revealPathSegment(paths.top, totalTop, offset1, DURATION_MS.branchPart1);
-        await pauseAtNode(nodes.multi, '多模态接入', token);
-        if (token !== animationToken) return;
-
-        // ====================== 多模态：切换接入方式重接入 ======================
-        await revealPathSegment(paths.top, offset1, 0, DURATION_MS.branchPart2);
-        await pauseAtNode(nodes.switchNode, '切换接入方式重接入', token);
-      } else {
-        // ====================== 单模态：单模态接入 ======================
-        const totalBot = Number(paths.bottom.dataset.total);
-        const offset2 = totalBot * 0.5;
-        await revealPathSegment(paths.bottom, totalBot, offset2, DURATION_MS.branchPart1);
-        await pauseAtNode(nodes.single, '单模态接入', token);
-        if (token !== animationToken) return;
-
-        // ====================== 单模态：随机退避接入 ======================
-        await revealPathSegment(paths.bottom, offset2, 0, DURATION_MS.branchPart2);
-        await pauseAtNode(nodes.backoff, '随机退避接入', token);
       }
 
-      if (token === animationToken) {
-        statusEl.textContent = '流程完成：' + flowName;
+      function appendLog(target, message) {
+        const li = document.createElement('li');
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        li.appendChild(dot);
+        li.appendChild(document.createTextNode('[' + nowTime() + '] ' + message));
+        target.appendChild(li);
+        target.scrollTop = target.scrollHeight;
       }
-    }
 
-    buttons.forEach((button) => {
-      button.addEventListener('click', () => {
-        runFlow(button.dataset.mode);
+      function initGauge(gauge) {
+        const length = gauge.progress.getTotalLength();
+        gauge.length = length;
+        gauge.progress.style.strokeDasharray = String(length);
+        gauge.progress.style.strokeDashoffset = String(length);
+      }
+
+      function setGauge(gauge, value) {
+        if (value === null || Number.isNaN(value)) {
+          gauge.value.textContent = '--';
+          gauge.progress.style.strokeDashoffset = String(gauge.length);
+          gauge.needle.style.transform = 'rotate(-90deg)';
+          return;
+        }
+
+        const clamped = Math.min(gauge.max, Math.max(gauge.min, value));
+        const ratio = (clamped - gauge.min) / (gauge.max - gauge.min);
+        const dashOffset = gauge.length * (1 - ratio);
+        const angle = -90 + ratio * 180;
+
+        gauge.progress.style.strokeDashoffset = String(dashOffset);
+        gauge.needle.style.transform = 'rotate(' + angle + 'deg)';
+        gauge.value.textContent = gauge.format(clamped);
+      }
+
+      function resetView() {
+        setGauge(gauges.single, null);
+        setGauge(gauges.multi, null);
+        setGauge(gauges.boost, null);
+        singleMetric.textContent = '单模态当前成功率：--';
+        multiMetric.textContent = '多模态当前成功率：--';
+      }
+
+      function setControlState(disabled) {
+        running = disabled;
+        startBtn.disabled = disabled;
+        singleOption.disabled = disabled;
+        multiOption.disabled = disabled;
+        singleCountInput.disabled = disabled;
+        multiCountInput.disabled = disabled;
+      }
+
+      function readRoundCount(inputEl) {
+        const raw = inputEl.value.trim();
+        if (raw === '') {
+          return DEFAULT_ROUNDS;
+        }
+        if (!/^\d+$/.test(raw)) {
+          return null;
+        }
+        const value = Number(raw);
+        if (value < MIN_ROUNDS || value > MAX_ROUNDS) {
+          return null;
+        }
+        return value;
+      }
+
+      function calcRate(success, total) {
+        if (total <= 0) {
+          return null;
+        }
+        return (success / total) * 100;
+      }
+
+      function updateMetrics(singleRate, multiRate) {
+        if (singleRate === null) {
+          singleMetric.textContent = '单模态当前成功率：--';
+        } else {
+          singleMetric.textContent = '单模态当前成功率：' + singleRate.toFixed(1) + '%';
+        }
+
+        if (multiRate === null) {
+          multiMetric.textContent = '多模态当前成功率：--';
+        } else {
+          multiMetric.textContent = '多模态当前成功率：' + multiRate.toFixed(1) + '%';
+        }
+      }
+
+      async function runTest() {
+        if (running) {
+          return;
+        }
+
+        const runSingle = singleOption.checked;
+        const runMulti = multiOption.checked;
+
+        if (!runSingle && !runMulti) {
+          return;
+        }
+
+        const singleRounds = runSingle ? readRoundCount(singleCountInput) : 0;
+        const multiRounds = runMulti ? readRoundCount(multiCountInput) : 0;
+
+        if (runSingle && singleRounds === null) {
+          appendLog(singleLog, '[单模态] 参数错误：测试次数需为 ' + MIN_ROUNDS + '-' + MAX_ROUNDS + ' 的整数');
+          return;
+        }
+
+        if (runMulti && multiRounds === null) {
+          appendLog(multiLog, '[多模态] 参数错误：测试次数需为 ' + MIN_ROUNDS + '-' + MAX_ROUNDS + ' 的整数');
+          return;
+        }
+
+        singleLog.innerHTML = '';
+        multiLog.innerHTML = '';
+        resetView();
+
+        setControlState(true);
+
+        let singleTotal = 0;
+        let singleSuccess = 0;
+        let multiTotal = 0;
+        let multiSuccess = 0;
+
+        const totalRounds = Math.max(singleRounds, multiRounds);
+
+        for (let i = 1; i <= totalRounds; i += 1) {
+          if (runSingle && i <= singleRounds) {
+            singleTotal += 1;
+            const okSingle = Math.random() < 0.7;
+            if (okSingle) {
+              singleSuccess += 1;
+            }
+            appendLog(singleLog, '[单模态] 第' + i + '轮接入' + (okSingle ? '成功' : '失败'));
+          }
+
+          if (runMulti && i <= multiRounds) {
+            multiTotal += 1;
+            const okMulti = Math.random() < 0.93;
+            if (okMulti) {
+              multiSuccess += 1;
+            }
+            appendLog(multiLog, '[多模态] 第' + i + '轮接入' + (okMulti ? '成功' : '失败'));
+          }
+
+          const singleRate = runSingle ? calcRate(singleSuccess, singleTotal) : null;
+          const multiRate = runMulti ? calcRate(multiSuccess, multiTotal) : null;
+
+          setGauge(gauges.single, singleRate);
+          setGauge(gauges.multi, multiRate);
+
+          if (singleRate !== null && multiRate !== null) {
+            setGauge(gauges.boost, Math.max(0, multiRate - singleRate));
+          } else {
+            setGauge(gauges.boost, null);
+          }
+
+          updateMetrics(singleRate, multiRate);
+          await sleep(STEP_DELAY_MS);
+        }
+
+        const finalSingleRate = runSingle ? calcRate(singleSuccess, singleTotal) : null;
+        const finalMultiRate = runMulti ? calcRate(multiSuccess, multiTotal) : null;
+
+        if (runSingle) {
+          appendLog(singleLog, '[单模态] 测试完成，最终成功率 ' + finalSingleRate.toFixed(1) + '%');
+        }
+
+        if (runMulti) {
+          appendLog(multiLog, '[多模态] 测试完成，最终成功率 ' + finalMultiRate.toFixed(1) + '%');
+        }
+
+        setControlState(false);
+      }
+
+      Object.keys(gauges).forEach(function (key) {
+        initGauge(gauges[key]);
       });
-    });
 
-    resetPaths();
-    resetNodes();
-  })();
-</script>
-  </body>
+      resetView();
+      appendLog(singleLog, '[单模态] 系统就绪，等待测试指令');
+      appendLog(multiLog, '[多模态] 系统就绪，等待测试指令');
+
+      startBtn.addEventListener('click', runTest);
+    })();
+  </script>
+</body>
 </html>
