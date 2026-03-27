@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>安全防御</title>
   <style>
-    :root {
-      --bg-panel: #f8fafc;
-      --line: #e5e7eb;
-    }
-
     * {
       box-sizing: border-box;
     }
@@ -21,7 +16,7 @@
 
     body {
       margin: 0;
-      font-family: "Bahnschrift", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
       background: #ffffff;
       color: #0f172a;
       overflow: auto;
@@ -36,125 +31,331 @@
     }
 
     .card {
-      border: 1px solid var(--line);
+      border: 1px solid #e5e7eb;
       border-radius: 10px;
-      background: var(--bg-panel);
+      background: #f8fafc;
     }
 
     .top-panel {
-      position: relative;
       overflow: hidden;
     }
 
     .top-panel img {
       width: 100%;
       height: 100%;
-      display: block;
       object-fit: contain;
+      display: block;
       background: #ffffff;
     }
 
-    .bottom {
+    .bottom-layout {
+      min-height: 0;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr 1fr;
       gap: 14px;
-      min-height: 0;
     }
 
-    .panel {
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      padding: 12px 12px 10px;
-    }
-
-    .bottom .card {
-      background: #020810;
-      border: 1px solid #1e3047;
+    .left-panel {
+      border: 1px solid #e5e7eb;
       border-radius: 10px;
+      background: #f9fafb;
+      min-height: 0;
+      padding: 12px;
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 12px;
     }
 
-    .panel-title {
-      margin: 0;
-      font-size: 16px;
-      color: #2ef8a2;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid #1a2f45;
-      padding-bottom: 8px;
-      font-family: "Consolas", "Courier New", monospace;
+    .controls {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      min-height: 124px;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .action-btn {
+      border: 1px solid #0f5f82;
+      border-radius: 8px;
+      background: #186487;
+      color: #ffffff;
+      font-size: 14px;
       font-weight: 600;
+      padding: 10px 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .terminal {
-      margin-top: 10px;
+    .action-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(24, 100, 135, 0.24);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .input-row label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .count-input {
+      width: 180px;
+      max-width: 100%;
+      height: 34px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 13px;
+      padding: 0 10px;
+      outline: none;
+    }
+
+    .count-input:focus {
+      border-color: #0f766e;
+      box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.14);
+    }
+
+    .status {
+      margin: 0;
+      font-size: 13px;
+      color: #1d4ed8;
+      font-weight: 600;
+      min-height: 0;
+      flex: 1 1 auto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .flow-area {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 6px 8px;
+      display: grid;
+      align-content: start;
+      gap: 2px;
+      overflow: visible;
+    }
+
+    .flow-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .flow-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .flow-wrap {
       border: 0;
       border-radius: 0;
       background: transparent;
-      overflow: hidden;
+      padding: 0;
+      overflow: visible;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .flow-svg {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 900 / 260;
+    }
+
+    .flow-base {
+      fill: none;
+      stroke: #8ab8de;
+      stroke-width: 16;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .flow-active {
+      fill: none;
+      stroke: #2563eb;
+      stroke-width: 24;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 4px rgba(37, 99, 235, 0.6));
+    }
+
+    .flow-node {
+      fill: #ffffff;
+      stroke: #93a4b5;
+      stroke-width: 3;
+      transition: fill 0.3s ease, stroke 0.3s ease, r 0.3s ease;
+    }
+
+    .flow-node.is-visited {
+      fill: #ffffff;
+      stroke: #2563eb;
+    }
+
+    .flow-node.is-active {
+      fill: #ffffff;
+      stroke: #1d4ed8;
+      stroke-width: 4;
+    }
+
+    .flow-label {
+      fill: #111827;
+      font-size: 24px;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .flow-label-small {
+      fill: #111827;
+      font-size: 19px;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .flow-label-long {
+      fill: #111827;
+      font-size: 16px;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .flow-heading {
+      fill: #1d9bf0;
+    }
+
+    .right-panel {
       min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .terminal-body {
-      padding: 4px 2px 6px;
       display: grid;
-      gap: 14px;
-      overflow: auto;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
 
-    .log-row {
-      display: flex;
+    .log-box {
+      border: 1px solid #111827;
+      border-radius: 10px;
+      background: #05070a;
+      color: #3cff84;
+      padding: 10px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
       gap: 8px;
-      align-items: flex-start;
-      font-family: "Consolas", "Courier New", monospace;
-      font-size: 12px;
-      color: #23f58f;
-      line-height: 1.9;
-      word-break: break-all;
+      min-height: 0;
+      overflow: hidden;
+      font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
-    .log-row::before {
-      content: "";
+    .log-title {
+      margin: 0;
+      font-size: 15px;
+      color: #7dffab;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 8px;
+    }
+
+    .log-content {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: pre-wrap;
+    }
+
+    .log-content li {
+      margin: 0 0 8px;
+      word-break: break-word;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
       background: #2dff95;
       margin-top: 6px;
       flex: 0 0 auto;
+      box-shadow: 0 0 6px rgba(45, 255, 149, 0.75);
     }
 
-    .log-time {
-      color: #22f78f;
-      flex: 0 0 auto;
-      font-weight: 600;
+    .log-metric {
+      margin: 0;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(125, 255, 171, 0.35);
+      font-size: 12px;
+      font-weight: 700;
+      color: #93c5fd;
+      line-height: 1.4;
     }
 
-    .log-text {
-      color: #1df08a;
-    }
-
-    @media (max-width: 900px) {
-      body {
-        overflow: auto;
-      }
-
-      .page {
-        min-height: 100%;
-        grid-template-rows: auto auto;
-      }
-
-      .top-panel {
-        min-height: 300px;
-      }
-
-      .bottom {
+    @media (max-width: 980px) {
+      .bottom-layout {
         grid-template-columns: 1fr;
       }
+
+      .right-panel {
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(180px, 1fr);
+      }
     }
 
-    .top-panel.card {
-      border-color: #e9edf3;
+    @media (max-width: 760px) {
+      .btn-row {
+        grid-template-columns: 1fr;
+      }
+
+      .count-input {
+        width: 100%;
+      }
+
+      .status {
+        flex-basis: 100%;
+        white-space: normal;
+      }
+
+      .flow-svg {
+        width: 100%;
+      }
+
+      .flow-label {
+        font-size: 19px;
+      }
+
+      .flow-label-small {
+        font-size: 16px;
+      }
+
+      .flow-label-long {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -164,39 +365,339 @@
       <img src="../assets/fangyu.png" alt="安全防御态势图" />
     </section>
 
-    <section class="bottom">
-      <article class="panel card">
-        <h2 class="panel-title">攻击分析与威胁事件明细</h2>
-        <div class="terminal">
-          <div class="terminal-body">
-            <div class="log-row">
-              <span class="log-time">[22:33:10]</span>
-              <span class="log-text">高频重接入攻击 | 无人机ID=UAV-1007 | 公钥=03A9F12C8D7E44B1</span>
-            </div>
-            <div class="log-row">
-              <span class="log-time">[22:33:14]</span>
-              <span class="log-text">自私接入攻击 | 无人机ID=UAV-2033 | 公钥=021BC77DE90AF5C4</span>
-            </div>
+    <section class="bottom-layout">
+      <article class="left-panel">
+        <div class="controls">
+          <div class="btn-row">
+            <button class="action-btn" id="selfish-btn" type="button">自私接入攻击测试</button>
+            <button class="action-btn" id="highfreq-btn" type="button">高频重接入攻击测试</button>
+          </div>
+          <div class="input-row">
+            <label for="test-count">测试次数</label>
+            <input id="test-count" class="count-input" type="text" inputmode="numeric" placeholder="默认 1，范围 1-50" />
+            <p class="status" id="status-text">等待开始测试...</p>
+          </div>
+        </div>
+
+        <div class="flow-area">
+          <div class="flow-wrap">
+            <svg class="flow-svg" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" aria-label="攻击处置流程图">
+              <text class="flow-label-small flow-heading" x="70" y="28">自私接入攻击流程</text>
+              <path class="flow-base" d="M60 62 L760 62" />
+
+              <path id="selfish-seg-0" class="flow-active" d="M60 62 L150 62" />
+              <path id="selfish-seg-1" class="flow-active" d="M150 62 L350 62" />
+              <path id="selfish-seg-2" class="flow-active" d="M350 62 L550 62" />
+              <path id="selfish-seg-3" class="flow-active" d="M550 62 L760 62" />
+
+              <circle id="selfish-node-0" class="flow-node" cx="150" cy="62" r="10" />
+              <circle id="selfish-node-1" class="flow-node" cx="350" cy="62" r="10" />
+              <circle id="selfish-node-2" class="flow-node" cx="550" cy="62" r="10" />
+              <circle id="selfish-node-3" class="flow-node" cx="760" cy="62" r="10" />
+
+              <text class="flow-label-long" x="150" y="104" text-anchor="middle">
+                <tspan x="150" dy="0">无人机发送ID</tspan>
+                <tspan x="150" dy="16">和公钥</tspan>
+              </text>
+              <text class="flow-label-small" x="350" y="116" text-anchor="middle">查询区块链</text>
+              <text class="flow-label-small" x="550" y="116" text-anchor="middle">匹配信息</text>
+              <text class="flow-label-small" x="760" y="116" text-anchor="middle">加入黑名单</text>
+
+              <text class="flow-label-small flow-heading" x="70" y="154">高频重接入攻击流程</text>
+              <path class="flow-base" d="M80 184 L680 184" />
+
+              <path id="highfreq-seg-0" class="flow-active" d="M80 184 L180 184" />
+              <path id="highfreq-seg-1" class="flow-active" d="M180 184 L430 184" />
+              <path id="highfreq-seg-2" class="flow-active" d="M430 184 L680 184" />
+
+              <circle id="highfreq-node-0" class="flow-node" cx="180" cy="184" r="10" />
+              <circle id="highfreq-node-1" class="flow-node" cx="430" cy="184" r="10" />
+              <circle id="highfreq-node-2" class="flow-node" cx="680" cy="184" r="10" />
+
+              <text class="flow-label-small" x="180" y="228" text-anchor="middle">高频重接入</text>
+              <text class="flow-label-small" x="430" y="228" text-anchor="middle">记录违规行为</text>
+              <text class="flow-label-small" x="680" y="228" text-anchor="middle">加入黑名单</text>
+            </svg>
           </div>
         </div>
       </article>
 
-      <article class="panel card">
-        <h2 class="panel-title">处置记录</h2>
-        <div class="terminal">
-          <div class="terminal-body">
-            <div class="log-row">
-              <span class="log-time">[22:33:21]</span>
-              <span class="log-text">无人机ID=UAV-1007 | 公钥=03A9F12C8D7E44B1 | 因高频重接入攻击加入黑名单</span>
-            </div>
-            <div class="log-row">
-              <span class="log-time">[22:33:24]</span>
-              <span class="log-text">无人机ID=UAV-2033 | 公钥=021BC77DE90AF5C4 | 因自私接入攻击加入黑名单</span>
-            </div>
-          </div>
-        </div>
+      <article class="right-panel">
+        <section class="log-box">
+          <h3 class="log-title">攻击分析终端日志</h3>
+          <ul class="log-content" id="analysis-log"></ul>
+          <p class="log-metric" id="analysis-metric">攻击分析测试识别率：--</p>
+        </section>
+
+        <section class="log-box">
+          <h3 class="log-title">处置记录终端日志</h3>
+          <ul class="log-content" id="dispose-log"></ul>
+          <p class="log-metric" id="dispose-metric">处置记录已处置ID：--</p>
+        </section>
       </article>
     </section>
   </main>
+
+  <script>
+    (function () {
+      const selfishBtn = document.getElementById('selfish-btn');
+      const highfreqBtn = document.getElementById('highfreq-btn');
+      const testCountInput = document.getElementById('test-count');
+      const statusText = document.getElementById('status-text');
+      const analysisLog = document.getElementById('analysis-log');
+      const disposeLog = document.getElementById('dispose-log');
+      const analysisMetric = document.getElementById('analysis-metric');
+      const disposeMetric = document.getElementById('dispose-metric');
+
+      let running = false;
+
+      const flows = {
+        selfish: {
+          segments: [
+            document.getElementById('selfish-seg-0'),
+            document.getElementById('selfish-seg-1'),
+            document.getElementById('selfish-seg-2'),
+            document.getElementById('selfish-seg-3')
+          ],
+          nodes: [
+            document.getElementById('selfish-node-0'),
+            document.getElementById('selfish-node-1'),
+            document.getElementById('selfish-node-2'),
+            document.getElementById('selfish-node-3')
+          ]
+        },
+        highfreq: {
+          segments: [
+            document.getElementById('highfreq-seg-0'),
+            document.getElementById('highfreq-seg-1'),
+            document.getElementById('highfreq-seg-2')
+          ],
+          nodes: [
+            document.getElementById('highfreq-node-0'),
+            document.getElementById('highfreq-node-1'),
+            document.getElementById('highfreq-node-2')
+          ]
+        }
+      };
+
+      function nowTime() {
+        return new Date().toLocaleTimeString('zh-CN', { hour12: false });
+      }
+
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+      function parseCount() {
+        const raw = testCountInput.value.trim();
+        if (raw === '') {
+          return 1;
+        }
+        if (!/^\d+$/.test(raw)) {
+          return null;
+        }
+        const value = Number(raw);
+        if (value < 1 || value > 50) {
+          return null;
+        }
+        return value;
+      }
+
+      function appendLog(target, device, message) {
+        const li = document.createElement('li');
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        li.appendChild(dot);
+        li.appendChild(document.createTextNode('[' + nowTime() + '] [' + device + '] ' + message));
+        target.appendChild(li);
+        target.scrollTop = target.scrollHeight;
+      }
+
+      function resetMetrics() {
+        analysisMetric.textContent = '攻击分析测试通过率：--';
+        disposeMetric.textContent = '处置记录已处置ID：--';
+      }
+
+      function setRunningMetrics() {
+        analysisMetric.textContent = '攻击分析测试通过率：测试进行中...';
+        disposeMetric.textContent = '处置记录已处置ID：测试进行中...';
+      }
+
+      function setPassMetrics(passed, total) {
+        const rate = total > 0 ? (passed / total) * 100 : 0;
+        const text = rate.toFixed(1) + '%（' + passed + '/' + total + '）';
+        analysisMetric.textContent = '攻击分析测试通过率：' + text;
+        disposeMetric.textContent = '处置记录已处置ID：' + passed + ' 个';
+      }
+
+      function initPath(path) {
+        const total = path.getTotalLength();
+        path.dataset.total = String(total);
+        path.style.transition = 'none';
+        path.style.strokeDasharray = String(total);
+        path.style.strokeDashoffset = String(total);
+      }
+
+      function hidePath(path) {
+        path.style.transition = 'none';
+        path.style.strokeDashoffset = path.dataset.total;
+      }
+
+      function setNode(node, visited, active) {
+        node.classList.toggle('is-visited', Boolean(visited));
+        node.classList.toggle('is-active', Boolean(active));
+        node.setAttribute('r', active ? '14' : '10');
+      }
+
+      function resetFlow(flowName) {
+        const flow = flows[flowName];
+        flow.segments.forEach(hidePath);
+        flow.nodes.forEach((node) => setNode(node, false, false));
+      }
+
+      function initFlows() {
+        Object.keys(flows).forEach((name) => {
+          flows[name].segments.forEach(initPath);
+          resetFlow(name);
+        });
+      }
+
+      function animatePath(path, duration) {
+        return new Promise((resolve) => {
+          path.style.transition = 'none';
+          path.style.strokeDashoffset = path.dataset.total;
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              path.style.transition = 'stroke-dashoffset ' + duration + 'ms linear';
+              path.style.strokeDashoffset = '0';
+            });
+          });
+
+          window.setTimeout(resolve, duration + 30);
+        });
+      }
+
+      async function pulseNode(node) {
+        setNode(node, true, true);
+        await sleep(220);
+        setNode(node, true, false);
+      }
+
+      async function playStep(flowName, stepIndex) {
+        const flow = flows[flowName];
+        const path = flow.segments[stepIndex];
+        const node = flow.nodes[stepIndex];
+        await animatePath(path, 420);
+        await pulseNode(node);
+      }
+
+      function setRunningState(isRunning) {
+        running = isRunning;
+        selfishBtn.disabled = isRunning;
+        highfreqBtn.disabled = isRunning;
+        testCountInput.disabled = isRunning;
+      }
+
+      async function runSelfish(count) {
+        statusText.textContent = '正在执行：自私接入攻击测试';
+        let passed = 0;
+
+        for (let i = 1; i <= count; i += 1) {
+          appendLog(analysisLog, '接入点', '第' + i + '次测试开始');
+          appendLog(disposeLog, '区块链', '第' + i + '次测试开始');
+
+          resetFlow('selfish');
+          await playStep('selfish', 0);
+          appendLog(analysisLog, '接入点', '检测到自私接入攻击，无人机发送ID和公钥');
+          await sleep(180);
+
+          await playStep('selfish', 1);
+          appendLog(analysisLog, '区块链', '查询区块链身份信息');
+          await sleep(180);
+
+          await playStep('selfish', 2);
+          appendLog(analysisLog, '区块链', '匹配信息完成，判定异常接入');
+          await sleep(180);
+
+          await playStep('selfish', 3);
+          appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：自私接入攻击）');
+          await sleep(260);
+          passed += 1;
+        }
+
+        return passed;
+      }
+
+      async function runHighfreq(count) {
+        statusText.textContent = '正在执行：高频重接入攻击测试';
+        let passed = 0;
+
+        for (let i = 1; i <= count; i += 1) {
+          appendLog(analysisLog, '接入点', '第' + i + '次测试开始');
+          appendLog(disposeLog, '区块链', '第' + i + '次测试开始');
+
+          resetFlow('highfreq');
+          await playStep('highfreq', 0);
+          appendLog(analysisLog, '接入点', '检测到高频重接入行为');
+          await sleep(180);
+
+          await playStep('highfreq', 1);
+          appendLog(analysisLog, '区块链', '记录违规行为到链上');
+          await sleep(180);
+
+          await playStep('highfreq', 2);
+          appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：高频重接入攻击）');
+          await sleep(260);
+          passed += 1;
+        }
+
+        return passed;
+      }
+
+      async function startTest(type) {
+        if (running) {
+          return;
+        }
+
+        const count = parseCount();
+        if (count === null) {
+          statusText.textContent = '输入错误：测试次数需为 1-50 的整数';
+          appendLog(analysisLog, '接入点', '参数校验失败：测试次数需为 1-50 的整数');
+          return;
+        }
+
+        setRunningState(true);
+        setRunningMetrics();
+        resetFlow('selfish');
+        resetFlow('highfreq');
+        let passed = 0;
+
+        if (type === 'selfish') {
+          passed = await runSelfish(count);
+          statusText.textContent = '自私接入攻击测试完成，共执行 ' + count + ' 次';
+        } else {
+          passed = await runHighfreq(count);
+          statusText.textContent = '高频重接入攻击测试完成，共执行 ' + count + ' 次';
+        }
+
+        setPassMetrics(passed, count);
+        setRunningState(false);
+      }
+
+      selfishBtn.addEventListener('click', function () {
+        startTest('selfish');
+      });
+
+      highfreqBtn.addEventListener('click', function () {
+        startTest('highfreq');
+      });
+
+      initFlows();
+      resetMetrics();
+      appendLog(analysisLog, '接入点', '系统就绪，等待攻击测试指令');
+      appendLog(disposeLog, '区块链', '黑名单服务在线，等待处置事件');
+    })();
+  </script>
 </body>
 </html>
