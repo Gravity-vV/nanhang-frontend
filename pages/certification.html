@@ -20,9 +20,10 @@
     }
 
     .page {
-      height: 100%;
+      min-height: 100%;
+      height: auto;
       display: grid;
-      grid-template-rows: 3fr 2fr;
+      grid-template-rows: auto auto;
     }
 
     .section {
@@ -34,20 +35,139 @@
       border-top: 1px dashed #cbd5e1;
     }
 
-    .image-wrap {
-      width: 100%;
-      height: 100%;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #f8fafc;
+    .hero-section {
+      padding: 24px 10px 6px;
+      background: #ffffff;
+      border: 0;
+      border-radius: 0;
     }
 
-    .image-wrap img {
+    .cert-hero {
+      width: 100%;
+      height: auto;
+      display: grid;
+      grid-template-columns: 5.2fr 1.35fr 6.25fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .hero-left-stack {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 8px;
+    }
+
+    .hero-card {
+      position: relative;
+      border: 2px solid #2b2b2b;
+      background: #e8e8e8;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+      overflow: visible;
+      padding: 3px;
+    }
+
+    .hero-tag {
+      position: absolute;
+      left: -2px;
+      top: -32px;
+      margin: 0;
+      padding: 8px 24px;
+      background: #0f4f77;
+      color: #fff;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      box-shadow: 0 6px 12px rgba(15, 79, 119, 0.28);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .hero-diagram {
       width: 100%;
       height: 100%;
-      object-fit: contain;
       display: block;
+    }
+
+    .hero-left .hero-diagram {
+      height: 304px;
+    }
+
+    .hero-right .hero-diagram {
+      height: 420px;
+    }
+
+    .hero-arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 138px;
+    }
+
+    .hero-arrow-combo {
+      position: relative;
+      width: 162px;
+      height: 64px;
+      background: #c85d18;
+      box-shadow: 0 5px 10px rgba(138, 62, 21, 0.3);
+      display: grid;
+      place-items: center;
+      padding-right: 28px;
+    }
+
+    .hero-arrow-combo::after {
+      content: "";
+      position: absolute;
+      right: -26px;
+      top: 0;
+      width: 0;
+      height: 0;
+      border-top: 32px solid transparent;
+      border-bottom: 32px solid transparent;
+      border-left: 26px solid #c85d18;
+    }
+
+    .hero-boost-badge {
+      margin: 0;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.18;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .hero-arrow-main {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%) scaleX(-1);
+      width: 42px;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
+    }
+
+    .hero-summary {
+      padding-left: 8px;
+      color: #111827;
+    }
+
+    .hero-summary-title {
+      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+    }
+
+    .hero-summary-list {
+      margin: 0;
+      padding-left: 22px;
+      font-size: 16px;
+      line-height: 1.33;
+      font-weight: 600;
+    }
+
+    .hero-summary-list li {
+      margin: 1px 0;
     }
 
     .bottom-layout {
@@ -317,6 +437,43 @@
     }
 
     @media (max-width: 1000px) {
+      .hero-section {
+        padding: 16px 12px 10px;
+      }
+
+      .cert-hero {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .hero-tag {
+        position: static;
+        display: inline-block;
+        margin: 10px 0 8px 10px;
+      }
+
+      .hero-arrow {
+        padding-top: 0;
+        min-height: 86px;
+      }
+
+      .hero-arrow-main {
+        width: 40px;
+      }
+
+      .hero-boost-badge {
+        font-size: 16px;
+      }
+
+      .hero-card {
+        padding: 3px;
+      }
+
+      .hero-left .hero-diagram,
+      .hero-right .hero-diagram {
+        height: auto;
+      }
+
       .bottom-layout {
         grid-template-columns: 1fr;
       }
@@ -359,11 +516,40 @@
 </head>
 <body>
   <main class="page">
-    <section class="section">
-      <div class="image-wrap">
-        <img src="../assets/renzheng.png" alt="认证示意图" />
+    <section class="section hero-section">
+      <div class="cert-hero">
+        <div class="hero-left-stack">
+          <article class="hero-card hero-left">
+            <h3 class="hero-tag">&#38598;&#20013;&#24335;&#36523;&#20221;&#35748;&#35777;</h3>
+            <img class="hero-illustration" src="../assets/certification/flow-left.png" alt="集中式身份认证流程图" />
+          </article>
+
+          <section class="hero-summary" aria-label="跨域认证优势说明">
+            <p class="hero-summary-title">
+              &#9654; &#22522;&#20110;&#21306;&#22359;&#38142;&#30340;&#39640;&#25928;&#36328;&#22495;&#35748;&#35777;
+            </p>
+            <ul class="hero-summary-list">
+              <li>&#36523;&#20221;&#35748;&#35777;&#20449;&#24687;&#21487;&#20449;&#20849;&#20139;&#65292;&#24314;&#31435;&#36328;&#22495;&#20114;&#20449;</li>
+              <li>&#38142;&#19978;&#27604;&#23545;&#26597;&#39564;&#25968;&#23383;&#35777;&#20070;&#65292;&#31616;&#21270;&#35748;&#35777;&#27969;&#31243;</li>
+              <li>&#25269;&#24481;&#21333;&#28857;&#25925;&#38556;&#65292;&#25552;&#20379;&#39640;&#21487;&#29992;&#35748;&#35777;&#26381;&#21153;</li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="hero-arrow" aria-hidden="true">
+          <div class="hero-arrow-combo">
+            <p class="hero-boost-badge">&#35748;&#35777;&#25928;&#29575;<br />&#22823;&#24133;&#25552;&#21319;</p>
+            <img class="hero-arrow-main" src="../assets/certification/improve-arrow.png" alt="" />
+          </div>
+        </div>
+
+        <article class="hero-card hero-right">
+          <h3 class="hero-tag">&#22522;&#20110;&#21306;&#22359;&#38142;&#30340;&#20998;&#24067;&#24335;&#36523;&#20221;&#35748;&#35777;</h3>
+          <img class="hero-illustration" src="../assets/certification/flow-right.png" alt="基于区块链的分布式身份认证流程图" />
+        </article>
       </div>
     </section>
+
 
     <section class="section">
       <div class="bottom-layout">
