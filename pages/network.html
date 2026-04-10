@@ -38,23 +38,176 @@
       border-top: 1px dashed #cbd5e1;
     }
 
-    .image-wrap {
+
+  /* 左右两个大卡片 */
+  .diagram-panel {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 顶部标题栏 */
+  .panel-header {
+    background: linear-gradient(to right, #2b4c7e, #567ebb);
+    color: white;
+    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 10px 10px 0 0;
+    margin: 4px;
+  }
+
+ /* 确保绘图区域有足够空间 */
+  .canvas {
+    flex: 1;
+    position: relative;
+    min-height: 250px;
+    /* 背景图替换为你的图片 */
+    background-image: url("../assets/背景.jpg");
+    background-size: cover;       /* 铺满面板 */
+    background-position: center;  /* 居中 */
+    background-repeat: no-repeat; /* 不重复 */
+  }
+
+  .element {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+  }
+
+  /* 确保图片不拉伸 */
+  .element img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+/* 无人机卡片容器 */
+.uav-card {
+  border: 1.5px solid #f97316; /* 橙色边框 */
+  border-radius: 6px;          /* 圆角 */
+  background: rgba(255, 255, 255, 0.6); /* 半透明背景，防止背景杂乱 */
+  padding: 4px;                /* 让边框和图片之间有一点呼吸感 */
+  display: flex;
+  flex-direction: column;      /* 纵向排列：文字在上，图片在下 */
+  align-items: center;
+}
+
+/* 调整字体大小 */
+.uav-label {
+  font-size: 12px;             /* 在这里调整字体大小 */
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 2px;          /* 文字与图片间的间距 */
+}
+
+
+/* 图片缩放 */
+.uav-card img {
+  width: 50px;                 /* 独立控制无人机图片的大小 */
+  height: auto;
+  object-fit: contain;
+}
+
+  .element.icon-tri {
+    width: 28px;
+    height: 28px;
+  }
+  .element.icon-lora {
+    width: 26px;
+    height: 26px;
+  }
+  .element.icon-wifi {
+    width: 28px;
+    height: 28px;
+  }
+  .left-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
+  .left-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
+  .left-canvas .base-station { bottom: 40%; right: 35%; width: 90px; height: 120px; }
+  .left-canvas .hacker { bottom: 40%; left: 15%; width: 50px; height: 50px; }
+  .left-canvas .platform { bottom: 5%; left: 10%; right: 10%; height: 50px; border: 3px solid #ef4444; background: #c9e4fc; text-align: center; line-height: 36px; font-weight: bold; font-size: 20px; }
+  
+  .right-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
+  .right-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
+  .right-canvas .base-station { bottom: 40%; right: 35%; width: 90px; height: 120px; }
+  .right-canvas .hacker { bottom: 45%; left: 23.5%; width: 40px; height: 40px; }
+  .right-canvas .blockchain {
+    bottom: 5%; 
+    left: 5%;
+    right: 5%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #faffff;
+  }
+
+  /* --- 左侧面板：UAV群组位置微调 --- */
+  .left-canvas .pos-1 { top: 24%; left: 5%; }
+  .left-canvas .pos-2 { top: 12%; left: 15%; }
+  .left-canvas .pos-3 { top: 8%;  left: 26%; }
+
+  /* --- 右侧面板：UAV群组位置微调 --- */
+  .right-canvas .pos-1 { top: 24%; left: 5%; }
+  .right-canvas .pos-2 { top: 12%; left: 15%; }
+  .right-canvas .pos-3 { top: 8%;  left: 30%; }
+
+  /* 状态文字 */
+  .status-text {
+    position: absolute;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .fail { color: #f97316; }
+  .success { color: #10b981; }
+
+    /* 确保 SVG 铺满 canvas 容器 */
+    .connection-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #f8fafc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      pointer-events: none; /* 防止 SVG 遮挡下方元素的点击事件 */
+      z-index: 1; /* 确保在图片上方 */
     }
 
-    .image-wrap img {
-      width: 95%;
-      height: 100%;
-      object-fit: fill;
-      display: block;
+    /* 失败连线样式*/
+    .m-line-fail {
+      stroke: #f97316;
+      stroke-width: 1;
+    }
+
+    /* 成功连线样式*/
+    .m-line-success {
+      stroke: #64748b;
+      stroke-width: 1;
+    }
+
+    .m-line-connect {
+      stroke: #000;
+      stroke-width: 0.8;
+    }
+
+    .m-line-attack {
+      stroke: #ef4444;
+      stroke-width: 0.8;
+    }
+
+    .image-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 16px;
+      background: #f0f4f8;
+      height: 100%; /* 确保填满 grid 容器的第一行 */
     }
 
     .bottom-layout {
@@ -349,11 +502,273 @@
 </head>
 <body>
   <main class="page">
-    <section class="section">
-      <div class="image-wrap">
-        <img src="../assets/network.png" alt="网络层接入示意图" />
+<div class="image-wrap">
+  <div class="diagram-panel">
+    <div class="panel-header">单模态接入</div>
+    <div class="canvas left-canvas">
+      <div style="position:absolute; top:5%; left:5%; width:32%; height:35%;
+            border: 2px solid #64748b;
+            border-radius: 12px;
+            background: transparent;
+            pointer-events: none;"></div>
+      <div class="element uav-node pos-1">
+        <img src="../assets/uav1.png" alt="UAV-1" />
+        <div class="uav-label">UAV-1</div>
       </div>
-    </section>
+      <div class="element uav-node pos-2">
+        <img src="../assets/uav1.png" alt="UAV-1" />
+        <div class="uav-label">UAV-2</div>
+      </div>
+      <div class="element uav-node pos-3">
+        <img src="../assets/uav1.png" alt="UAV-1" />
+        <div class="uav-label">UAV-3</div>
+      </div>
+      <div class="element uav-card uav-single">
+        <span class="uav-label">UAV-4</span>
+        <img src="../assets/uav2.png" alt="UAV-4" />
+      </div>
+      <img src="../assets/接入点.png" class="element base-station" alt="基站" />
+      <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
+      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:32%; right:16%;" alt="WiFi">
+      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:60%; left:24%;" alt="WiFi">
+      
+      <div class="status-text fail" style="top: 40%; right: 9%;">接入请求失败 ❌</div>
+      <div class="element platform">集中式信息共享与认证平台</div>
+      <div style="position:absolute; top:67%; left:27%; transform:translateX(-50%); 
+                  font-size:13px; font-weight:bold; color:#ef4444; 
+                  text-align:center; white-space:nowrap;">
+        网络攻击<br>（持续 t 秒）
+      </div>
+      <div style="position:absolute; top:67%; left:45%; transform:translateX(-50%); 
+                  font-size:13px; font-weight:bold; color:#000; 
+                  text-align:center; white-space:nowrap;">
+        认证请求
+      </div>
+
+      <div style="position:absolute; top:67%; left:71%; transform:translateX(-50%); 
+                  font-size:13px; font-weight:bold; color:#000; 
+                  text-align:center; white-space:nowrap;">
+        接入认证节点被<br>攻击,
+        <span style="color:#f97316;">接入失败</span>
+      </div>
+
+      <div style="position:absolute; top:22%; left:57%; transform:translateX(-50%); 
+                  font-size:13px; font-weight:bold; color:#000; 
+                  text-align:center; white-space:nowrap;">
+        接入点
+      </div>
+      
+            <!-- 全局只定义一次箭头 → 所有线条共用 -->
+      <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrowhead-success" 
+                  markerWidth="4" markerHeight="2.4" 
+                  refX="3" refY="1.2" orient="auto">
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#64748b" />
+          </marker>
+
+          <marker id="arrowhead-fail" 
+                  markerWidth="4" markerHeight="2.4" 
+                  refX="3" refY="1.2" orient="auto">
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#f97316" />
+          </marker>
+
+          <marker id="arrowhead-black"
+                  markerWidth="4" markerHeight="2.4"
+                  refX="3" refY="1.2" orient="auto">
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#000" />
+          </marker>
+
+          <marker id="arrowhead-attack"
+                  markerWidth="4" markerHeight="2.4"
+                  refX="3" refY="1.2" orient="auto">
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#ef4444" />
+          </marker>
+        </defs>
+
+        <line class="m-line-success" 
+              x1="35" y1="20" x2="50" y2="40" 
+              stroke-dasharray="4 1" 
+              marker-end="url(#arrowhead-success)" />
+        <line class="m-line-success" 
+              x1="20" y1="27" x2="50" y2="45" 
+              stroke-dasharray="4 1" 
+              marker-end="url(#arrowhead-success)" />
+        <line class="m-line-success" 
+              x1="15" y1="35" x2="50" y2="50" 
+              stroke-dasharray="4 1" 
+              marker-end="url(#arrowhead-success)" />
+        <line class="m-line-fail" 
+              x1="80" y1="30" x2="63" y2="48" 
+              stroke-dasharray="4 1" 
+              marker-end="url(#arrowhead-fail)" />
+
+        <line class="m-line-connect"
+              x1="60" y1="80" x2="60" y2="60"
+              stroke-dasharray="4 1"
+              marker-end="url(#arrowhead-black)" />
+        <line class="m-line-connect"
+              x1="52" y1="60" x2="52" y2="80"
+              stroke-dasharray="4 1"
+              marker-end="url(#arrowhead-black)" />
+
+        <line class="m-line-attack" 
+              x1="19" y1="60" x2="19" y2="80" 
+              stroke-dasharray="4 1" 
+              marker-end="url(#arrowhead-attack)" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="diagram-panel">
+    <div class="panel-header">区块链增强的多模态接入</div>
+    <div class="canvas right-canvas">
+      <div style="position:absolute; top:5%; left:5%; width:35%; height:35%;
+            border: 2px solid #64748b;
+            border-radius: 12px;
+            background: transparent;
+            pointer-events: none;"></div>
+      <div class="element uav-node pos-1">
+        <img src="../assets/uav1.png" alt="UAV-1" />
+        <div class="uav-label">UAV-1</div>
+      </div>
+
+      <div class="element uav-node pos-2">
+        <img src="../assets/uav1.png" alt="UAV-1" />
+        <div class="uav-label">UAV-2</div>
+      </div>
+
+      <div class="element uav-node pos-3">
+        <img src="../assets/uav1.png" alt="UAV-1" />
+        <div class="uav-label">UAV-3</div>
+      </div>
+      <div class="element uav-card uav-single">
+        <span class="uav-label">UAV-4</span>
+        <img src="../assets/uav2.png" alt="UAV-4" />
+      </div>
+      <img src="../assets/接入点.png" class="element base-station" alt="基站" />
+      <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
+      <img src="../assets/三角块.svg" 
+          class="element icon-tri" 
+          style="top:20%; right:10%; transform: scale(0.8);
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+          alt="三角块">
+      <img src="../assets/三角块.svg" 
+          class="element icon-tri" 
+          style="top: 9%;  left: 36%; transform: scale(0.8);
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+          alt="三角块">
+      <img src="../assets/三角块.svg" 
+          class="element icon-tri" 
+          style="top: 13%; left: 21%; transform: scale(0.8);
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+          alt="三角块">
+      <img src="../assets/三角块.svg" 
+          class="element icon-tri" 
+          style="top: 25%; left: 11%; transform: scale(0.8);
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+          alt="三角块">
+      <img src="../assets/三角块.svg" 
+          class="element icon-tri" 
+          style="top: 50%; left: 57%; transform: scale(0.8);
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+          alt="三角块">
+      <img src="../assets/lora.png" class="element icon-lora" style="top:28%; left:24%;" alt="LoRa">
+      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:33%; right:30%;" alt="WiFi">
+      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:33%; left:17%;" alt="WiFi">
+      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:22%; left:33%;" alt="WiFi">
+      <img src="../assets/wifi.svg" class="element icon-wifi" style="bottom:33%; left:28%;" alt="WiFi">
+      <img src="../assets/flash.svg" 
+          class="element icon-wifi" 
+          style="top:37%; left:30%;
+                  transform: rotate(105deg) scaleX(1) scaleY(8.5);
+                  transform-origin: center;" 
+          alt="flash">
+      
+      <img src="../assets/flash.svg" 
+          class="element icon-wifi" 
+          style="top:30%; left:34%;
+                  transform: rotate(112deg) scaleX(1) scaleY(7);
+                  transform-origin: center;" 
+          alt="flash">
+      
+      <img src="../assets/flash.svg" 
+          class="element icon-wifi" 
+          style="top:28%; left:42%;
+                  transform: rotate(120deg) scaleX(1) scaleY(4);
+                  transform-origin: center;" 
+          alt="flash">
+
+      <img src="../assets/flash2.svg" 
+          class="element icon-wifi" 
+          style="top:35%; right:26%;
+                  transform: rotate(-135deg) scaleX(1) scaleY(5);
+                  transform-origin: center;" 
+          alt="flash2">
+      
+      <div class="status-text success" style="top: 38%; right: 10%;">获得认证反馈<br>成功接入 ✅</div>
+      
+      <div class="element blockchain" style="background-color:#faffff; border-radius:8px;">
+        <img src="../assets/blockchain.png" 
+            alt="区块链" 
+            style="width: 100%; 
+                    height: 100%; 
+                    object-fit: contain; 
+                    background: transparent;
+                    transform: scaleX(1.1); /* 只左右拉伸 1.2 倍 */
+                    transform-origin: center;" /> 
+      </div>
+
+      <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <line class="m-line-connect"
+              x1="58" y1="80" x2="58" y2="60"
+              stroke-dasharray="4 1"
+              marker-end="url(#arrowhead-black)" />
+        <line class="m-line-connect"
+              x1="54" y1="60" x2="54" y2="80"
+              stroke-dasharray="4 1"
+              marker-end="url(#arrowhead-black)" />
+
+        <line class="m-line-attack" 
+              x1="26.5" y1="55" x2="26.5" y2="70" 
+              stroke-dasharray="4 1" 
+              marker-end="url(#arrowhead-attack)" />
+      </svg>
+
+      <div style="position:absolute; top:55%; left:17%; transform:translateX(-50%); 
+                  font-size:13px; font-weight:bold; color:#ef4444; 
+                  text-align:center; white-space:nowrap;">
+        对区块链节点的<br>网络攻击<br>（持续 t 秒）
+      </div>
+      <div style="position:absolute; top:64%; left:47%; transform:translateX(-50%); 
+                  font-size:13px; font-weight:bold; color:#000; 
+                  text-align:center; white-space:nowrap;">
+        认证请求
+      </div>
+      <div style="position:absolute; top:22%; left:57%; transform:translateX(-50%); 
+                  font-size:13px; font-weight:bold; color:#000; 
+                  text-align:center; white-space:nowrap;">
+        接入点
+      </div>
+      <div style="position:absolute; top:60%; left:71%; transform:translateX(-50%); 
+                  font-size:13px; font-weight:bold; color:#000; 
+                  text-align:center; white-space:nowrap;">
+        区块链具有节点容错能<br>力，仍能发出认证反馈
+      </div>
+
+      <div style="position: absolute;
+            top: 71%;
+            left: 23%;
+            width: 8%;
+            height: 11%;
+            background-color: #ef4444;
+            opacity: 0.5;
+            border: none;
+            border-radius: 4px;
+            pointer-events: none;"></div>
+    </div>
+  </div>
+</div>
 
     <section class="section">
       <div class="bottom-layout">
