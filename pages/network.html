@@ -368,21 +368,21 @@
     .gauge-track {
       fill: none;
       stroke: #d5dee9;
-      stroke-width: 14;
+      stroke-width: 22;
       stroke-linecap: round;
     }
 
     .gauge-progress {
       fill: none;
       stroke: #0ea5e9;
-      stroke-width: 14;
+      stroke-width: 22;
       stroke-linecap: round;
       transition: stroke-dashoffset 0.35s ease;
     }
 
     .gauge-needle {
       stroke: #0f172a;
-      stroke-width: 4;
+      stroke-width: 6;
       stroke-linecap: round;
       transform-origin: 110px 102px;
       transition: transform 0.35s ease;
@@ -857,6 +857,7 @@
       const DEFAULT_ROUNDS = 20;
       const MIN_ROUNDS = 1;
       const MAX_ROUNDS = 200;
+      const MIN_BOOST_GAP = 20;
       const STEP_DELAY_MS = 280;
 
       const singleOption = document.getElementById('single-option');
@@ -985,6 +986,94 @@
         return (success / total) * 100;
       }
 
+      function randomInRange(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function buildOutcomeList(rounds, successProb) {
+        const result = [];
+        for (let i = 0; i < rounds; i += 1) {
+          result.push(Math.random() < successProb);
+        }
+        return result;
+      }
+
+      function buildOutcomeListAroundMean(rounds, meanRatePercent, jitterPercent) {
+        const result = [];
+        for (let i = 0; i < rounds; i += 1) {
+          const roundRate = clamp(
+            meanRatePercent + randomInRange(-jitterPercent, jitterPercent),
+            1,
+            99
+          );
+          result.push(Math.random() < roundRate / 100);
+        }
+        return result;
+      }
+
+      function countSuccess(outcomes) {
+        return outcomes.reduce(function (sum, ok) {
+          return sum + (ok ? 1 : 0);
+        }, 0);
+      }
+
+      function calcGap(singleOutcomes, multiOutcomes) {
+        const singleRate = calcRate(countSuccess(singleOutcomes), singleOutcomes.length);
+        const multiRate = calcRate(countSuccess(multiOutcomes), multiOutcomes.length);
+        if (singleRate === null || multiRate === null) {
+          return null;
+        }
+        return multiRate - singleRate;
+      }
+
+      function enforceMinGap(singleOutcomes, multiOutcomes, minGap) {
+        let gap = calcGap(singleOutcomes, multiOutcomes);
+
+        while (gap !== null && gap < minGap) {
+          const multiFailIndex = multiOutcomes.findIndex(function (ok) { return !ok; });
+          if (multiFailIndex !== -1) {
+            multiOutcomes[multiFailIndex] = true;
+            gap = calcGap(singleOutcomes, multiOutcomes);
+            continue;
+          }
+
+          const singleSuccessIndex = singleOutcomes.findIndex(function (ok) { return ok; });
+          if (singleSuccessIndex !== -1) {
+            singleOutcomes[singleSuccessIndex] = false;
+            gap = calcGap(singleOutcomes, multiOutcomes);
+            continue;
+          }
+
+          break;
+        }
+      }
+
+      function createPairedOutcomes(singleRounds, multiRounds) {
+        let singleOutcomes = [];
+        let multiOutcomes = [];
+
+        for (let attempt = 0; attempt < 200; attempt += 1) {
+          const targetGap = randomInRange(20, 40);
+          const singleMeanRate = randomInRange(55, 72);
+          const multiMeanRate = clamp(singleMeanRate + targetGap, singleMeanRate + 1, 98);
+
+          singleOutcomes = buildOutcomeListAroundMean(singleRounds, singleMeanRate, 6);
+          multiOutcomes = buildOutcomeListAroundMean(multiRounds, multiMeanRate, 6);
+
+          const gap = calcGap(singleOutcomes, multiOutcomes);
+          if (gap !== null && gap >= MIN_BOOST_GAP) {
+            return { singleOutcomes: singleOutcomes, multiOutcomes: multiOutcomes };
+          }
+        }
+
+        enforceMinGap(singleOutcomes, multiOutcomes, MIN_BOOST_GAP);
+        return { singleOutcomes: singleOutcomes, multiOutcomes: multiOutcomes };
+      }
+
       function updateMetrics(singleRate, multiRate) {
         if (singleRate === null) {
           singleMetric.textContent = '单模态当前成功率：--';
@@ -1035,12 +1124,28 @@
         let multiTotal = 0;
         let multiSuccess = 0;
 
+        let singleOutcomes = [];
+        let multiOutcomes = [];
+
+        if (runSingle && runMulti) {
+          const paired = createPairedOutcomes(singleRounds, multiRounds);
+          singleOutcomes = paired.singleOutcomes;
+          multiOutcomes = paired.multiOutcomes;
+        } else {
+          if (runSingle) {
+            singleOutcomes = buildOutcomeList(singleRounds, 0.70);
+          }
+          if (runMulti) {
+            multiOutcomes = buildOutcomeList(multiRounds, 0.93);
+          }
+        }
+
         const totalRounds = Math.max(singleRounds, multiRounds);
 
         for (let i = 1; i <= totalRounds; i += 1) {
           if (runSingle && i <= singleRounds) {
             singleTotal += 1;
-            const okSingle = Math.random() < 0.7;
+            const okSingle = singleOutcomes[i - 1];
             if (okSingle) {
               singleSuccess += 1;
             }
@@ -1049,7 +1154,7 @@
 
           if (runMulti && i <= multiRounds) {
             multiTotal += 1;
-            const okMulti = Math.random() < 0.93;
+            const okMulti = multiOutcomes[i - 1];
             if (okMulti) {
               multiSuccess += 1;
             }
