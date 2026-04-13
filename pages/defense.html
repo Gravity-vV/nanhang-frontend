@@ -120,7 +120,7 @@
     }
 
     .count-input {
-      width: 180px;
+      width: 100%;
       max-width: 100%;
       height: 34px;
       border: 1px solid #cbd5e1;
@@ -128,8 +128,57 @@
       background: #ffffff;
       color: #0f172a;
       font-size: 13px;
-      padding: 0 10px;
+      padding: 0 34px 0 10px;
       outline: none;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .count-input::-webkit-outer-spin-button,
+    .count-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .count-input-wrap {
+      position: relative;
+      width: 180px;
+      max-width: 100%;
+    }
+
+    .count-stepper {
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+      width: 24px;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .count-step-btn {
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      background: #f8fafc;
+      color: #334155;
+      font-size: 10px;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .count-step-btn:hover:not(:disabled) {
+      background: #eef2ff;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
+
+    .count-step-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
     }
 
     .count-input:focus {
@@ -332,7 +381,7 @@
         grid-template-columns: 1fr;
       }
 
-      .count-input {
+      .count-input-wrap {
         width: 100%;
       }
 
@@ -374,7 +423,13 @@
           </div>
           <div class="input-row">
             <label for="test-count">测试次数</label>
-            <input id="test-count" class="count-input" type="text" inputmode="numeric" placeholder="默认 1，范围 1-50" />
+            <div class="count-input-wrap">
+              <input id="test-count" class="count-input" type="number" inputmode="numeric" min="5" max="10" step="1" value="5" aria-label="测试次数" />
+              <div class="count-stepper" aria-hidden="true">
+                <button class="count-step-btn" id="test-count-up" type="button" tabindex="-1">&#9650;</button>
+                <button class="count-step-btn" id="test-count-down" type="button" tabindex="-1">&#9660;</button>
+              </div>
+            </div>
             <p class="status" id="status-text">等待开始测试...</p>
           </div>
         </div>
@@ -440,9 +495,15 @@
 
   <script>
     (function () {
+      const DEFAULT_TEST_COUNT = 5;
+      const MIN_TEST_COUNT = 5;
+      const MAX_TEST_COUNT = 10;
+
       const selfishBtn = document.getElementById('selfish-btn');
       const highfreqBtn = document.getElementById('highfreq-btn');
       const testCountInput = document.getElementById('test-count');
+      const testCountUpBtn = document.getElementById('test-count-up');
+      const testCountDownBtn = document.getElementById('test-count-down');
       const statusText = document.getElementById('status-text');
       const analysisLog = document.getElementById('analysis-log');
       const disposeLog = document.getElementById('dispose-log');
@@ -491,16 +552,39 @@
       function parseCount() {
         const raw = testCountInput.value.trim();
         if (raw === '') {
-          return 1;
+          return DEFAULT_TEST_COUNT;
         }
         if (!/^\d+$/.test(raw)) {
           return null;
         }
         const value = Number(raw);
-        if (value < 1 || value > 50) {
+        if (value < MIN_TEST_COUNT || value > MAX_TEST_COUNT) {
           return null;
         }
         return value;
+      }
+
+      function clampCount(value) {
+        return Math.min(MAX_TEST_COUNT, Math.max(MIN_TEST_COUNT, value));
+      }
+
+      function getStepperBaseCount() {
+        const raw = testCountInput.value.trim();
+        if (raw === '') {
+          return DEFAULT_TEST_COUNT;
+        }
+        const parsed = Number(raw);
+        if (!Number.isFinite(parsed)) {
+          return DEFAULT_TEST_COUNT;
+        }
+        return clampCount(Math.round(parsed));
+      }
+
+      function adjustCount(delta) {
+        if (testCountInput.disabled) {
+          return;
+        }
+        testCountInput.value = String(clampCount(getStepperBaseCount() + delta));
       }
 
       function appendLog(target, device, message) {
@@ -597,6 +681,12 @@
         selfishBtn.disabled = isRunning;
         highfreqBtn.disabled = isRunning;
         testCountInput.disabled = isRunning;
+        if (testCountUpBtn) {
+          testCountUpBtn.disabled = isRunning;
+        }
+        if (testCountDownBtn) {
+          testCountDownBtn.disabled = isRunning;
+        }
       }
 
       async function runSelfish(count) {
@@ -662,8 +752,12 @@
 
         const count = parseCount();
         if (count === null) {
-          statusText.textContent = '输入错误：测试次数需为 1-50 的整数';
-          appendLog(analysisLog, '接入点', '参数校验失败：测试次数需为 1-50 的整数');
+          statusText.textContent = '输入错误：测试次数需为 ' + MIN_TEST_COUNT + '-' + MAX_TEST_COUNT + ' 的整数';
+          appendLog(
+            analysisLog,
+            '接入点',
+            '参数校验失败：测试次数需为 ' + MIN_TEST_COUNT + '-' + MAX_TEST_COUNT + ' 的整数'
+          );
           return;
         }
 
@@ -692,6 +786,18 @@
       highfreqBtn.addEventListener('click', function () {
         startTest('highfreq');
       });
+
+      if (testCountUpBtn) {
+        testCountUpBtn.addEventListener('click', function () {
+          adjustCount(1);
+        });
+      }
+
+      if (testCountDownBtn) {
+        testCountDownBtn.addEventListener('click', function () {
+          adjustCount(-1);
+        });
+      }
 
       initFlows();
       resetMetrics();

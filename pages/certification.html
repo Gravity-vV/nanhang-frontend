@@ -64,7 +64,7 @@
 
     .hero-card {
       position: relative;
-      border: 2px solid #2b2b2b;
+      border: none;
       background: #ffffff;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
       overflow: visible;
@@ -244,7 +244,7 @@
 
     .mode-buttons {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
 
@@ -266,6 +266,20 @@
       font-size: 12px;
       font-weight: 600;
       color: #334155;
+      white-space: nowrap;
+    }
+
+    .current-mode-indicator {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #1e40af;
+      font-size: 12px;
+      font-weight: 700;
       white-space: nowrap;
     }
 
@@ -900,8 +914,7 @@
           <!-- 左栏顶部：操作按钮横�?-->
           <div class="mode-buttons">
             <button class="mode-btn start-btn" type="button" id="start-test-btn">环境初始化</button>
-            <button class="mode-btn" type="button" data-mode="distributed" id="distributed-btn">分布式认证</button>
-            <button class="mode-btn" type="button" data-mode="centralized" id="centralized-btn">集中式认证</button>
+            <button class="mode-btn" type="button" id="auth-sequence-btn">开始认证测试</button>
           </div>
 
           <div class="test-config">
@@ -923,6 +936,7 @@
                 <button class="count-step-btn" id="sample-count-down" type="button" tabindex="-1">&#9660;</button>
               </div>
             </div>
+            <span class="current-mode-indicator" id="current-mode-indicator">当前测试：等待开始</span>
           </div>
 
           <div class="flow-wrap">
@@ -948,7 +962,7 @@
             </svg>
           </div>
 
-          <p class="flow-status" id="flow-status" style="display:none;">点击“开始测试”初始化流程</p>
+          <p class="flow-status" id="flow-status" style="display:none;">点击“环境初始化”完成准备后，再开始认证测试</p>
         </div>
 
         <aside class="latency-panel" aria-label="时延汇总">
@@ -1003,22 +1017,17 @@
       const NODE_BASE_R = 10;
       const NODE_ACTIVE_R = 17;
       const NON_KEY_STAGE_MS = [400, 1000];
-      const AUTH_STAGE_MS = {
-        distributed: [500, 700],
-        centralized: [900, 1100]
-      };
-      const LATENCY_RANGE = {
-        distributed: [0.5, 0.7],
-        centralized: [0.9, 1.1]
+      const LATENCY_TARGET_MS = {
+        distributed: [520, 700],
+        centralized: [920, 1100]
       };
 
       const startBtn = document.getElementById('start-test-btn');
-      const modeButtons = document.querySelectorAll('[data-mode]');
-      const distributedBtn = document.getElementById('distributed-btn');
-      const centralizedBtn = document.getElementById('centralized-btn');
+      const authSequenceBtn = document.getElementById('auth-sequence-btn');
       const sampleCountInput = document.getElementById('sample-count-input');
       const sampleCountUpBtn = document.getElementById('sample-count-up');
       const sampleCountDownBtn = document.getElementById('sample-count-down');
+      const currentModeIndicator = document.getElementById('current-mode-indicator');
 
       const statusEl = document.getElementById('flow-status');
       const distributedMetricsEl = document.getElementById('distributed-metrics');
@@ -1120,6 +1129,21 @@
         statusEl.textContent = text;
       }
 
+      function updateCurrentModeIndicator() {
+        let text = '当前测试：等待开始';
+        if (state.runningMode === 'init') {
+          text = '当前测试：环境初始化';
+        } else if (state.runningMode === 'centralized') {
+          text = '当前测试：集中式认证';
+        } else if (state.runningMode === 'distributed') {
+          text = '当前测试：分布式认证';
+        } else if (state.centralized.done && state.distributed.done) {
+          text = '当前测试：测试完成';
+        }
+
+        currentModeIndicator.textContent = text;
+      }
+
       function getMetricText(modeLabel, modeState) {
         const avgText = modeState.avgLatency === null ? '--' : formatSeconds(modeState.avgLatency) + 's';
         return modeLabel + '：已完成 ' + modeState.completedCount + '/' + modeState.targetCount + '，当前平均时延 ' + avgText;
@@ -1147,6 +1171,14 @@
         summaryImprovementEl.textContent = getImprovementText();
       }
 
+      function appendTargetCountError(mode, message) {
+        if (mode === 'distributed' || mode === 'centralized') {
+          appendLog(mode, '[测试控制器] ' + message);
+          return;
+        }
+        appendBothLogs('[测试控制器] ' + message);
+      }
+
       function readTargetCount(mode) {
         const raw = sampleCountInput.value.trim();
         if (raw === '') {
@@ -1155,14 +1187,14 @@
 
         if (!/^\d+$/.test(raw)) {
           setStatus('输入错误：总测试次数必须为整数（5-100）。');
-          appendLog(mode, '[测试控制器] 输入错误：总测试次数必须为整数（5-100）。');
+          appendTargetCountError(mode, '输入错误：总测试次数必须为整数（5-100）。');
           return null;
         }
 
         const value = Number(raw);
         if (value < MIN_SAMPLE_COUNT || value > MAX_SAMPLE_COUNT) {
           setStatus('输入错误：总测试次数范围应为 5-100。');
-          appendLog(mode, '[测试控制器] 输入错误：总测试次数范围应为 5-100。');
+          appendTargetCountError(mode, '输入错误：总测试次数范围应为 5-100。');
           return null;
         }
 
@@ -1193,14 +1225,25 @@
         sampleCountInput.value = String(nextValue);
       }
 
-      function restoreSampleCountInput() {
-        sampleCountInput.value = '';
-        sampleCountInput.defaultValue = '';
-        sampleCountInput.placeholder = '留空=10，范围5-100';
-        sampleCountInput.blur();
-        window.setTimeout(() => {
-          sampleCountInput.value = '';
-        }, 0);
+      function createLatencyPlan(mode) {
+        const targetMs = randomMs(LATENCY_TARGET_MS[mode]);
+        const requestPathMs = Math.round(targetMs * 0.16);
+        const requestPulseMs = Math.round(targetMs * 0.12);
+        const authPathMs = Math.round(targetMs * 0.22);
+        const authPulseMs = Math.round(targetMs * 0.12);
+        const processingMs = Math.max(
+          0,
+          targetMs - requestPathMs - requestPulseMs - authPathMs - authPulseMs
+        );
+
+        return {
+          targetMs,
+          requestPathMs,
+          requestPulseMs,
+          processingMs,
+          authPathMs,
+          authPulseMs
+        };
       }
 
       function hideComparison() {
@@ -1257,15 +1300,14 @@
           sampleCountDownBtn.disabled = busy;
         }
 
-        const distDisabled = !state.session.started || busy || state.distributed.done;
-        const centDisabled = !state.session.started || busy || state.centralized.done;
-        distributedBtn.disabled = distDisabled;
-        centralizedBtn.disabled = centDisabled;
-
-        distributedBtn.classList.toggle('is-active', state.runningMode === 'distributed');
-        centralizedBtn.classList.toggle('is-active', state.runningMode === 'centralized');
-        distributedBtn.classList.toggle('is-done', state.distributed.done);
-        centralizedBtn.classList.toggle('is-done', state.centralized.done);
+        const sequenceDone = state.distributed.done && state.centralized.done;
+        authSequenceBtn.disabled = !state.session.started || busy || sequenceDone;
+        authSequenceBtn.classList.toggle(
+          'is-active',
+          state.runningMode === 'centralized' || state.runningMode === 'distributed'
+        );
+        authSequenceBtn.classList.toggle('is-done', sequenceDone);
+        updateCurrentModeIndicator();
       }
 
       function initPath(path) {
@@ -1331,12 +1373,12 @@
         });
       }
 
-      async function pulseNode(nodeKey, keepVisited, token) {
+      async function pulseNode(nodeKey, keepVisited, token, duration) {
         if (token !== state.animationToken) {
           return false;
         }
         setNode(nodeKey, true, true);
-        await sleep(260);
+        await sleep(duration);
         if (token !== state.animationToken) {
           return false;
         }
@@ -1368,25 +1410,25 @@
         if (!okNode) return;
 
         appendBothLogs('[区块链系统服务组件] 执行链上证书查询，证书记录一致性校验通过。');
-        setStatus('步骤1完成：可手动触发“分布式认证”或“集中式认证”测试。');
+        setStatus('步骤1完成：可点击“开始认证测试”，系统将先执行集中式认证，再执行分布式认证。');
 
         state.runningMode = null;
         setButtonsState();
       }
 
-      async function doRequestStage(mode, sampleNo, token) {
+      async function doRequestStage(mode, sampleNo, token, latencyPlan) {
         const targetCount = state[mode].targetCount;
         const modeLabel = mode === 'distributed' ? '分布式' : '集中式';
         appendLog(mode, '[异域无人机] 第' + sampleNo + '次发起跨域证书认证请求。');
         setStatus('步骤2/3：' + modeLabel + ' 第' + sampleNo + '/' + targetCount + '次 - 无人机认证请求');
 
         resetSampleFlowVisual();
-        const okPath = await animatePath(paths.seg2, 420, token);
+        const okPath = await animatePath(paths.seg2, latencyPlan.requestPathMs, token);
         if (!okPath) return false;
-        return pulseNode('request', true, token);
+        return pulseNode('request', true, token, latencyPlan.requestPulseMs);
       }
 
-      async function doAuthStage(mode, sampleNo, token) {
+      async function doAuthStage(mode, sampleNo, token, latencyPlan) {
         const targetCount = state[mode].targetCount;
         const modeLabel = mode === 'distributed' ? '分布式' : '集中式';
         appendLog(mode, '[接入点] 第' + sampleNo + '次启动' + modeLabel + '跨域证书验证。');
@@ -1395,9 +1437,9 @@
         const path = mode === 'distributed' ? paths.top : paths.bottom;
         const nodeKey = mode === 'distributed' ? 'distributed' : 'centralized';
 
-        const okPath = await animatePath(path, 560, token);
+        const okPath = await animatePath(path, latencyPlan.authPathMs, token);
         if (!okPath) return false;
-        return pulseNode(nodeKey, true, token);
+        return pulseNode(nodeKey, true, token, latencyPlan.authPulseMs);
       }
 
       function getModeAvg(mode) {
@@ -1406,12 +1448,13 @@
         return sum / samples.length;
       }
 
-      async function runModeBatch(mode) {
+      async function runModeBatch(mode, targetCountOverride) {
         if (!state.session.started || state.runningMode !== null || state[mode].done) {
           return;
         }
 
-        const targetCount = readTargetCount(mode);
+        const targetCount =
+          typeof targetCountOverride === 'number' ? targetCountOverride : readTargetCount(mode);
         if (targetCount === null) {
           updateMetricsPanel();
           return;
@@ -1437,32 +1480,25 @@
             return;
           }
 
-          await sleep(randomMs(NON_KEY_STAGE_MS));
-          if (token !== state.animationToken) {
-            return;
-          }
+          const latencyPlan = createLatencyPlan(mode);
+          const roundStart = performance.now();
 
-          const okRequest = await doRequestStage(mode, i, token);
+          const okRequest = await doRequestStage(mode, i, token, latencyPlan);
           if (!okRequest || token !== state.animationToken) {
             return;
           }
 
-          await sleep(randomMs(AUTH_STAGE_MS[mode]));
+          await sleep(latencyPlan.processingMs);
           if (token !== state.animationToken) {
             return;
           }
 
-          const okAuth = await doAuthStage(mode, i, token);
+          const okAuth = await doAuthStage(mode, i, token, latencyPlan);
           if (!okAuth || token !== state.animationToken) {
             return;
           }
 
-          await sleep(randomMs(NON_KEY_STAGE_MS));
-          if (token !== state.animationToken) {
-            return;
-          }
-
-          const latency = randomInRange(LATENCY_RANGE[mode][0], LATENCY_RANGE[mode][1]);
+          const latency = (performance.now() - roundStart) / 1000;
           state[mode].samples.push(latency);
           state[mode].completedCount = i;
           state[mode].avgLatency = getModeAvg(mode);
@@ -1491,7 +1527,29 @@
         handleComparisonResult();
 
         setButtonsState();
-        restoreSampleCountInput();
+      }
+
+      async function runAuthSequence() {
+        if (!state.session.started || state.runningMode !== null) {
+          return;
+        }
+
+        const targetCount = readTargetCount();
+        if (targetCount === null) {
+          updateMetricsPanel();
+          return;
+        }
+
+        appendBothLogs('[测试控制器] 开始自动认证测试：先执行集中式认证，再执行分布式认证，样本数=' + targetCount + '。');
+        setStatus('步骤2/4：准备执行集中式认证批量测试。');
+
+        await runModeBatch('centralized', targetCount);
+        if (!state.centralized.done) {
+          return;
+        }
+
+        setStatus('步骤3/4：集中式认证完成，开始执行分布式认证批量测试。');
+        await runModeBatch('distributed', targetCount);
       }
 
       function resetSessionData() {
@@ -1520,11 +1578,8 @@
         await runInitialization();
       });
 
-      modeButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const mode = button.dataset.mode;
-          runModeBatch(mode);
-        });
+      authSequenceBtn.addEventListener('click', () => {
+        runAuthSequence();
       });
 
       if (sampleCountUpBtn) {
