@@ -36,6 +36,75 @@
       background: #f8fafc;
     }
 
+    .image-wrap {
+      display: grid;
+      gap: 20px;
+      padding: 16px;
+      background: #f0f4f8;
+      height: 100%; /* 确保填满 grid 容器的第一行 */
+    }
+
+    .canvas {
+      background: #f0f4f8;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      gap: 80px;
+      padding: 0 20px;  /* 上下为0，左右为40px */
+    }
+
+    .area-title1 {
+      background: #f8cdac;
+      color: #c65f10;
+      border: 2px solid #c65f10;
+      text-align: center;
+      padding: 8px 0;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .area-title2 {
+      background: #b6c7ea;
+      color: #2e54a1;
+      border: 2px solid #2e54a1;
+      text-align: center;
+      padding: 8px 0;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .element {
+      position: absolute;
+      pointer-events: none;
+    }
+    .connection-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .uav-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+    .status-text {
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .status-text.fail {
+      color: #f97316;
+    }
+    .status-text.success {
+      color: #16a34a;
+    }
+
+
+
     .top-panel {
       overflow: hidden;
     }
@@ -411,9 +480,119 @@
 </head>
 <body>
   <main class="page">
-    <section class="top-panel card">
-      <img src="../assets/fangyu.png" alt="安全防御态势图" />
-    </section>
+  <div class="image-wrap">
+    <div class="canvas">
+
+      <!-- 左侧区域：标题1 -->
+      <div class="left-area" style="flex: 1; height: 100%; background: #fdefe4; position: relative;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <div class="area-title1">自私接入攻击</div>
+        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; left:43%; width:210px;" alt="UAV"/>
+
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:15%; width:125px;" alt="接入点">
+        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:28%; right:10%; width:105px;" alt="pass">
+        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:30%; right:10%; width:105px;" alt="reject">
+
+        <img src="../assets/sec-cert.png" class="element" style="position: absolute; bottom: 20%; left:41%; width:40px;" alt="cert">
+        <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 40%; left:36%; width:40px;" alt="cert">
+
+        <div style="position: absolute; top: 40%; left: 21%; color: #c65f10; font-size: 15px; font-weight: bold; white-space: nowrap;">
+            接入点
+        </div>
+        <div style="position: absolute; top: 40%; left: 46%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
+            信息匹配
+        </div>
+        <div style="position: absolute; top: 62%; left: 45%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
+            信息不匹配
+        </div>
+
+        <div style="position: absolute; top: 23%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
+            允许接入
+        </div>
+        <div style="position: absolute; top: 47%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
+            拒绝接入
+        </div>
+        <div style="position: absolute; top: 26%; left: 15%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+            发送包含设备ID和<br>公钥的请求数据
+        </div>
+        <div style="position: absolute; top: 78%; left: 14%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+            查询区块链获取<br>ID白名单与ID和<br>公钥匹配信息
+        </div>
+        <div style="position: absolute; top: 73%; right: 22%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
+            设备ID/公钥<br>加入黑名单
+        </div>
+      </div>
+
+      <!-- 右侧区域：标题2 -->
+      <div class="right-area" style="flex: 1; height: 100%; background: #d3dbeb; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <div class="area-title2">高频重接入攻击</div>
+        
+        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; right:43%; width:210px;" alt="UAV"/>
+
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; right:15%; width:125px;" alt="接入点">
+        <img src="../assets/sec-database.png" class="element" style="position: absolute; top:38%; left:10%; width:95px;" alt="database">
+        <div style="position: absolute; top: 40%; right: 21%; color: #2e54a1; font-size: 15px; font-weight: bold; white-space: nowrap;">
+            接入点
+        </div>
+
+        <div style="position: absolute; top: 31%; left: 9%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+            接入点本地储存
+        </div>
+        <div style="position: absolute; top: 30%; left: 59%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+            高频重接入<br>反复连接断开
+        </div>
+        <div style="position: absolute; top:53%; left: 26%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+            记录接入无人机的<br>ID、接入时间
+        </div>
+        <div style="position: absolute; top: 65%; left: 20%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+            重接入频率到达阈值，<br>记录一次违规行为
+        </div>
+        <div style="position: absolute; top: 86%; right:10%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+            累计到达n次违规后，将该<br>无人机设备ID加入黑名单
+        </div>
+        <div style="position: absolute; top: 40%; right: 39%; color: #2e54a1; font-size: 22px; font-weight: bold; white-space: nowrap; z-index: 100; transform: rotate(-45deg);">
+            ❌
+        </div>
+      </div>
+
+<svg class="connection-svg" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none;" viewBox="0 0 100 100">
+  <defs>
+    <marker id="arrow1" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
+      <polygon points="0 0,1.5 1.5,0 3" fill="#c65f10"/>
+    </marker>
+    <marker id="arrow2" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
+      <polygon points="0 0,1.5 1.5,0 3" fill="#2e54a1"/>
+    </marker>
+  </defs>
+
+  <!-- 橙色#c65f10 -->
+  
+  <line x1="-25" y1="32" x2="-50" y2="42" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+  <line x1="-45" y1="54" x2="5" y2="40" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+  <line x1="-45" y1="60" x2="5" y2="60" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+
+  <line x1="-48" y1="73" x2="-25" y2="90" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+  <line x1="-25" y1="90" x2="-48" y2="73" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+
+  <line x1="20" y1="72" x2="20" y2="82" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+
+  <!-- 蓝色#2e54a1 -->
+  <line x1="125" y1="32" x2="145" y2="52" stroke="#2e54a1" stroke-width="3" marker-end="url(#arrow2)"/>
+  <line x1="147" y1="60" x2="95" y2="46" stroke="#2e54a1" stroke-width="3" marker-end="url(#arrow2)"/>
+  <line x1="81" y1="56" x2="81" y2="82" stroke="#2e54a1" stroke-width="3" marker-end="url(#arrow2)"/>
+  <path d="M 120 85 
+         L 130 85 
+         A 5 5 0 0 1 130 95
+         L 120 95" 
+      stroke="#2e54a1" 
+      stroke-width="3" 
+      fill="none" 
+      marker-end="url(#arrow2)"/>
+
+</svg>
+
+      <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:0%; left:50%;transform: translateX(-50%) scaleX(0.9);" alt="区块链">
+    </div>
+</div>
 
     <section class="bottom-layout">
       <article class="left-panel">
