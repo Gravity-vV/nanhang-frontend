@@ -131,7 +131,7 @@
       min-height: 0;
       padding: 12px;
       display: grid;
-      grid-template-rows: auto auto;
+      grid-template-rows: auto 1fr;
       gap: 12px;
     }
 
@@ -156,9 +156,9 @@
       border-radius: 8px;
       background: #186487;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
-      padding: 10px 8px;
+      padding: 3px 8px;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -183,9 +183,60 @@
     }
 
     .input-row label {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
       color: #334155;
+    }
+
+    .blacklist-area {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        background: #fef2f2;
+        border-radius: 24px;
+        border: 1px solid #fecaca;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+        overflow: visible;
+        contain: layout paint;
+    }
+
+    .blacklist-label {
+        font-weight: bold;
+        color: #dc2626;
+        font-size: 15px;
+    }
+
+    .blacklist-count {
+        background: #dc2626;
+        color: white;
+        border-radius: 20px;
+        min-width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 15px;
+        padding: 0 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .blacklist-select {
+      margin-left: 8px;
+      font-size: 12px;
+      color: #7f1d1d;
+      max-width: 320px;
+      min-width: 160px;
+      max-height: 120px;
+      overflow-y: auto;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      padding: 4px 6px;
+      background: #ffffff;
+      -webkit-overflow-scrolling: touch;
     }
 
     .count-input {
@@ -276,6 +327,7 @@
       align-content: start;
       gap: 2px;
       overflow: visible;
+      min-height: 0;
     }
 
     .flow-group {
@@ -602,15 +654,24 @@
             <button class="action-btn" id="highfreq-btn" type="button">高频重接入攻击测试</button>
           </div>
           <div class="input-row">
-            <label for="test-count">测试次数</label>
-            <div class="count-input-wrap">
-              <input id="test-count" class="count-input" type="number" inputmode="numeric" min="5" max="10" step="1" value="5" aria-label="测试次数" />
-              <div class="count-stepper" aria-hidden="true">
-                <button class="count-step-btn" id="test-count-up" type="button" tabindex="-1">&#9650;</button>
-                <button class="count-step-btn" id="test-count-down" type="button" tabindex="-1">&#9660;</button>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <label for="test-count">测试次数</label>
+                <div class="count-input-wrap">
+                  <input id="test-count" class="count-input" type="number" min="5" max="10" value="5">
+                  <div class="count-stepper">
+                    <button class="count-step-btn" id="test-count-up">&#9650;</button>
+                    <button class="count-step-btn" id="test-count-down">&#9660;</button>
+                  </div>
+                </div>
               </div>
+              <p class="status" id="status-text">等待开始测试...</p>
             </div>
-            <p class="status" id="status-text">等待开始测试...</p>
+            <div class="blacklist-area">
+              <span class="blacklist-label">🚫 无人机设备ID黑名单</span>
+              <span class="blacklist-count" id="blacklist-count">0</span>
+              <select id="blacklist-select" class="blacklist-select" size="2"></select>
+            </div>
           </div>
         </div>
 
@@ -691,6 +752,8 @@
       const disposeMetric = document.getElementById('dispose-metric');
 
       let running = false;
+      let selfishBlacklist = new Set();  // 自私接入攻击黑名单
+      let highfreqBlacklist = new Set(); // 高频重接入攻击黑名单
 
       const flows = {
         selfish: {
@@ -842,6 +905,56 @@
         });
       }
 
+      // ========== 官方标准 Remote ID 生成（GB 46750-2025 + CTA-2063-A）==========
+      function generateId() {
+        // 1. 厂商代码（3位大写字母，中国民航/CTA标准）
+        const mfrCodes = ['DJI', 'Dji', 'FLR', 'AUT', 'P3X', 'ZHY']; // 大疆、飞米、极飞等
+        const mfr = mfrCodes[Math.floor(Math.random() * mfrCodes.length)];
+
+        // 2. 型号代码（2位字母/数字）
+        const modelChars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 无IO01
+        const model = Array.from({ length: 2 }, () => 
+          modelChars[Math.floor(Math.random() * modelChars.length)]
+        ).join('');
+
+        // 3. 10位唯一序列号（数字+大写字母，无歧义）
+        const serialChars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        const serial = Array.from({ length: 10 }, () => 
+          serialChars[Math.floor(Math.random() * serialChars.length)]
+        ).join('');
+
+        // 4. 拼接：官方 Remote ID（CTA-2063-A 格式）
+        return `${mfr}-${model}-${serial}`;
+      }
+
+      function updateBlacklistDisplay() {
+        const totalBlacklist = Array.from(new Set([...selfishBlacklist, ...highfreqBlacklist]));
+        const blacklistCountElem = document.getElementById('blacklist-count');
+        const blacklistSelect = document.getElementById('blacklist-select');
+        if (blacklistCountElem) {
+          blacklistCountElem.textContent = totalBlacklist.length;
+        }
+        if (!blacklistSelect) return;
+        // 清空并填充选项
+        blacklistSelect.innerHTML = '';
+        if (totalBlacklist.length === 0) {
+          const opt = document.createElement('option');
+          opt.textContent = '—';
+          opt.disabled = true;
+          blacklistSelect.appendChild(opt);
+        } else {
+          totalBlacklist.forEach(id => {
+            const opt = document.createElement('option');
+            opt.value = id;
+            opt.textContent = id;
+            blacklistSelect.appendChild(opt);
+          });
+          // 选中最后一项并滚动到可见
+          blacklistSelect.selectedIndex = totalBlacklist.length - 1;
+          blacklistSelect.scrollTop = blacklistSelect.scrollHeight;
+        }
+      }
+
       async function pulseNode(node) {
         setNode(node, true, true);
         await sleep(220);
@@ -891,7 +1004,10 @@
           await sleep(180);
 
           await playStep('selfish', 3);
-          appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：自私接入攻击）');
+          const id = generateId();
+          selfishBlacklist.add(id);
+          appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：自私接入攻击，ID=' + id + '）');
+          updateBlacklistDisplay();
           await sleep(260);
           passed += 1;
         }
@@ -917,7 +1033,10 @@
           await sleep(180);
 
           await playStep('highfreq', 2);
-          appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：高频重接入攻击）');
+          const id = generateId();
+          highfreqBlacklist.add(id);
+          appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：高频重接入攻击，ID=' + id + '）');
+          updateBlacklistDisplay();
           await sleep(260);
           passed += 1;
         }
