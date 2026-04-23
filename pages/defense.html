@@ -24,16 +24,9 @@
 
     .page {
       height: 100%;
-      padding: 16px;
       display: grid;
       grid-template-rows: 3fr 2fr;
-      gap: 14px;
-    }
-
-    .card {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      background: #f8fafc;
+      gap: 0;
     }
 
     .image-wrap {
@@ -45,32 +38,74 @@
     }
 
     .canvas {
-      background: #f0f4f8;
+      background: #ffffff;
       position: relative;
       overflow: hidden;
       display: flex;
       gap: 80px;
-      padding: 0 20px;  /* 上下为0，左右为40px */
+      /* padding: 0 20px; */
     }
 
+    .left-area {
+      flex: 1; 
+      height: 100%; 
+      background: #ffffff; 
+      position: relative;
+      border-radius: 12px;
+      border: 1px solid #d1d5db; 
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .right-area {
+      flex: 1; 
+      height: 100%; 
+      background: #ffffff; 
+      position: relative;
+      border-radius: 12px;
+      border: 1px solid #d1d5db; 
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+
     .area-title1 {
-      background: #f8cdac;
-      color: #c65f10;
-      border: 2px solid #c65f10;
-      text-align: center;
-      padding: 8px 0;
-      font-size: 20px;
+      background: linear-gradient(to right, #2b4c7e, #567ebb);
+      color: white;
+      padding: 8px 16px;
       font-weight: bold;
+      font-size: 20px;
+      border-radius: 10px 10px 0 0;
+      margin: 4px;
     }
 
     .area-title2 {
-      background: #b6c7ea;
-      color: #2e54a1;
-      border: 2px solid #2e54a1;
-      text-align: center;
-      padding: 8px 0;
-      font-size: 20px;
+      background: linear-gradient(to right, #2b4c7e, #567ebb);
+      color: white;
+      padding: 8px 16px;
       font-weight: bold;
+      font-size: 20px;
+      border-radius: 10px 10px 0 0;
+      margin: 4px;
+    }
+
+    .m-line-fail {
+      stroke: #f97316;
+      stroke-width: 1;
+    }
+
+    /* 成功连线样式*/
+    .m-line-success {
+      stroke: #64748b;
+      stroke-width: 1;
+    }
+
+    .m-line-connect {
+      stroke: #000;
+      stroke-width: 1;
+    }
+
+    .m-line-attack {
+      stroke: #ef4444;
+      stroke-width: 1;
     }
 
     .element {
@@ -536,18 +571,18 @@
     <div class="canvas">
 
       <!-- 左侧区域：标题1 -->
-      <div class="left-area" style="flex: 1; height: 100%; background: #fdefe4; position: relative;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+      <div class="left-area">
         <div class="area-title1">自私接入攻击</div>
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; left:43%; width:210px;" alt="UAV"/>
 
-        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:15%; width:125px;" alt="接入点">
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:15%; width:130px;" alt="接入点">
         <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:28%; right:10%; width:105px;" alt="pass">
         <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:30%; right:10%; width:105px;" alt="reject">
 
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; bottom: 20%; left:41%; width:40px;" alt="cert">
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 40%; left:36%; width:40px;" alt="cert">
 
-        <div style="position: absolute; top: 40%; left: 21%; color: #c65f10; font-size: 15px; font-weight: bold; white-space: nowrap;">
+        <div style="position: absolute; top: 40%; left: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
             接入点
         </div>
         <div style="position: absolute; top: 40%; left: 46%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
@@ -575,14 +610,14 @@
       </div>
 
       <!-- 右侧区域：标题2 -->
-      <div class="right-area" style="flex: 1; height: 100%; background: #d3dbeb; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+      <div class="right-area">
         <div class="area-title2">高频重接入攻击</div>
         
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; right:43%; width:210px;" alt="UAV"/>
 
-        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; right:15%; width:125px;" alt="接入点">
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; right:15%; width:130px;" alt="接入点">
         <img src="../assets/sec-database.png" class="element" style="position: absolute; top:38%; left:10%; width:95px;" alt="database">
-        <div style="position: absolute; top: 40%; right: 21%; color: #2e54a1; font-size: 15px; font-weight: bold; white-space: nowrap;">
+        <div style="position: absolute; top: 40%; right: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
             接入点
         </div>
 
@@ -614,31 +649,55 @@
     <marker id="arrow2" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
       <polygon points="0 0,1.5 1.5,0 3" fill="#2e54a1"/>
     </marker>
+    <marker id="arrowhead-success" 
+            markerWidth="4" markerHeight="2.4" 
+            refX="3" refY="1.2" orient="auto">
+      <polygon points="0 0, 4 1.2, 0 2.4" fill="#64748b" />
+    </marker>
+
+    <marker id="arrowhead-fail" 
+            markerWidth="4" markerHeight="2.4" 
+            refX="3" refY="1.2" orient="auto">
+      <polygon points="0 0, 4 1.2, 0 2.4" fill="#f97316" />
+    </marker>
+
+    <marker id="arrowhead-black"
+            markerWidth="4" markerHeight="2.4"
+            refX="3" refY="1.2" orient="auto">
+      <polygon points="0 0, 4 1.2, 0 2.4" fill="#000" />
+    </marker>
+
+    <marker id="arrowhead-attack"
+            markerWidth="4" markerHeight="2.4"
+            refX="3" refY="1.2" orient="auto">
+      <polygon points="0 0, 4 1.2, 0 2.4" fill="#ef4444" />
+    </marker>
   </defs>
 
   <!-- 橙色#c65f10 -->
   
-  <line x1="-25" y1="32" x2="-50" y2="42" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
-  <line x1="-45" y1="54" x2="5" y2="40" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
-  <line x1="-45" y1="60" x2="5" y2="60" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+  <line class="m-line-success" x1="-25" y1="32" x2="-50" y2="42" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-success" x1="-45" y1="54" x2="5" y2="40" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-attack" x1="-45" y1="60" x2="5" y2="60" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
-  <line x1="-48" y1="73" x2="-25" y2="90" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
-  <line x1="-25" y1="90" x2="-48" y2="73" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+  <line class="m-line-connect" x1="-48" y1="70" x2="-23" y2="87" stroke-dasharray="4 1" marker-end="url(#arrowhead-black)"/>
+  <line class="m-line-connect" x1="-27" y1="93" x2="-52" y2="76" stroke-dasharray="4 1" marker-end="url(#arrowhead-black)"/>
 
-  <line x1="20" y1="72" x2="20" y2="82" stroke="#c65f10" stroke-width="3" marker-end="url(#arrow1)"/>
+  <line class="m-line-attack" x1="20" y1="72" x2="20" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
   <!-- 蓝色#2e54a1 -->
-  <line x1="125" y1="32" x2="145" y2="52" stroke="#2e54a1" stroke-width="3" marker-end="url(#arrow2)"/>
-  <line x1="147" y1="60" x2="95" y2="46" stroke="#2e54a1" stroke-width="3" marker-end="url(#arrow2)"/>
-  <line x1="81" y1="56" x2="81" y2="82" stroke="#2e54a1" stroke-width="3" marker-end="url(#arrow2)"/>
+  <line class="m-line-success" x1="125" y1="32" x2="145" y2="52" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-success" x1="147" y1="60" x2="95" y2="46"  stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-attack" x1="81" y1="56" x2="81" y2="82"  stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
   <path d="M 120 85 
          L 130 85 
          A 5 5 0 0 1 130 95
          L 120 95" 
-      stroke="#2e54a1" 
-      stroke-width="3" 
+      stroke="#ef4444"; 
+      stroke-width="1";
+      stroke-dasharray="4 1"
       fill="none" 
-      marker-end="url(#arrow2)"/>
+      marker-end="url(#arrowhead-attack)"/>
 
 </svg>
 
