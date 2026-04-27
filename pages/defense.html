@@ -32,7 +32,7 @@
     .image-wrap {
       display: grid;
       gap: 20px;
-      padding: 16px;
+      padding: 6px 16px;
       background: #f0f4f8;
       height: 100%; /* 确保填满 grid 容器的第一行 */
     }
@@ -72,7 +72,7 @@
       color: white;
       padding: 8px 16px;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 18px;
       border-radius: 10px 10px 0 0;
       margin: 4px;
     }
@@ -82,7 +82,7 @@
       color: white;
       padding: 8px 16px;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 18px;
       border-radius: 10px 10px 0 0;
       margin: 4px;
     }
@@ -161,22 +161,23 @@
 
     .left-panel {
       border: 1px solid #e5e7eb;
+      /* border: 2px solid #000 ; */
       border-radius: 10px;
-      background: #f9fafb;
+      /* background: #f9fafb; */
+      height : 100%;
       min-height: 0;
-      padding: 12px;
+      padding: 6px 16px;
       display: grid;
       grid-template-rows: auto 1fr;
-      gap: 12px;
+      gap: 0px;
     }
 
     .controls {
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
+      /* border: 1px solid #d1d5db; */
       background: #ffffff;
-      padding: 12px 30px;
+      padding: 8px 30px;
       display: grid;
-      gap: 10px;
+      gap:10px;
       min-height: 124px;
     }
 
@@ -191,7 +192,7 @@
       border-radius: 8px;
       background: #186487;
       color: #ffffff;
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 600;
       padding: 3px 8px;
       cursor: pointer;
@@ -213,12 +214,12 @@
     .input-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       flex-wrap: wrap;
     }
 
     .input-row label {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
       color: #334155;
     }
@@ -355,7 +356,7 @@
 
     .status {
       margin: 0;
-      font-size: 13px;
+      font-size: 15px;
       color: #1d4ed8;
       font-weight: 600;
       min-height: 0;
@@ -366,27 +367,14 @@
     }
 
     .flow-area {
-      border: 1px solid #d1d5db;
+      /* border: 1px solid #d1d5db; */
       border-radius: 8px;
       background: #ffffff;
-      padding: 6px 8px;
+      padding:3px 8px;
       display: grid;
       align-content: start;
-      gap: 2px;
       overflow: visible;
       min-height: 0;
-    }
-
-    .flow-group {
-      display: grid;
-      gap: 8px;
-    }
-
-    .flow-title {
-      margin: 0;
-      font-size: 13px;
-      font-weight: 700;
-      color: #334155;
     }
 
     .flow-wrap {
@@ -729,7 +717,7 @@
             <button class="action-btn" id="highfreq-btn" type="button">高频重接入攻击测试</button>
           </div>
           <div class="input-row">
-            <div style="display:flex; flex-direction:column; gap:4px;">
+            <div style="display:flex; flex-direction:column; gap:9px;">
               <div style="display:flex; align-items:center; gap:8px;">
                 <label for="test-count">测试次数</label>
                 <div class="count-input-wrap">
@@ -774,8 +762,8 @@
               <circle id="selfish-node-3" class="flow-node" cx="760" cy="62" r="10" />
 
               <text class="flow-label-long" x="150" y="104" text-anchor="middle">
-                <tspan x="150" dy="0">无人机发送ID</tspan>
-                <tspan x="150" dy="16">和公钥</tspan>
+                <tspan x="150" dy="0">无人机发送</tspan>
+                <tspan x="150" dy="16">ID和公钥</tspan>
               </text>
               <text class="flow-label-small" x="350" y="116" text-anchor="middle">查询区块链</text>
               <text class="flow-label-small" x="550" y="116" text-anchor="middle">匹配信息</text>
@@ -1173,7 +1161,7 @@
           highfreqBlacklist.add(id);
           appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：高频重接入攻击，ID=' + id + '）');
           updateBlacklistDisplay();
-          await sleep(260);
+          await sleep(intervalMs+3000);
           passed += 1;
         }
 
