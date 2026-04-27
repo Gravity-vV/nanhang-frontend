@@ -174,7 +174,7 @@
       border: 1px solid #d1d5db;
       border-radius: 8px;
       background: #ffffff;
-      padding: 12px;
+      padding: 12px 30px;
       display: grid;
       gap: 10px;
       min-height: 124px;
@@ -218,7 +218,7 @@
     }
 
     .input-row label {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       color: #334155;
     }
@@ -242,6 +242,7 @@
         font-weight: bold;
         color: #dc2626;
         font-size: 15px;
+        text-align: center;
     }
 
     .blacklist-count {
@@ -277,7 +278,7 @@
     .count-input {
       width: 100%;
       max-width: 100%;
-      height: 34px;
+      height: 28px;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
       background: #ffffff;
@@ -299,13 +300,24 @@
       position: relative;
       width: 180px;
       max-width: 100%;
+      height: 28px;
+    }
+
+    .time-input-wrap {
+      width: 100px;
+      max-width: 100%;
+    }
+
+    .time-input {
+      height : 20px;
+      padding-right: 10px;
     }
 
     .count-stepper {
       position: absolute;
       right: 4px;
-      top: 4px;
-      bottom: 4px;
+      top: 0px;
+      bottom: 0px;
       width: 24px;
       display: grid;
       grid-template-rows: 1fr 1fr;
@@ -542,6 +554,10 @@
         width: 100%;
       }
 
+      .time-input-wrap {
+        width: 100%;
+      }
+
       .status {
         flex-basis: 100%;
         white-space: normal;
@@ -724,12 +740,19 @@
                   </div>
                 </div>
               </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <label for="highfreq-interval">高频重接入间隔(ms)</label>
+                <div class="time-input-wrap">
+                  <input id="highfreq-interval" class="count-input time-input" type="number" min="1" max="60000" value="800">
+                </div>
+              </div>
               <p class="status" id="status-text">等待开始测试...</p>
             </div>
             <div class="blacklist-area">
-              <span class="blacklist-label">🚫 无人机设备ID黑名单</span>
+              <span class="blacklist-label">🚫</span>
+              <span class="blacklist-label">违规无人机设备<br>ID黑名单</span>
               <span class="blacklist-count" id="blacklist-count">0</span>
-              <select id="blacklist-select" class="blacklist-select" size="2"></select>
+              <select id="blacklist-select" class="blacklist-select" size="4"></select>
             </div>
           </div>
         </div>
@@ -798,10 +821,15 @@
       const DEFAULT_TEST_COUNT = 5;
       const MIN_TEST_COUNT = 5;
       const MAX_TEST_COUNT = 10;
+      const DEFAULT_HIGHFREQ_INTERVAL_MS = 800;
+      const MIN_HIGHFREQ_INTERVAL_MS = 1;
+      const MAX_HIGHFREQ_INTERVAL_MS = 60000;
+      const HIGHFREQ_INTERVAL_THRESHOLD_MS = 1000;
 
       const selfishBtn = document.getElementById('selfish-btn');
       const highfreqBtn = document.getElementById('highfreq-btn');
       const testCountInput = document.getElementById('test-count');
+      const highfreqIntervalInput = document.getElementById('highfreq-interval');
       const testCountUpBtn = document.getElementById('test-count-up');
       const testCountDownBtn = document.getElementById('test-count-down');
       const statusText = document.getElementById('status-text');
@@ -868,6 +896,24 @@
 
       function clampCount(value) {
         return Math.min(MAX_TEST_COUNT, Math.max(MIN_TEST_COUNT, value));
+      }
+
+      function parseHighfreqInterval() {
+        if (!highfreqIntervalInput) {
+          return DEFAULT_HIGHFREQ_INTERVAL_MS;
+        }
+        const raw = highfreqIntervalInput.value.trim();
+        if (raw === '') {
+          return DEFAULT_HIGHFREQ_INTERVAL_MS;
+        }
+        if (!/^\d+$/.test(raw)) {
+          return null;
+        }
+        const value = Number(raw);
+        if (value < MIN_HIGHFREQ_INTERVAL_MS || value > MAX_HIGHFREQ_INTERVAL_MS) {
+          return null;
+        }
+        return value;
       }
 
       function getStepperBaseCount() {
@@ -1033,6 +1079,9 @@
         selfishBtn.disabled = isRunning;
         highfreqBtn.disabled = isRunning;
         testCountInput.disabled = isRunning;
+        if (highfreqIntervalInput) {
+          highfreqIntervalInput.disabled = isRunning;
+        }
         if (testCountUpBtn) {
           testCountUpBtn.disabled = isRunning;
         }
@@ -1076,6 +1125,22 @@
 
       async function runHighfreq(count) {
         statusText.textContent = '正在执行：高频重接入攻击测试';
+        const intervalMs = parseHighfreqInterval();
+        if (intervalMs === null) {
+          statusText.textContent = '输入错误：接入时间间隔需为 ' + MIN_HIGHFREQ_INTERVAL_MS + '-' + MAX_HIGHFREQ_INTERVAL_MS + ' 的整数（ms）';
+          appendLog(
+            analysisLog,
+            '接入点',
+            '参数校验失败：接入时间间隔需为 ' + MIN_HIGHFREQ_INTERVAL_MS + '-' + MAX_HIGHFREQ_INTERVAL_MS + ' 的整数（ms）'
+          );
+          return null;
+        }
+        const isHighfreq = intervalMs <= HIGHFREQ_INTERVAL_THRESHOLD_MS;
+        appendLog(
+          analysisLog,
+          '接入点',
+          '高频判定：接入时间间隔=' + intervalMs + 'ms，阈值<= ' + HIGHFREQ_INTERVAL_THRESHOLD_MS + 'ms'
+        );
         let passed = 0;
 
         for (let i = 1; i <= count; i += 1) {
@@ -1084,7 +1149,19 @@
 
           resetFlow('highfreq');
           await playStep('highfreq', 0);
-          appendLog(analysisLog, '接入点', '检测到高频重接入行为');
+          if (!isHighfreq) {
+            for(let i =1;i<=5;i+=1){
+              appendLog(analysisLog, '接入点', '收到接入请求');
+              await sleep(intervalMs);
+            }
+            appendLog(analysisLog, '接入点', '接入时间间隔未达到高频条件，本次不记录违规行为');
+            continue;
+          }
+          for(let i =1;i<=5;i+=1){
+            appendLog(analysisLog, '接入点', '收到接入请求');
+            await sleep(intervalMs);
+          }
+          appendLog(analysisLog, '接入点', '检测到高频重接入行为（接入时间间隔=' + intervalMs + 'ms）');
           await sleep(180);
 
           await playStep('highfreq', 1);
@@ -1130,6 +1207,11 @@
           statusText.textContent = '自私接入攻击测试完成，共执行 ' + count + ' 次';
         } else {
           passed = await runHighfreq(count);
+          if (passed === null) {
+            resetMetrics();
+            setRunningState(false);
+            return;
+          }
           statusText.textContent = '高频重接入攻击测试完成，共执行 ' + count + ' 次';
         }
 
