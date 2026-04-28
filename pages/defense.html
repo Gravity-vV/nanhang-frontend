@@ -175,7 +175,7 @@
     .controls {
       /* border: 1px solid #d1d5db; */
       background: #ffffff;
-      padding: 8px 30px;
+      padding: 8px 20px;
       display: grid;
       gap:10px;
       min-height: 124px;
@@ -214,7 +214,7 @@
     .input-row {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 2px;
       flex-wrap: wrap;
     }
 
@@ -299,13 +299,13 @@
 
     .count-input-wrap {
       position: relative;
-      width: 180px;
+      width: 205px;
       max-width: 100%;
       height: 28px;
     }
 
     .time-input-wrap {
-      width: 100px;
+      width: 60px;
       max-width: 100%;
     }
 
@@ -719,7 +719,7 @@
           <div class="input-row">
             <div style="display:flex; flex-direction:column; gap:9px;">
               <div style="display:flex; align-items:center; gap:8px;">
-                <label for="test-count">测试次数</label>
+                <label for="test-count">接入攻击测试次数</label>
                 <div class="count-input-wrap">
                   <input id="test-count" class="count-input" type="number" min="5" max="10" value="5">
                   <div class="count-stepper">
@@ -729,16 +729,17 @@
                 </div>
               </div>
               <div style="display:flex; align-items:center; gap:8px;">
-                <label for="highfreq-interval">高频重接入间隔(ms)</label>
+                <label for="highfreq-interval">重接入间隔(ms)</label>
                 <div class="time-input-wrap">
                   <input id="highfreq-interval" class="count-input time-input" type="number" min="1" max="60000" value="800">
                 </div>
+                <label for="highfreq-interval">高频阈值 : ≤1000</label>
               </div>
               <p class="status" id="status-text">等待开始测试...</p>
             </div>
             <div class="blacklist-area">
               <span class="blacklist-label">🚫</span>
-              <span class="blacklist-label">违规无人机设备<br>ID黑名单</span>
+              <span class="blacklist-label">无人机设备<br>ID黑名单</span>
               <span class="blacklist-count" id="blacklist-count">0</span>
               <select id="blacklist-select" class="blacklist-select" size="4"></select>
             </div>
