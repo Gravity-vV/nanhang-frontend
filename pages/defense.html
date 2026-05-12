@@ -99,8 +99,8 @@
 
     /* 右上攻击示意图左侧：自私接入攻击流程示意 */
     .left-area {
-      flex: 1; 
-      height: 100%; 
+      flex: 1;
+      height: 100%;
       background:
         radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.18), transparent 34%),
         linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
@@ -112,8 +112,8 @@
 
     /* 右上攻击示意图右侧：高频重接入攻击流程示意 */
     .right-area {
-      flex: 1; 
-      height: 100%; 
+      flex: 1;
+      height: 100%;
       background:
         radial-gradient(circle at 70% 18%, rgba(34, 211, 238, 0.18), transparent 34%),
         linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
@@ -126,11 +126,12 @@
     .left-area div[style],
     .right-area div[style] {
       color: #e0f2fe !important;
+      font-size: 19px !important;
       text-shadow:
         0 1px 2px rgba(2, 6, 23, 0.95),
         0 0 10px rgba(34, 211, 238, 0.72);
     }
-    
+
 
     /* 自私接入攻击示意图标题条 */
     .area-title1 {
@@ -157,22 +158,26 @@
     .m-line-fail {
       stroke: #f97316;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.58));
     }
 
     /* 成功连线样式*/
     .m-line-success {
       stroke: #38bdf8;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.58));
     }
 
     .m-line-connect {
       stroke: #dbeafe;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(219, 234, 254, 0.5));
     }
 
     .m-line-attack {
       stroke: #ef4444;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.62));
     }
 
     .element {
@@ -909,8 +914,8 @@
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; left:25%; width:210px;" alt="UAV"/>
 
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:15%; width:130px;" alt="接入点">
-        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:28%; right:10%; width:105px;" alt="pass">
-        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:30%; right:10%; width:105px;" alt="reject">
+        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:28%; right:10%; width:118px;" alt="pass">
+        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:34%; right:10%; width:118px;" alt="reject">
 
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; bottom: 20%; left:41%; width:40px;" alt="cert">
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 40%; left:36%; width:40px;" alt="cert">
@@ -931,10 +936,10 @@
         <div style="position: absolute; top: 47%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             拒绝接入
         </div>
-        <div style="position: absolute; top: 26%; left: 15%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <div style="position: absolute; top: 26%; left: 12%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             发送包含设备ID和<br>公钥的请求数据
         </div>
-        <div style="position: absolute; top: 78%; left: 14%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <div style="position: absolute; top: 78%; left: 11%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             查询区块链获取<br>ID白名单与ID和<br>公钥匹配信息
         </div>
         <div style="position: absolute; top: 73%; right: 22%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
@@ -946,25 +951,25 @@
       <!-- 高频重接入攻击示意区域 -->
       <div class="right-area">
         <div class="area-title2">高频重接入攻击</div>
-        
+
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; right:43%; width:210px;" alt="UAV"/>
 
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; right:15%; width:130px;" alt="接入点">
-        <img src="../assets/sec-database.png" class="element" style="position: absolute; top:38%; left:10%; width:95px;" alt="database">
-        <div style="position: absolute; top: 40%; right: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
+        <img src="../assets/database.png" class="element" style="position: absolute; top:38%; left:13%; width:108px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="database">
+        <div style="position: absolute; top: 55%; right: 7%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
             接入点
         </div>
 
         <div style="position: absolute; top: 31%; left: 9%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             接入点本地储存
         </div>
-        <div style="position: absolute; top: 30%; left: 59%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <div style="position: absolute; top: 28%; left: 60%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             高频重接入<br>反复连接断开
         </div>
-        <div style="position: absolute; top:53%; left: 26%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <div style="position: absolute; top:55%; left: 35%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             记录接入无人机的<br>ID、接入时间
         </div>
-        <div style="position: absolute; top: 65%; left: 20%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <div style="position: absolute; top: 69%; left: 24%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             重接入频率到达阈值，<br>记录一次违规行为
         </div>
         <div style="position: absolute; top: 86%; right:10%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
@@ -984,14 +989,14 @@
     <marker id="arrow2" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
       <polygon points="0 0,1.5 1.5,0 3" fill="#2e54a1"/>
     </marker>
-    <marker id="arrowhead-success" 
-            markerWidth="4" markerHeight="2.4" 
-            refX="3" refY="1.2" orient="auto">
-      <polygon points="0 0, 4 1.2, 0 2.4" fill="#64748b" />
+    <marker id="arrowhead-success"
+            markerWidth="5.2" markerHeight="3.2"
+            refX="5.2" refY="1.6" orient="auto">
+      <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#64748b" />
     </marker>
 
-    <marker id="arrowhead-fail" 
-            markerWidth="4" markerHeight="2.4" 
+    <marker id="arrowhead-fail"
+            markerWidth="4" markerHeight="2.4"
             refX="3" refY="1.2" orient="auto">
       <polygon points="0 0, 4 1.2, 0 2.4" fill="#f97316" />
     </marker>
@@ -1002,6 +1007,12 @@
       <polygon points="0 0, 4 1.2, 0 2.4" fill="#000" />
     </marker>
 
+    <marker id="arrowhead-connect"
+            markerWidth="5" markerHeight="3"
+            refX="4" refY="1.5" orient="auto">
+      <polygon points="0 0, 5 1.5, 0 3" fill="#dbeafe" />
+    </marker>
+
     <marker id="arrowhead-attack"
             markerWidth="4" markerHeight="2.4"
             refX="3" refY="1.2" orient="auto">
@@ -1010,33 +1021,33 @@
   </defs>
 
   <!-- 橙色#c65f10 -->
-  
-  <line class="m-line-success" x1="-25" y1="32" x2="-50" y2="42" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <line class="m-line-success" x1="-45" y1="54" x2="5" y2="40" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <line class="m-line-attack" x1="-45" y1="60" x2="5" y2="60" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
-  <line class="m-line-connect" x1="-48" y1="70" x2="-23" y2="87" stroke-dasharray="4 1" marker-end="url(#arrowhead-black)"/>
-  <line class="m-line-connect" x1="-27" y1="93" x2="-52" y2="76" stroke-dasharray="4 1" marker-end="url(#arrowhead-black)"/>
+  <line class="m-line-success" x1="-20" y1="26" x2="-35" y2="39" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-success" x1="-27" y1="54" x2="17" y2="37" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-attack" x1="-27" y1="60" x2="17" y2="60" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
-  <line class="m-line-attack" x1="20" y1="72" x2="20" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
+  <line class="m-line-connect" x1="-30" y1="70" x2="-10" y2="87" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect)"/>
+  <line class="m-line-connect" x1="-13" y1="91" x2="-33" y2="74" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect)"/>
+
+  <line class="m-line-attack" x1="25" y1="67" x2="25" y2="84" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
   <!-- 蓝色#2e54a1 -->
-  <line class="m-line-success" x1="125" y1="32" x2="145" y2="52" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <line class="m-line-success" x1="147" y1="60" x2="95" y2="46"  stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <line class="m-line-attack" x1="81" y1="56" x2="81" y2="82"  stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
-  <path d="M 120 85 
-         L 130 85 
-         A 5 5 0 0 1 130 95
-         L 120 95" 
-      stroke="#ef4444"; 
+  <line class="m-line-success" x1="100" y1="28" x2="135" y2="44" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-success" x1="127" y1="56" x2="90" y2="46"  stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-attack" x1="76" y1="56" x2="76" y2="82"  stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
+  <path d="M 102 87
+         L 110 87
+         A 5 5 0 0 1 110 93
+         L 102 93"
+      stroke="#ef4444";
       stroke-width="1";
       stroke-dasharray="4 1"
-      fill="none" 
+      fill="none"
       marker-end="url(#arrowhead-attack)"/>
 
 </svg>
 
-      <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:0%; left:50%;transform: translateX(-50%) scaleX(0.9);" alt="区块链">
+      <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:3%; left:50%;transform: translateX(-50%) scaleX(1.02) scaleY(1.12);" alt="区块链">
       </div>
     </div>
 </div>
@@ -1417,13 +1428,13 @@
 
         // 2. 型号代码（2位字母/数字）
         const modelChars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 无IO01
-        const model = Array.from({ length: 2 }, () => 
+        const model = Array.from({ length: 2 }, () =>
           modelChars[Math.floor(Math.random() * modelChars.length)]
         ).join('');
 
         // 3. 10位唯一序列号（数字+大写字母，无歧义）
         const serialChars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-        const serial = Array.from({ length: 10 }, () => 
+        const serial = Array.from({ length: 10 }, () =>
           serialChars[Math.floor(Math.random() * serialChars.length)]
         ).join('');
 
