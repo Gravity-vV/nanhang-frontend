@@ -22,27 +22,40 @@
     .page {
       height: 100%;
       display: grid;
-      grid-template-rows: 3fr 2fr;
+      grid-template-columns: minmax(320px, 0.34fr) minmax(0, 0.66fr);
+      grid-template-rows: minmax(0, 0.56fr) minmax(0, 0.44fr);
+      grid-template-areas:
+        "flow image"
+        "controls logs";
+      gap: 14px;
+      padding: 12px 16px;
       min-height: 0;
+      overflow: hidden;
     }
 
     .section {
-      padding: 16px;
+      padding: 0;
       min-height: 0;
     }
 
+    .page > .section {
+      display: contents;
+    }
+
     .section + .section {
-      border-top: 1px dashed #cbd5e1;
+      border-top: 0;
     }
 
     .hero-section {
-      padding-bottom: 8px;
+      grid-area: image;
+      min-height: 0;
     }
 
     .hero-scene {
+      grid-area: image;
       width: 100%;
       height: 100%;
-      padding: 16px;
+      padding: 12px;
       border: 1px solid #e2e8f0;
       border-radius: 12px;
       overflow: hidden;
@@ -53,8 +66,8 @@
       height: 100%;
       min-height: 0;
       display: grid;
-      grid-template-columns: 4.2fr 5.8fr;
-      gap: 20px;
+      grid-template-columns: minmax(0, 0.47fr) minmax(0, 0.53fr);
+      gap: 12px;
     }
 
     .physical-left-stack {
@@ -177,31 +190,110 @@
     }
 
     .bottom-layout {
-      display: grid;
-      grid-template-columns: 4.5fr 5.5fr;
-      gap: 16px;
-      height: 100%;
-      min-height: 0;
+      display: contents;
     }
 
     .left-panel {
+      display: contents;
+    }
+
+    .flow-panel,
+    .controls-panel {
       border: 1px solid #e5e7eb;
-      border-radius: 10px;
+      border-radius: 14px;
       background: #f9fafb;
-      padding: 14px;
+      padding: 12px;
       display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 12px;
+      gap: 10px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .flow-panel {
+      grid-area: flow;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+
+    .controls-panel {
+      grid-area: controls;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+
+    .controls-heading {
+      margin: 0;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(34, 211, 238, 0.34);
+      display: flex;
+      align-items: center;
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.12), rgba(251, 191, 36, 0.1));
+    }
+
+    .parameter-grid {
+      display: grid;
+      gap: 10px;
+      align-content: center;
       min-height: 0;
     }
 
+    .parameter-card {
+      padding: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 14px;
+      background: rgba(248, 250, 252, 0.92);
+      display: grid;
+      gap: 4px;
+    }
+
+    .parameter-label {
+      color: #475569;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .parameter-value {
+      color: #0f172a;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
     .mode-buttons {
+      grid-area: controls;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
+      min-height: 0;
+      align-content: start;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      background: #f9fafb;
+      padding: 12px;
+      overflow: hidden;
     }
 
-    .mode-btn {
+    .mode-buttons::before {
+      content: "测试参数与开始按钮";
+      order: 0;
+      grid-column: 1 / -1;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(34, 211, 238, 0.34);
+      display: flex;
+      align-items: center;
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.12), rgba(251, 191, 36, 0.1));
+    }
+.mode-btn {
+      order: 2;
       border: 1px solid #0f5f82;
       border-radius: 8px;
       background: #186487;
@@ -224,13 +316,30 @@
     }
 
     .flow-wrap {
+      grid-area: flow;
       border: 1px solid #d1d5db;
       border-radius: 8px;
       background: #ffffff;
       padding: 10px;
       min-height: 0;
       overflow: hidden;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .flow-title {
+      min-height: 34px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(34, 211, 238, 0.34);
       display: flex;
+      align-items: center;
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.14), rgba(14, 165, 233, 0.08));
     }
 
     .flow-svg {
@@ -281,14 +390,29 @@
     }
 
     .flow-status {
+      order: 2;
+      grid-column: 1 / -1;
       margin: 0;
-      min-height: 22px;
-      font-size: 14px;
-      color: #1d4ed8;
-      font-weight: 600;
+      min-height: 34px;
+      padding: 11px 16px;
+      font-size: 19px;
+      color: #cffafe;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 999px;
+      background: rgba(8, 47, 73, 0.28);
+      display: flex;
+      align-items: center;
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: 0 0 10px rgba(34, 211, 238, 0.42);
     }
 
     .right-panel {
+      grid-area: logs;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
@@ -318,18 +442,72 @@
 
     .log-content {
       margin: 10px 0 0;
-      padding-left: 16px;
+      padding: 0;
+      list-style: none;
       font-size: 12px;
       color: #3b82f6;
       line-height: 1.6;
-      overflow: auto;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      scrollbar-gutter: stable;
       white-space: pre-wrap;
+    }
+
+    .log-content li {
+      margin: 0 0 7px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.12);
+      background: rgba(15, 23, 42, 0.42);
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      word-break: break-word;
+    }
+
+    .log-content li::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fbbf24;
+      margin-top: 7px;
+      flex: 0 0 auto;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
+    }
+
+    .log-line {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .log-time {
+      color: #94a3b8;
+    }
+
+    .log-device {
+      color: #fde68a;
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(251, 191, 36, 0.2);
+    }
+
+    .log-message {
+      color: #bfdbfe;
     }
 
     @media (max-width: 1200px) {
       .page {
         height: auto;
-        grid-template-rows: auto auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(320px, auto) minmax(360px, auto) minmax(220px, auto) minmax(320px, auto);
+        grid-template-areas:
+          "flow"
+          "image"
+          "controls"
+          "logs";
+        overflow: auto;
       }
 
       .hero-scene {
@@ -407,6 +585,7 @@
     .hero-scene,
     .diagram-panel,
     .flow-wrap,
+    .mode-buttons,
     .log-box {
       background: rgba(2, 8, 23, 0.88) !important;
       border: 1px solid rgba(34, 211, 238, 0.36) !important;
@@ -429,6 +608,7 @@
 
     .physical-summary-title,
     .flow-heading,
+    .flow-title,
     .log-title,
     .status,
     .log-metric {
@@ -466,8 +646,29 @@
       color: #93c5fd !important;
     }
 
+    .log-content li {
+      background: rgba(15, 23, 42, 0.42) !important;
+      border-color: rgba(56, 189, 248, 0.12) !important;
+    }
+
     .log-title {
       border-bottom-color: rgba(125, 211, 252, 0.24) !important;
+    }
+
+    .mode-buttons::before {
+      border-color: rgba(251, 191, 36, 0.4) !important;
+      background:
+        linear-gradient(90deg, rgba(251, 191, 36, 0.2), rgba(34, 211, 238, 0.12)),
+        rgba(2, 6, 23, 0.62) !important;
+      color: #fef3c7 !important;
+      text-shadow: 0 0 8px rgba(251, 191, 36, 0.22);
+    }
+.flow-status {
+      background: rgba(8, 47, 73, 0.28) !important;
+      border-color: rgba(56, 189, 248, 0.22) !important;
+      color: #cffafe !important;
+      text-shadow: 0 0 10px rgba(34, 211, 238, 0.42);
+      box-shadow: none;
     }
   </style>
 </head>
@@ -769,9 +970,11 @@
           <div class="mode-buttons">
             <button class="mode-btn" type="button" data-mode="centralized">单模态认证演示</button>
             <button class="mode-btn" type="button" data-mode="distributed">区块链增强多模态认证演示</button>
+            <p class="flow-status" id="flow-status">正在执行：等待开始。</p>
           </div>
 
           <div class="flow-wrap">
+            <div class="flow-title">流程演示</div>
             <svg class="flow-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" aria-label="物理层接入演示流程">
               <path class="flow-base" d="M50 180 L240 180" />
               <path class="flow-base" d="M240 180 C320 180 320 80 440 80 L620 80" />
@@ -796,29 +999,17 @@
               <text class="flow-label-small" x="618" y="320">退避接入</text>
             </svg>
           </div>
-
-          <p class="flow-status" id="flow-status">点击上方按钮查看物理层接入流程演示。</p>
         </div>
 
         <div class="right-panel">
           <article class="log-box">
             <h3 class="log-title">单模态认证日志</h3>
-            <ul class="log-content">
-              <li>[22:33:10] 接入点检测到干扰，WiFi 接入认证受阻。</li>
-              <li>[22:33:14] 系统发现 UAV-4 当前认证失败，进入退避阶段。</li>
-              <li>[22:33:16] 平台同步屏蔽记录并下发接入限制策略。</li>
-              <li>[22:33:21] 多机协同广播失败原因，等待下一轮接入窗口。</li>
-            </ul>
+            <ul class="log-content"></ul>
           </article>
 
           <article class="log-box">
             <h3 class="log-title">多模态认证日志</h3>
-            <ul class="log-content">
-              <li>[22:33:11] 区块链链路记录当前 WiFi 节点失效状态。</li>
-              <li>[22:33:15] 站点1 失败记录已上链，交易哈希 tx:0x8f4...aa1。</li>
-              <li>[22:33:20] 系统引导 UAV 切换至 LoRa / 多站点联合接入模式。</li>
-              <li>[22:33:24] 新接入模式完成验证，平台同步最新可信接入状态。</li>
-            </ul>
+            <ul class="log-content"></ul>
           </article>
         </div>
       </div>
@@ -829,6 +1020,10 @@
     (function () {
       const statusEl = document.getElementById('flow-status');
       const buttons = document.querySelectorAll('.mode-btn');
+      const logEls = {
+        centralized: document.querySelector('.log-box:nth-child(1) .log-content'),
+        distributed: document.querySelector('.log-box:nth-child(2) .log-content')
+      };
       const paths = {
         seg1: document.getElementById('active-seg-1'),
         top: document.getElementById('active-seg-top'),
@@ -860,6 +1055,71 @@
       function setButtonState(mode) {
         buttons.forEach((button) => {
           button.classList.toggle('is-active', button.dataset.mode === mode);
+        });
+      }
+
+      function nowStamp() {
+        const now = new Date();
+        return now.toLocaleTimeString('zh-CN', { hour12: false });
+      }
+
+      function appendLog(mode, role, message) {
+        const target = logEls[mode];
+        if (!target) return;
+
+        const item = document.createElement('li');
+        const line = document.createElement('span');
+        const time = document.createElement('span');
+        const device = document.createElement('span');
+        const content = document.createElement('span');
+
+        line.className = 'log-line';
+        time.className = 'log-time';
+        device.className = 'log-device';
+        content.className = 'log-message';
+        time.textContent = '[' + nowStamp() + ']';
+        device.textContent = '[' + role + ']';
+        content.textContent = message;
+
+        line.appendChild(time);
+        line.appendChild(device);
+        line.appendChild(content);
+        item.appendChild(line);
+        target.appendChild(item);
+        target.scrollTop = target.scrollHeight;
+      }
+
+      function clearActiveLog(mode) {
+        const target = logEls[mode];
+        if (target) {
+          target.innerHTML = '';
+        }
+      }
+
+      function enhanceStaticLogs() {
+        document.querySelectorAll('.log-content li').forEach((item) => {
+          if (item.querySelector('.log-line')) return;
+
+          const raw = item.textContent.trim();
+          const match = raw.match(/^(\[[^\]]+\])\s*(.*)$/);
+          const line = document.createElement('span');
+          const time = document.createElement('span');
+          const device = document.createElement('span');
+          const message = document.createElement('span');
+
+          line.className = 'log-line';
+          time.className = 'log-time';
+          device.className = 'log-device';
+          message.className = 'log-message';
+          time.textContent = match ? match[1] : '[--:--:--]';
+          device.textContent = '[物理层]';
+          message.textContent = match ? match[2] : raw;
+
+          line.appendChild(time);
+          line.appendChild(device);
+          line.appendChild(message);
+          item.textContent = '';
+          item.appendChild(line);
         });
       }
 
@@ -900,7 +1160,7 @@
         if (token !== animationToken) return;
         node.classList.add('is-visited', 'is-active');
         node.setAttribute('r', String(NODE_ACTIVE_R));
-        statusEl.textContent = '当前步骤：' + label;
+        statusEl.textContent = '\u6b63\u5728\u6267\u884c\uff1a' + label;
         await sleep(PAUSE_MS);
         if (token !== animationToken) return;
         node.classList.remove('is-active');
@@ -914,15 +1174,18 @@
         setButtonState(mode);
         resetPaths();
         resetNodes();
+        clearActiveLog(mode);
 
         const flowName =
           mode === 'distributed'
             ? '区块链增强多模态接入'
             : '单模态接入';
-        statusEl.textContent = '开始演示：' + flowName;
+        statusEl.textContent = '\u6d41\u7a0b\u5b8c\u6210\uff1a' + flowName;
+          appendLog(mode, '测试控制器', flowName + '\u6d41\u7a0b\u6f14\u793a\u5b8c\u6210\u3002');
         await sleep(300);
 
         await revealPathSegment(paths.seg1, paths.seg1.dataset.total, 0, DURATION_MS.seg1);
+        appendLog(mode, 'UAV-4', '发起接入请求，接入点开始检测当前链路状态。');
         await pauseAtNode(nodes.start, '接入请求', token);
         if (token !== animationToken) return;
 
@@ -930,24 +1193,29 @@
           const totalTop = Number(paths.top.dataset.total);
           const offset1 = totalTop * 0.5;
           await revealPathSegment(paths.top, totalTop, offset1, DURATION_MS.branchPart1);
+          appendLog(mode, '区块链节点', '读取 WiFi 失效记录，触发多模态联合认证。');
           await pauseAtNode(nodes.multi, '多模态认证', token);
           if (token !== animationToken) return;
 
           await revealPathSegment(paths.top, offset1, 0, DURATION_MS.branchPart2);
+          appendLog(mode, '接入点', '切换至 LoRa / 多站点联合接入模式，认证反馈生成。');
           await pauseAtNode(nodes.switchNode, '接入方式切换', token);
         } else {
           const totalBottom = Number(paths.bottom.dataset.total);
           const offset2 = totalBottom * 0.5;
           await revealPathSegment(paths.bottom, totalBottom, offset2, DURATION_MS.branchPart1);
+          appendLog(mode, '接入点', 'WiFi 通道持续受干扰，单模态认证失败。');
           await pauseAtNode(nodes.single, '单模态认证', token);
           if (token !== animationToken) return;
 
           await revealPathSegment(paths.bottom, offset2, 0, DURATION_MS.branchPart2);
+          appendLog(mode, '平台', '同步接入失败记录，UAV-4 进入随机退避接入阶段。');
           await pauseAtNode(nodes.backoff, '退避接入', token);
         }
 
         if (token === animationToken) {
-          statusEl.textContent = '演示完成：' + flowName;
+          statusEl.textContent = '\u6d41\u7a0b\u5b8c\u6210\uff1a' + flowName;
+          appendLog(mode, '测试控制器', flowName + '\u6d41\u7a0b\u6f14\u793a\u5b8c\u6210\u3002');
         }
       }
 
@@ -956,7 +1224,6 @@
           runFlow(button.dataset.mode);
         });
       });
-
       resetPaths();
       resetNodes();
     })();
