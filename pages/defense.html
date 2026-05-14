@@ -137,9 +137,9 @@
     .area-title1 {
       background: linear-gradient(90deg, #0f766e, #0ea5e9);
       color: #ecfeff;
-      padding: 8px 16px;
+      padding: 12px 18px;
       font-weight: 900;
-      font-size: 18px;
+      font-size: 22px;
       border-radius: 10px 10px 0 0;
       margin: 4px;
     }
@@ -148,9 +148,9 @@
     .area-title2 {
       background: linear-gradient(90deg, #0f766e, #0ea5e9);
       color: #ecfeff;
-      padding: 8px 16px;
+      padding: 12px 18px;
       font-weight: 900;
-      font-size: 18px;
+      font-size: 22px;
       border-radius: 10px 10px 0 0;
       margin: 4px;
     }
@@ -910,38 +910,53 @@
       <!-- 左侧区域：标题1 -->
       <!-- 自私接入攻击示意区域 -->
       <div class="left-area">
+        <!-- 左图标题：自私接入攻击；位置/尺寸由 .area-title1 控制 -->
         <div class="area-title1">自私接入攻击</div>
+        <!-- 左图无人机图标：自私接入场景中的 UAV；调 top/left/width 改位置和大小 -->
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; left:25%; width:210px;" alt="UAV"/>
 
+        <!-- 左图接入点图标：无人机请求接入的接入点；调 top/left/width 改位置和大小 -->
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:15%; width:130px;" alt="接入点">
+        <!-- 左图允许接入图标：信息匹配成功后的允许接入结果；调 top/right/width 改位置和大小 -->
         <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:28%; right:10%; width:118px;" alt="pass">
+        <!-- 左图拒绝接入图标：信息不匹配后的拒绝接入结果；调 bottom/right/width 改位置和大小 -->
         <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:34%; right:10%; width:118px;" alt="reject">
 
+        <!-- 左图证书图标1：下方查询/匹配链路上的证书信息；调 bottom/left/width 改位置和大小 -->
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; bottom: 20%; left:41%; width:40px;" alt="cert">
+        <!-- 左图证书图标2：上方信息匹配链路上的证书信息；调 top/left/width 改位置和大小 -->
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 40%; left:36%; width:40px;" alt="cert">
 
+        <!-- 左图文字：接入点标签；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 40%; left: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
             接入点
         </div>
+        <!-- 左图文字：信息匹配标签；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 40%; left: 46%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             信息匹配
         </div>
+        <!-- 左图文字：信息不匹配标签；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 62%; left: 45%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             信息不匹配
         </div>
 
+        <!-- 左图文字：允许接入标签；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 23%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             允许接入
         </div>
+        <!-- 左图文字：拒绝接入标签；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 47%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             拒绝接入
         </div>
+        <!-- 左图说明文字：发送包含设备ID和公钥的请求数据；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 26%; left: 12%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             发送包含设备ID和<br>公钥的请求数据
         </div>
+        <!-- 左图说明文字：查询区块链获取白名单与匹配信息；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 78%; left: 11%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             查询区块链获取<br>ID白名单与ID和<br>公钥匹配信息
         </div>
+        <!-- 左图说明文字：设备ID/公钥加入黑名单；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 73%; right: 22%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             设备ID/公钥<br>加入黑名单
         </div>
@@ -950,31 +965,42 @@
       <!-- 右侧区域：标题2 -->
       <!-- 高频重接入攻击示意区域 -->
       <div class="right-area">
+        <!-- 右图标题：高频重接入攻击；位置/尺寸由 .area-title2 控制 -->
         <div class="area-title2">高频重接入攻击</div>
 
+        <!-- 右图无人机图标：高频重接入场景中的 UAV；调 top/right/width 改位置和大小 -->
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; right:43%; width:210px;" alt="UAV"/>
 
+        <!-- 右图接入点图标：高频重接入场景的接入点；调 top/right/width 改位置和大小 -->
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; right:15%; width:130px;" alt="接入点">
+        <!-- 右图数据库/本地存储图标：接入点本地存储；调 top/left/width/filter 改位置、大小和光效 -->
         <img src="../assets/database.png" class="element" style="position: absolute; top:38%; left:13%; width:108px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="database">
+        <!-- 右图文字：接入点标签；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 55%; right: 7%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
             接入点
         </div>
 
+        <!-- 右图文字：接入点本地存储标签；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 31%; left: 9%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             接入点本地储存
         </div>
+        <!-- 右图说明文字：高频重接入反复连接断开；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 28%; left: 60%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             高频重接入<br>反复连接断开
         </div>
+        <!-- 右图说明文字：记录接入无人机ID和接入时间；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top:55%; left: 35%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             记录接入无人机的<br>ID、接入时间
         </div>
+        <!-- 右图说明文字：重接入频率达到阈值并记录违规；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 69%; left: 24%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             重接入频率到达阈值，<br>记录一次违规行为
         </div>
+        <!-- 右图说明文字：累计违规后加入黑名单；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 86%; right:10%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             累计到达n次违规后，将该<br>无人机设备ID加入黑名单
         </div>
+        <!-- 右图拒绝/异常标记：红叉图标；调 top/right/font-size/rotate 改位置、大小和角度 -->
         <div style="position: absolute; top: 40%; right: 39%; color: #2e54a1; font-size: 22px; font-weight: bold; white-space: nowrap; z-index: 100; transform: rotate(-45deg);">
             ❌
         </div>
@@ -983,36 +1009,43 @@
 <!-- 右上攻击示意图连线层：用 SVG 画虚线箭头和攻击路径 -->
 <svg class="connection-svg" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none;" viewBox="0 0 100 100">
   <defs>
+    <!-- SVG箭头定义：旧橙色箭头尖，当前主要保留兼容 -->
     <marker id="arrow1" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
       <polygon points="0 0,1.5 1.5,0 3" fill="#c65f10"/>
     </marker>
+    <!-- SVG箭头定义：旧蓝色箭头尖，当前主要保留兼容 -->
     <marker id="arrow2" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
       <polygon points="0 0,1.5 1.5,0 3" fill="#2e54a1"/>
     </marker>
+    <!-- SVG箭头定义：成功/正常流程箭头尖；被 m-line-success 使用 -->
     <marker id="arrowhead-success"
             markerWidth="5.2" markerHeight="3.2"
-            refX="5.2" refY="1.6" orient="auto">
+            refX="4.4" refY="1.6" orient="auto">
       <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#64748b" />
     </marker>
 
+    <!-- SVG箭头定义：失败流程箭头尖；保留给失败线使用 -->
     <marker id="arrowhead-fail"
             markerWidth="4" markerHeight="2.4"
             refX="3" refY="1.2" orient="auto">
       <polygon points="0 0, 4 1.2, 0 2.4" fill="#f97316" />
     </marker>
 
+    <!-- SVG箭头定义：黑色箭头尖；保留给旧连接线使用 -->
     <marker id="arrowhead-black"
             markerWidth="4" markerHeight="2.4"
             refX="3" refY="1.2" orient="auto">
       <polygon points="0 0, 4 1.2, 0 2.4" fill="#000" />
     </marker>
 
+    <!-- SVG箭头定义：接入点与区块链/本地存储之间的正常连接箭头尖 -->
     <marker id="arrowhead-connect"
             markerWidth="5" markerHeight="3"
             refX="4" refY="1.5" orient="auto">
       <polygon points="0 0, 5 1.5, 0 3" fill="#dbeafe" />
     </marker>
 
+    <!-- SVG箭头定义：攻击/违规流程箭头尖；被 m-line-attack 使用 -->
     <marker id="arrowhead-attack"
             markerWidth="4" markerHeight="2.4"
             refX="3" refY="1.2" orient="auto">
@@ -1022,19 +1055,29 @@
 
   <!-- 橙色#c65f10 -->
 
+  <!-- 左图线1：UAV/请求数据到信息匹配上方路径；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-success" x1="-20" y1="26" x2="-35" y2="39" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <!-- 左图线2：接入点到信息匹配/允许接入路径；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-success" x1="-27" y1="54" x2="17" y2="37" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <!-- 左图线3：接入点到信息不匹配/拒绝接入的攻击失败路径；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-attack" x1="-27" y1="60" x2="17" y2="60" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
+  <!-- 左图线4：查询区块链请求上行箭头；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-connect" x1="-30" y1="70" x2="-10" y2="87" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect)"/>
+  <!-- 左图线5：区块链查询反馈下行箭头；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-connect" x1="-13" y1="91" x2="-33" y2="74" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect)"/>
 
+  <!-- 左图线6：设备ID/公钥加入黑名单路径；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-attack" x1="25" y1="67" x2="25" y2="84" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
   <!-- 蓝色#2e54a1 -->
+  <!-- 右图线1：UAV 高频重接入请求到接入点路径；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-success" x1="100" y1="28" x2="135" y2="44" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <!-- 右图线2：接入点反馈/断开连接路径；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-success" x1="127" y1="56" x2="90" y2="46"  stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <!-- 右图线3：接入点记录接入时间/ID 到本地存储路径；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-attack" x1="76" y1="56" x2="76" y2="82"  stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
+  <!-- 右图U型箭头：累计违规后加入黑名单的回环路径；调 path 的 M/L/A 坐标改位置和形状 -->
   <path d="M 102 87
          L 110 87
          A 5 5 0 0 1 110 93
@@ -1047,6 +1090,7 @@
 
 </svg>
 
+      <!-- 右上示意图底部区块链背景图：横跨左右两种攻击流程；调 bottom/left/scaleX/scaleY 改位置和比例 -->
       <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:3%; left:50%;transform: translateX(-50%) scaleX(1.02) scaleY(1.12);" alt="区块链">
       </div>
     </div>
@@ -1215,6 +1259,7 @@
   <script>
     (function () {
       const DEFAULT_TEST_COUNT = 5;
+      const DEFAULT_HIGHFREQ_TEST_COUNT = 1;
       const MIN_TEST_COUNT = 5;
       const MAX_TEST_COUNT = 10;
       const DEFAULT_HIGHFREQ_INTERVAL_MS = 800;
@@ -1595,7 +1640,7 @@
           return;
         }
 
-        const count = parseCount();
+        const count = type === 'highfreq' ? DEFAULT_HIGHFREQ_TEST_COUNT : parseCount();
         if (count === null) {
           statusText.textContent = '输入错误：测试次数需为 ' + MIN_TEST_COUNT + '-' + MAX_TEST_COUNT + ' 的整数';
           appendLog(
