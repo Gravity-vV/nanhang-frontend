@@ -25,13 +25,23 @@
     .page {
       height: 100%;
       display: grid;
-      grid-template-rows: 3fr 2fr;
-      gap: 0;
+      grid-template-columns: minmax(280px, 0.32fr) minmax(0, 0.68fr);
+      grid-template-rows: minmax(0, 0.56fr) minmax(0, 0.44fr);
+      grid-template-areas:
+        "gauges image"
+        "controls logs";
+      gap: 14px;
+      padding: 12px 16px;
+      overflow: hidden;
     }
 
     .section {
-      padding: 16px;
+      padding: 0;
       min-height: 0;
+    }
+
+    .page > .section {
+      display: contents;
     }
 
     .section + .section {
@@ -49,6 +59,7 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    min-height: 0;
   }
 
   /* 顶部标题栏 */
@@ -129,18 +140,25 @@
     width: 28px;
     height: 28px;
   }
+  img[src$="wifi.svg"].icon-wifi {
+    filter: drop-shadow(0 1px 2px rgba(2, 6, 23, 0.85));
+  }
   .left-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
   .left-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
   .left-canvas .base-station { bottom: 40%; right: 37%; width: 90px; height: 120px; }
   .left-canvas .hacker { bottom: 40%; left: 15%; width: 50px; height: 50px; }
   .left-canvas .platform { bottom: 5%; left: 20%; right: 20%; height: 50px; border: 3px solid #ef4444; background: #e6f0ff; text-align: center; line-height: 36px; font-weight: bold; font-size: 20px; }
-  
+
   .right-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
+  /* 右图 UAV-4 大无人机：top=10%, right=10%, width=90px, height=60px */
   .right-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
+  /* 右图接入点/基站图标：bottom=40%, right=37%, width=90px, height=120px */
   .right-canvas .base-station { bottom: 40%; right: 37%; width: 90px; height: 120px; }
+  /* 右图攻击者图标：bottom=45%, left=23.5%, width=40px, height=40px */
   .right-canvas .hacker { bottom: 45%; left: 23.5%; width: 40px; height: 40px; }
+  /* 右图区块链平台：bottom=5%, left=15%, right=15%, height=80px */
   .right-canvas .blockchain {
-    bottom: 5%; 
+    bottom: 5%;
     left: 15%;
     right: 15%;
     height: 80px;
@@ -156,9 +174,9 @@
   .left-canvas .pos-3 { top: 8%;  left: 26%; }
 
   /* --- 右侧面板：UAV群组位置微调 --- */
-  .right-canvas .pos-1 { top: 24%; left: 5%; }
-  .right-canvas .pos-2 { top: 12%; left: 15%; }
-  .right-canvas .pos-3 { top: 8%;  left: 30%; }
+  .right-canvas .pos-1 { top: 24%; left: 5%; } /* 右图 UAV-1：top=24%, left=5%, width/height 继承 .uav-node */
+  .right-canvas .pos-2 { top: 12%; left: 15%; } /* 右图 UAV-2：top=12%, left=15%, width/height 继承 .uav-node */
+  .right-canvas .pos-3 { top: 8%;  left: 30%; } /* 右图 UAV-3：top=8%, left=30%, width/height 继承 .uav-node */
 
   /* 状态文字 */
   .status-text {
@@ -204,20 +222,23 @@
     }
 
     .image-wrap {
+      grid-area: image;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding: 16px;
-      background: #f0f4f8;
+      gap: 12px;
+      padding: 0;
+      background:
+        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 50% 12%, rgba(34, 211, 238, 0.12), transparent 38%),
+        rgba(2, 8, 23, 0.72);
+      background-size: 28px 28px, 28px 28px, auto, auto;
+      min-height: 0;
       height: 100%; /* 确保填满 grid 容器的第一行 */
     }
 
     .bottom-layout {
-      height: 100%;
-      min-height: 0;
-      display: grid;
-      grid-template-columns: 5.5fr 4.5fr;
-      gap: 16px;
+      display: contents;
     }
 
     .left-panel {
@@ -225,43 +246,87 @@
       border-radius: 10px;
       background: #f9fafb;
       padding: 12px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 12px;
-      min-height: 0;
+      display: contents;
     }
 
     .controls {
+      grid-area: controls;
       border: 1px solid #d1d5db;
-      border-radius: 8px;
+      border-radius: 16px;
       background: #ffffff;
-      padding: 12px;
+      padding: 14px;
       display: grid;
-      gap: 10px;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .controls::before {
+      content: "\6d4b\8bd5\53c2\6570\4e0e\72b6\6001\63a7\5236";
+      display: flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(34, 211, 238, 0.36);
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.16), rgba(251, 191, 36, 0.12));
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
     }
 
     .option-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      min-height: 0;
+      align-content: center;
     }
 
     .option-line {
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(112px, 0.34fr);
       align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.06), rgba(14, 165, 233, 0.08)),
+        rgba(248, 250, 252, 0.92);
+      box-shadow: inset 0 0 18px rgba(14, 165, 233, 0.05);
+    }
+
+    .current-test-indicator {
+      display: inline-flex;
+      align-items: center;
+      min-height: 46px;
+      padding: 0 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      background: #f8fafc;
+      color: #1e40af;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: normal;
+      line-height: 1.35;
+      justify-content: center;
+      text-align: center;
     }
 
     .option-item {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 14px;
+      font-size: 15px;
       color: #334155;
-      font-weight: 600;
+      font-weight: 850;
       cursor: pointer;
       user-select: none;
+      min-width: 0;
     }
 
     .option-item input {
@@ -272,9 +337,10 @@
     }
 
     .count-label {
-      font-size: 13px;
+      font-size: 12px;
       color: #475569;
-      font-weight: 600;
+      font-weight: 800;
+      white-space: nowrap;
     }
 
     .count-input-wrap {
@@ -285,13 +351,14 @@
 
     .count-input {
       width: 100%;
-      height: 30px;
+      height: 38px;
       border: 1px solid #cbd5e1;
-      border-radius: 6px;
+      border-radius: 10px;
       background: #ffffff;
       color: #0f172a;
-      font-size: 12px;
-      padding: 0 30px 0 8px;
+      font-size: 16px;
+      font-weight: 900;
+      padding: 0 34px 0 10px;
       outline: none;
       appearance: textfield;
       -moz-appearance: textfield;
@@ -308,15 +375,18 @@
       right: 4px;
       top: 4px;
       bottom: 4px;
-      width: 20px;
+      width: 24px;
       display: grid;
       grid-template-rows: 1fr 1fr;
       gap: 2px;
+      padding: 1px;
+      border-radius: 7px;
+      background: rgba(15, 23, 42, 0.16);
     }
 
     .count-step-btn {
       border: 1px solid #cbd5e1;
-      border-radius: 4px;
+      border-radius: 5px;
       background: #f8fafc;
       color: #334155;
       font-size: 10px;
@@ -344,22 +414,26 @@
     }
 
     .action-row {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+      align-items: stretch;
       gap: 10px;
-      flex-wrap: wrap;
+      min-height: 46px;
     }
 
     .start-btn {
       border: 1px solid #0a7661;
-      border-radius: 8px;
-      background: #0f8a72;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0f766e, #0ea5e9);
       color: #ffffff;
-      font-size: 14px;
-      font-weight: 700;
-      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: 900;
+      padding: 0 18px;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      min-height: 46px;
+      width: 100%;
+      letter-spacing: 0.06em;
     }
 
     .start-btn:hover:not(:disabled) {
@@ -375,36 +449,90 @@
     }
 
     .gauge-row {
+      grid-area: gauges;
       border: 1px solid #d1d5db;
-      border-radius: 8px;
+      border-radius: 16px;
       background: #ffffff;
-      padding: 10px;
+      padding: 14px;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-rows: auto repeat(3, minmax(0, 1fr));
+      grid-template-columns: 1fr;
+      gap: 12px;
       min-height: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .gauge-row::before {
+      content: "\7f51\7edc\63a5\5165\6d4b\8bd5\7ed3\679c";
+      display: flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(34, 211, 238, 0.32);
+      background:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.16), rgba(14, 165, 233, 0.06)),
+        rgba(255, 255, 255, 0.72);
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 950;
+      letter-spacing: 0.08em;
     }
 
     .gauge-card {
       border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      border-radius: 14px;
       background: #f8fafc;
-      padding: 6px;
+      padding: 9px 12px;
       display: grid;
-      grid-template-rows: auto auto auto;
-      justify-items: center;
-      align-content: start;
-      gap: 2px;
+      grid-template-columns: minmax(0, 1fr) 162px;
+      grid-template-rows: auto auto;
+      align-items: center;
+      justify-items: stretch;
+      gap: 2px 12px;
+    }
+
+    .gauge-row .gauge-card {
+      min-height: 0;
+    }
+
+    .gauge-row .gauge-svg {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      max-width: 162px;
+      min-height: 96px;
+      align-self: center;
     }
 
     .gauge-title {
       margin: 0;
-      font-size: 12px;
-      color: #334155;
-      font-weight: 700;
-      text-align: center;
-      line-height: 1.35;
-      min-height: 28px;
+      width: 100%;
+      font-size: 15px;
+      color: #0f172a;
+      font-weight: 900;
+      text-align: left;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      position: relative;
+      overflow: visible;
+    }
+
+    .gauge-title::before {
+      content: "";
+      width: 5px;
+      height: 24px;
+      border-radius: 999px;
+      margin-right: 10px;
+      background: linear-gradient(180deg, #22d3ee, #fbbf24);
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.56);
+      flex: 0 0 auto;
     }
 
     .gauge-svg {
@@ -426,36 +554,45 @@
       stroke: #0ea5e9;
       stroke-width: 22;
       stroke-linecap: round;
-      transition: stroke-dashoffset 0.35s ease;
+      transition: stroke-dashoffset 0.35s ease, opacity 0.22s ease;
     }
 
     .gauge-needle {
-      stroke: #0f172a;
-      stroke-width: 6;
+      stroke: #fbbf24;
+      stroke-width: 8;
       stroke-linecap: round;
       transform-origin: 110px 102px;
-      transition: transform 0.35s ease;
+      transform-box: view-box;
+      transition: transform 0.35s ease, opacity 0.22s ease;
+      filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.9));
     }
 
     .gauge-center {
-      fill: #0f172a;
+      fill: #fef3c7;
+      stroke: #f59e0b;
+      stroke-width: 3;
+      filter: drop-shadow(0 0 7px rgba(251, 191, 36, 0.75));
+      transition: opacity 0.22s ease;
     }
 
     .gauge-mark {
       fill: #64748b;
-      font-size: 10px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 900;
     }
 
     .gauge-value {
       margin: 0;
-      font-size: 16px;
+      font-size: 24px;
       font-weight: 800;
       color: #0f172a;
       line-height: 1.2;
+      padding-left: 15px;
+      letter-spacing: 0.02em;
     }
 
     .right-panel {
+      grid-area: logs;
       min-height: 0;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -491,27 +628,70 @@
       font-size: 12px;
       color: #3b82f6;
       line-height: 1.6;
-      overflow-y: auto;
+      overflow-y: scroll;
       overflow-x: hidden;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(59, 130, 246, 0.7) rgba(219, 234, 254, 0.9);
       white-space: pre-wrap;
     }
 
+    .log-content::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .log-content::-webkit-scrollbar-track {
+      background: rgba(219, 234, 254, 0.9);
+      border-radius: 10px;
+    }
+
+    .log-content::-webkit-scrollbar-thumb {
+      background: rgba(59, 130, 246, 0.7);
+      border-radius: 10px;
+      border: 2px solid rgba(219, 234, 254, 0.9);
+    }
+
     .log-content li {
-      margin: 0 0 8px;
+      margin: 0 0 7px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.12);
+      background: rgba(15, 23, 42, 0.42);
       word-break: break-word;
       display: flex;
       gap: 6px;
       align-items: flex-start;
     }
 
+    .log-line {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .log-time {
+      color: #94a3b8;
+    }
+
+    .log-device {
+      color: #fde68a;
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(251, 191, 36, 0.2);
+    }
+
+    .log-message {
+      color: #bfdbfe;
+    }
+
     .dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: #3b82f6;
+      background: #fbbf24;
       margin-top: 6px;
       flex: 0 0 auto;
-      box-shadow: 0 0 6px rgba(59, 130, 246, 0.75);
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
     }
 
     .log-metric {
@@ -525,8 +705,15 @@
     }
 
     @media (max-width: 1180px) {
-      .bottom-layout {
+      .page {
         grid-template-columns: 1fr;
+        grid-template-rows: minmax(360px, auto) minmax(360px, auto) minmax(160px, auto) minmax(320px, auto);
+        grid-template-areas:
+          "gauges"
+          "image"
+          "controls"
+          "logs";
+        overflow: auto;
       }
 
       .right-panel {
@@ -535,10 +722,6 @@
     }
 
     @media (max-width: 900px) {
-      .gauge-row {
-        grid-template-columns: 1fr;
-      }
-
       .right-panel {
         grid-template-columns: 1fr;
       }
@@ -573,6 +756,7 @@
 
     .diagram-panel,
     .controls,
+    .gauge-row,
     .log-box {
       background: rgba(2, 8, 23, 0.88) !important;
       border: 1px solid rgba(34, 211, 238, 0.36) !important;
@@ -586,7 +770,9 @@
 
     .panel-header,
     .action-btn {
-      background: linear-gradient(135deg, #0f766e, #0ea5e9) !important;
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
+        radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%) !important;
       color: #ecfeff !important;
       border-color: rgba(45, 212, 191, 0.72) !important;
       box-shadow: 0 0 14px rgba(34, 211, 238, 0.24);
@@ -603,9 +789,80 @@
 
     .canvas div[style],
     svg text {
-      color: #0f172a !important;
-      fill: #0f172a !important;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) !important;
+      color: #dbeafe !important;
+      fill: #dbeafe !important;
+      text-shadow: 0 0 8px rgba(34, 211, 238, 0.32), 0 1px 2px rgba(0, 0, 0, 0.75) !important;
+    }
+
+    .image-wrap .canvas {
+      background:
+        radial-gradient(circle at 18% 14%, rgba(34, 211, 238, 0.1), transparent 32%),
+        radial-gradient(circle at 82% 24%, rgba(251, 191, 36, 0.08), transparent 28%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.54), rgba(2, 6, 23, 0.44)) !important;
+    }
+
+    .image-wrap .canvas div[style*="font-size"],
+    .image-wrap .status-text {
+      padding: 4px 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(125, 211, 252, 0.22);
+      background: rgba(2, 8, 23, 0.58);
+      box-shadow: inset 0 0 12px rgba(34, 211, 238, 0.05);
+    }
+
+    .image-wrap .status-text.success {
+      color: #86efac !important;
+      border-color: rgba(34, 197, 94, 0.28);
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.35) !important;
+    }
+
+    .image-wrap .status-text.fail {
+      color: #fdba74 !important;
+      border-color: rgba(249, 115, 22, 0.28);
+      text-shadow: 0 0 10px rgba(249, 115, 22, 0.35) !important;
+    }
+
+    .image-wrap .uav-label {
+      color: #dbeafe !important;
+      text-shadow: 0 0 8px rgba(34, 211, 238, 0.28), 0 1px 2px rgba(0, 0, 0, 0.72);
+    }
+
+    .image-wrap .uav-card {
+      background: rgba(15, 23, 42, 0.58) !important;
+      border-color: rgba(249, 115, 22, 0.78) !important;
+      box-shadow: inset 0 0 12px rgba(249, 115, 22, 0.08), 0 0 14px rgba(249, 115, 22, 0.18);
+    }
+
+    .left-canvas .platform,
+    .right-canvas .blockchain {
+      background:
+        linear-gradient(135deg, rgba(8, 47, 73, 0.96), rgba(2, 6, 23, 0.9)) !important;
+      color: #dbeafe !important;
+      border-color: rgba(34, 211, 238, 0.38) !important;
+      box-shadow:
+        inset 0 0 28px rgba(2, 6, 23, 0.72),
+        inset 0 0 18px rgba(34, 211, 238, 0.08),
+        0 0 16px rgba(14, 165, 233, 0.14);
+      overflow: hidden;
+    }
+
+    .left-canvas .platform::after,
+    .right-canvas .blockchain::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      background:
+        linear-gradient(180deg, rgba(2, 6, 23, 0.16), rgba(2, 6, 23, 0.42)),
+        radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.12), transparent 48%);
+      mix-blend-mode: multiply;
+    }
+
+    .right-canvas .blockchain img {
+      filter: brightness(0.62) contrast(1.22) saturate(0.85) drop-shadow(0 0 8px rgba(34, 211, 238, 0.12));
+      opacity: 0.88;
+      mix-blend-mode: screen;
     }
 
     .status,
@@ -615,10 +872,74 @@
     }
 
     .count-input,
-    .time-input {
+    .time-input,
+    .current-test-indicator {
       background: rgba(2, 6, 23, 0.86) !important;
       border-color: rgba(125, 211, 252, 0.45) !important;
       color: #e0f2fe !important;
+    }
+
+    .current-test-indicator {
+      color: #67e8f9 !important;
+      text-shadow: 0 0 8px rgba(34, 211, 238, 0.28);
+      box-shadow: inset 0 0 12px rgba(15, 23, 42, 0.44);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(251, 191, 36, 0.18), transparent 42%),
+        linear-gradient(135deg, rgba(8, 47, 73, 0.88), rgba(2, 6, 23, 0.9)) !important;
+    }
+
+    .count-stepper {
+      background: rgba(2, 6, 23, 0.58) !important;
+      box-shadow: inset 0 0 8px rgba(34, 211, 238, 0.06);
+    }
+
+    .count-step-btn {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.92)) !important;
+      border-color: rgba(125, 211, 252, 0.34) !important;
+      color: #bfdbfe !important;
+      box-shadow: inset 0 0 8px rgba(34, 211, 238, 0.06);
+    }
+
+    .count-step-btn:hover:not(:disabled) {
+      background: linear-gradient(180deg, rgba(8, 47, 73, 0.96), rgba(14, 116, 144, 0.72)) !important;
+      border-color: rgba(34, 211, 238, 0.56) !important;
+      color: #67e8f9 !important;
+    }
+
+    .controls::before {
+      border-color: rgba(251, 191, 36, 0.4) !important;
+      background:
+        linear-gradient(90deg, rgba(251, 191, 36, 0.2), rgba(34, 211, 238, 0.12)),
+        rgba(2, 6, 23, 0.62) !important;
+      color: #fef3c7 !important;
+      text-shadow: 0 0 10px rgba(251, 191, 36, 0.32);
+      box-shadow: inset 0 0 16px rgba(251, 191, 36, 0.06);
+    }
+
+    .option-line {
+      border-color: rgba(125, 211, 252, 0.25) !important;
+      background:
+        linear-gradient(135deg, rgba(8, 47, 73, 0.72), rgba(2, 6, 23, 0.78)),
+        radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.12), transparent 38%) !important;
+      box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.06);
+    }
+
+    .option-item {
+      color: #dbeafe !important;
+      text-shadow: 0 0 7px rgba(34, 211, 238, 0.2);
+    }
+
+    .count-label {
+      color: #93c5fd !important;
+    }
+
+    .start-btn {
+      border-color: rgba(45, 212, 191, 0.72) !important;
+      background:
+        linear-gradient(135deg, #0f766e, #0ea5e9),
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.22), transparent 34%) !important;
+      color: #ecfeff !important;
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
     }
 
     .log-content {
@@ -632,266 +953,389 @@
     .log-metric {
       border-top-color: rgba(125, 211, 252, 0.28) !important;
     }
+
+    .gauge-card {
+      background:
+        linear-gradient(90deg, rgba(8, 47, 73, 0.86), rgba(2, 6, 23, 0.78)),
+        radial-gradient(circle at 100% 50%, rgba(34, 211, 238, 0.12), transparent 36%) !important;
+      border-color: rgba(125, 211, 252, 0.28) !important;
+      box-shadow:
+        inset 0 0 18px rgba(34, 211, 238, 0.06),
+        0 0 0 1px rgba(15, 23, 42, 0.22);
+    }
+
+    .gauge-row::before {
+      border-color: rgba(34, 211, 238, 0.34) !important;
+      background:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.18), rgba(251, 191, 36, 0.08)),
+        rgba(2, 6, 23, 0.7) !important;
+      color: #dffbff !important;
+      text-shadow: 0 0 10px rgba(34, 211, 238, 0.38);
+      box-shadow: inset 0 0 14px rgba(34, 211, 238, 0.06);
+    }
+
+    .gauge-title {
+      color: #dbeafe !important;
+      border: 0 !important;
+      background: transparent !important;
+      text-shadow: 0 0 8px rgba(34, 211, 238, 0.24);
+      box-shadow: none !important;
+    }
+
+    .gauge-title::before {
+      background: linear-gradient(180deg, #fbbf24, #22d3ee);
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.48);
+    }
+
+    .gauge-value {
+      color: #fef3c7 !important;
+      text-shadow: 0 0 12px rgba(251, 191, 36, 0.36);
+    }
+
+    .gauge-mark {
+      fill: #dbeafe !important;
+      text-shadow: 0 0 6px rgba(34, 211, 238, 0.32);
+    }
+
+    .log-box {
+      background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96)),
+        radial-gradient(circle at 0% 0%, rgba(251, 191, 36, 0.08), transparent 36%) !important;
+      background-size: auto !important;
+      border-color: rgba(148, 163, 184, 0.28) !important;
+      color: #dbeafe !important;
+      box-shadow:
+        inset 0 0 22px rgba(15, 23, 42, 0.88),
+        0 0 18px rgba(15, 23, 42, 0.36) !important;
+    }
+
+    .log-box:nth-child(1) {
+      border-color: rgba(251, 191, 36, 0.28) !important;
+    }
+
+    .log-box:nth-child(2) {
+      border-color: rgba(125, 211, 252, 0.28) !important;
+    }
+
+    .log-box:nth-child(1) .log-title,
+    .log-box:nth-child(2) .log-title {
+      color: #fde68a !important;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 8px rgba(251, 191, 36, 0.24);
+      border-bottom-color: rgba(251, 191, 36, 0.24) !important;
+    }
+
+    .log-box:nth-child(1) .log-metric,
+    .log-box:nth-child(2) .log-metric {
+      color: #93c5fd !important;
+      text-shadow: none;
+      border-top-color: rgba(251, 191, 36, 0.26) !important;
+    }
   </style>
 </head>
 <body>
   <main class="page">
 <div class="image-wrap">
+  <!-- 右上图区块容器：左右两个图都放在 image-wrap 里。 -->
   <div class="diagram-panel">
-    <div class="panel-header">单模态接入</div>
+<div class="panel-header">单模态接入</div>
+    <!-- 左图画布：内部元素使用绝对定位，以该画布作为坐标容器。 -->
     <div class="canvas left-canvas">
-      <div style="position:absolute; top:5%; left:5%; width:32%; height:35%;
+<!-- 左图无人机群边界框：修改 top/left/width/height 可调整位置和大小。 -->
+<div style="position:absolute; top:5%; left:5%; width:32%; height:35%;
             border: 2px solid #64748b;
             border-radius: 12px;
             background: transparent;
             pointer-events: none;"></div>
-      <div class="element uav-node pos-1">
+<!-- 左图 UAV-1 节点：位置由 .pos-1 控制，大小由 .uav-node 控制。 -->
+<div class="element uav-node pos-1">
         <img src="../assets/uav1.png" alt="UAV-1" />
         <div class="uav-label">UAV-1</div>
       </div>
-      <div class="element uav-node pos-2">
+<!-- 左图 UAV-2 节点：位置由 .pos-2 控制，大小由 .uav-node 控制。 -->
+<div class="element uav-node pos-2">
         <img src="../assets/uav1.png" alt="UAV-1" />
         <div class="uav-label">UAV-2</div>
       </div>
-      <div class="element uav-node pos-3">
+<!-- 左图 UAV-3 节点：位置由 .pos-3 控制，大小由 .uav-node 控制。 -->
+<div class="element uav-node pos-3">
         <img src="../assets/uav1.png" alt="UAV-1" />
         <div class="uav-label">UAV-3</div>
       </div>
-      <div class="element uav-card uav-single">
+<!-- 左图 UAV-4 卡片：位置和大小由 .uav-single 控制。 -->
+<div class="element uav-card uav-single">
         <span class="uav-label">UAV-4</span>
         <img src="../assets/uav2.png" alt="UAV-4" />
       </div>
-      <img src="../assets/接入点.png" class="element base-station" alt="基站" />
-      <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
-      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:32%; right:16%;" alt="WiFi">
-      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:60%; left:24%;" alt="WiFi">
-      
-      <div class="status-text fail" style="top: 40%; right: 9%;">接入请求失败 ❌</div>
-      <div class="element platform">集中式信息共享与认证平台</div>
-      <div style="position:absolute; top:67%; left:21%; transform:translateX(-50%); 
-                  font-size:13px; font-weight:bold; color:#ef4444; 
+<!-- 左图接入点/基站图标：位置和大小由 .base-station 控制。 -->
+<img src="../assets/接入点.png" class="element base-station" alt="基站" />
+<!-- 左图攻击者图标：位置和大小由 .hacker 控制。 -->
+<img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
+<!-- 左图 WiFi 图标 1：修改行内 top/left/right/bottom 可移动位置。 -->
+<img src="../assets/wifi.svg" class="element icon-wifi" style="top:32%; right:16%;" alt="WiFi">
+<!-- 左图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
+<img src="../assets/wifi.svg" class="element icon-wifi" style="top:60%; left:24%;" alt="WiFi">
+<!-- 左图接入失败状态文字：修改 top/right 可移动位置。 -->
+<div class="status-text fail" style="top: 40%; right: 9%;">接入请求失败 ❌</div>
+<!-- 左图集中式信息共享与认证平台：位置和大小由 .platform 控制。 -->
+<div class="element platform">集中式信息共享与认证平台</div>
+<!-- 左图网络攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
+<div style="position:absolute; top:67%; left:21%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#ef4444;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         网络攻击<br>（持续 t 秒）
       </div>
-      <div style="position:absolute; top:67%; left:40%; transform:translateX(-50%); 
-                  font-size:13px; font-weight:bold; color:#000; 
+<!-- 左图认证请求文字：修改 top/left/font-size/scale 可调整。 -->
+<div style="position:absolute; top:67%; left:40%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         认证请求
       </div>
-
-      <div style="position:absolute; top:67%; left:66%; transform:translateX(-50%); 
-                  font-size:13px; font-weight:bold; color:#000; 
+<!-- 左图认证失败说明文字：修改 top/left/font-size/scale 可调整。 -->
+<div style="position:absolute; top:67%; left:66%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入认证节点被<br>攻击,
         <span style="color:#f97316;">接入失败</span>
       </div>
-
-      <div style="position:absolute; top:29%; left:55%; transform:translateX(-50%); 
-                  font-size:13px; font-weight:bold; color:#000; 
+<!-- 左图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
+<div style="position:absolute; top:23%; left:48%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入点
       </div>
-      
-            <!-- 全局只定义一次箭头 → 所有线条共用 -->
-      <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+<!-- 左图 SVG 连线层：包含认证请求、接入失败、平台反馈和攻击路径虚线。 -->
+<svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <defs>
-          <marker id="arrowhead-success" 
-                  markerWidth="4" markerHeight="2.4" 
+<!-- 箭头定义：普通/成功链路的箭头尖。 -->
+<marker id="arrowhead-success"
+                  markerWidth="4" markerHeight="2.4"
                   refX="3" refY="1.2" orient="auto">
             <polygon points="0 0, 4 1.2, 0 2.4" fill="#64748b" />
           </marker>
-
-          <marker id="arrowhead-fail" 
-                  markerWidth="4" markerHeight="2.4" 
+<!-- 箭头定义：失败链路的箭头尖。 -->
+<marker id="arrowhead-fail"
+                  markerWidth="4" markerHeight="2.4"
                   refX="3" refY="1.2" orient="auto">
             <polygon points="0 0, 4 1.2, 0 2.4" fill="#f97316" />
           </marker>
-
-          <marker id="arrowhead-black"
+<!-- 箭头定义：平台/区块链连接线的箭头尖。 -->
+<marker id="arrowhead-black"
                   markerWidth="4" markerHeight="2.4"
                   refX="3" refY="1.2" orient="auto">
             <polygon points="0 0, 4 1.2, 0 2.4" fill="#000" />
           </marker>
-
-          <marker id="arrowhead-attack"
+<!-- 箭头定义：攻击路径的箭头尖。 -->
+<marker id="arrowhead-attack"
                   markerWidth="4" markerHeight="2.4"
                   refX="3" refY="1.2" orient="auto">
             <polygon points="0 0, 4 1.2, 0 2.4" fill="#ef4444" />
           </marker>
         </defs>
-
-        <line class="m-line-success" 
-              x1="32" y1="20" x2="50" y2="40" 
-              stroke-dasharray="4 1" 
+<!-- 左图普通链路 1：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-success"
+              x1="32" y1="20" x2="45" y2="30"
+              stroke-dasharray="4 1"
               marker-end="url(#arrowhead-success)" />
-        <line class="m-line-success" 
-              x1="20" y1="25" x2="50" y2="45" 
-              stroke-dasharray="4 1" 
+<!-- 左图普通链路 2：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-success"
+              x1="20" y1="22" x2="45" y2="35"
+              stroke-dasharray="4 1"
               marker-end="url(#arrowhead-success)" />
-        <line class="m-line-success" 
-              x1="13" y1="35" x2="50" y2="50" 
-              stroke-dasharray="4 1" 
+<!-- 左图普通链路 3：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-success"
+              x1="15" y1="28" x2="45" y2="40"
+              stroke-dasharray="4 1"
               marker-end="url(#arrowhead-success)" />
-        <line class="m-line-fail" 
-              x1="80" y1="25" x2="63" y2="52" 
-              stroke-dasharray="4 1" 
+<!-- 左图 UAV-4 单模态接入失败链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-fail"
+              x1="80" y1="27" x2="65" y2="35"
+              stroke-dasharray="4 1"
               marker-end="url(#arrowhead-fail)" />
-
-        <line class="m-line-connect"
+<!-- 左图平台请求/反馈链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-connect"
               x1="60" y1="82.5" x2="60" y2="61"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
-        <line class="m-line-connect"
+<!-- 左图平台请求/反馈链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-connect"
               x1="52" y1="61" x2="52" y2="82.5"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
-
-        <line class="m-line-attack" 
-              x1="18.5" y1="61" x2="18.5" y2="82.5" 
-              stroke-dasharray="4 1" 
+<!-- 左图攻击链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-attack"
+              x1="18.5" y1="61" x2="18.5" y2="82.5"
+              stroke-dasharray="4 1"
               marker-end="url(#arrowhead-attack)" />
       </svg>
     </div>
   </div>
 
+  <!-- 右上图区块容器：右侧多模态接入图所在面板。 -->
   <div class="diagram-panel">
-    <div class="panel-header">区块链增强的多模态接入</div>
+<!-- 右图标题栏：区块链增强的多模态接入。 -->
+<div class="panel-header">区块链增强的多模态接入</div>
+    <!-- 右图画布：内部元素使用绝对定位，以该画布作为坐标容器。 -->
     <div class="canvas right-canvas">
-      <div style="position:absolute; top:5%; left:5%; width:35%; height:35%;
+<!-- 右图无人机群边界框：修改 top/left/width/height 可调整位置和大小。 -->
+<div style="position:absolute; top:5%; left:5%; width:35%; height:35%;
             border: 2px solid #64748b;
             border-radius: 12px;
             background: transparent;
             pointer-events: none;"></div>
-      <div class="element uav-node pos-1">
+<!-- 右图 UAV-1 节点：位置由 .pos-1 控制，大小由 .uav-node 控制。 -->
+<div class="element uav-node pos-1">
         <img src="../assets/uav1.png" alt="UAV-1" />
         <div class="uav-label">UAV-1</div>
       </div>
-
-      <div class="element uav-node pos-2">
+<!-- 右图 UAV-2 节点：位置由 .pos-2 控制，大小由 .uav-node 控制。 -->
+<div class="element uav-node pos-2">
         <img src="../assets/uav1.png" alt="UAV-1" />
         <div class="uav-label">UAV-2</div>
       </div>
-
-      <div class="element uav-node pos-3">
+<!-- 右图 UAV-3 节点：位置由 .pos-3 控制，大小由 .uav-node 控制。 -->
+<div class="element uav-node pos-3">
         <img src="../assets/uav1.png" alt="UAV-1" />
         <div class="uav-label">UAV-3</div>
       </div>
-      <div class="element uav-card uav-single">
+<!-- 右图 UAV-4 卡片：位置和大小由 .uav-single 控制。 -->
+<div class="element uav-card uav-single">
         <span class="uav-label">UAV-4</span>
         <img src="../assets/uav2.png" alt="UAV-4" />
       </div>
-      <img src="../assets/接入点.png" class="element base-station" alt="基站" />
-      <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
-      <img src="../assets/三角块.svg" 
-          class="element icon-tri" 
+<!-- 右图接入点/基站图标：位置和大小由 .base-station 控制。 -->
+<img src="../assets/接入点.png" class="element base-station" alt="基站" />
+<!-- 右图攻击者图标：位置和大小由 .hacker 控制。 -->
+<img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
+      <!-- 右图三角块 1：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
+      <img src="../assets/三角块.svg"
+class="element icon-tri"
           style="top:20%; right:10%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
           alt="三角块">
-      <img src="../assets/三角块.svg" 
-          class="element icon-tri" 
+      <!-- 右图三角块 2：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
+      <img src="../assets/三角块.svg"
+class="element icon-tri"
           style="top: 9%;  left: 36%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
           alt="三角块">
-      <img src="../assets/三角块.svg" 
-          class="element icon-tri" 
+      <!-- 右图三角块 3：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
+      <img src="../assets/三角块.svg"
+class="element icon-tri"
           style="top: 13%; left: 21%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
           alt="三角块">
-      <img src="../assets/三角块.svg" 
-          class="element icon-tri" 
+      <!-- 右图三角块 4：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
+      <img src="../assets/三角块.svg"
+class="element icon-tri"
           style="top: 25%; left: 11%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
           alt="三角块">
-      <img src="../assets/三角块.svg" 
-          class="element icon-tri" 
+      <!-- 右图三角块 5：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
+      <img src="../assets/三角块.svg"
+class="element icon-tri"
           style="top: 50%; left: 57%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);" 
+                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
           alt="三角块">
-      <img src="../assets/lora.png" class="element icon-lora" style="top:28%; left:24%;" alt="LoRa">
-      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:33%; right:30%;" alt="WiFi">
-      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:33%; left:17%;" alt="WiFi">
-      <img src="../assets/wifi.svg" class="element icon-wifi" style="top:22%; left:33%;" alt="WiFi">
-      <img src="../assets/wifi.svg" class="element icon-wifi" style="bottom:33%; left:28%;" alt="WiFi">
-      <img src="../assets/flash.svg" 
-          class="element icon-wifi" 
+<!-- 右图 LoRa 图标：修改行内 top/left 可移动位置。 -->
+<img src="../assets/lora.png" class="element icon-lora" style="top:28%; left:24%;" alt="LoRa">
+<!-- 右图 WiFi 图标 1：修改行内 top/left/right/bottom 可移动位置。 -->
+<img src="../assets/wifi.svg" class="element icon-wifi" style="top:33%; right:30%;" alt="WiFi">
+<!-- 右图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
+<img src="../assets/wifi.svg" class="element icon-wifi" style="top:33%; left:17%;" alt="WiFi">
+<!-- 右图 WiFi 图标 3：修改行内 top/left/right/bottom 可移动位置。 -->
+<img src="../assets/wifi.svg" class="element icon-wifi" style="top:22%; left:33%;" alt="WiFi">
+<!-- 右图 WiFi 图标 4：修改行内 top/left/right/bottom 可移动位置。 -->
+<img src="../assets/wifi.svg" class="element icon-wifi" style="bottom:33%; left:28%;" alt="WiFi">
+<!-- 右图绿色闪电链路 1：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
+<img src="../assets/flash.svg"
+          class="element icon-wifi"
           style="top:37%; left:30%;
                   transform: rotate(105deg) scaleX(1.25) scaleY(11);
-                  transform-origin: center;" 
+                  transform-origin: center;"
           alt="flash">
-      
-      <img src="../assets/flash.svg" 
-          class="element icon-wifi" 
+<!-- 右图绿色闪电链路 2：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
+<img src="../assets/flash.svg"
+          class="element icon-wifi"
           style="top:30%; left:34%;
                   transform: rotate(112deg) scaleX(1.2) scaleY(9);
-                  transform-origin: center;" 
+                  transform-origin: center;"
           alt="flash">
-      
-      <img src="../assets/flash.svg" 
-          class="element icon-wifi" 
+<!-- 右图绿色闪电链路 3：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
+<img src="../assets/flash.svg"
+          class="element icon-wifi"
           style="top:28%; left:42%;
                   transform: rotate(120deg) scaleX(1.1) scaleY(5);
-                  transform-origin: center;" 
+                  transform-origin: center;"
           alt="flash">
-
-      <img src="../assets/flash2.svg" 
-          class="element icon-wifi" 
+<!-- 右图橙色闪电链路：修改 top/right、rotate、scaleX、scaleY 可调整。 -->
+<img src="../assets/flash2.svg"
+          class="element icon-wifi"
           style="top:35%; right:26%;
                   transform: rotate(-135deg) scaleX(1.15) scaleY(7);
-                  transform-origin: center;" 
+                  transform-origin: center;"
           alt="flash2">
-      
-      <div class="status-text success" style="top: 38%; right: 10%;">获得认证反馈<br>成功接入 ✅</div>
-      
-      <div class="element blockchain" style="border-radius:8px;">
-        <img src="../assets/blockchain.png" 
-            alt="区块链" 
-            style="width: 100%; 
-                    height: 100%; 
-                    object-fit: contain; 
+<!-- 右图接入成功状态文字：修改 top/right 可移动位置。 -->
+<div class="status-text success" style="top: 38%; right: 10%;">获得认证反馈<br>成功接入 ✅</div>
+<!-- 右图区块链平台块：位置和大小由 .blockchain 控制。 -->
+<div class="element blockchain" style="border-radius:8px;">
+<!-- 区块链平台内部图片：修改 width/height/transform 可调整贴合方式。 -->
+<img src="../assets/blockchain.png"
+            alt="区块链"
+            style="width: 100%;
+                    height: 100%;
+                    object-fit: contain;
                     background: transparent;
                     transform: scaleX(1.1);
-                    transform-origin: center;" /> 
+                    transform-origin: center;" />
       </div>
-
-      <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <line class="m-line-connect"
+<!-- 右图 SVG 连线层：包含区块链查询、反馈和攻击路径虚线。 -->
+<svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+<!-- 右图区块链请求/反馈链路 1：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-connect"
               x1="58" y1="80" x2="58" y2="60"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
-        <line class="m-line-connect"
+<!-- 右图区块链请求/反馈链路 2：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-connect"
               x1="54" y1="60" x2="54" y2="80"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
-
-        <line class="m-line-attack" 
-              x1="26" y1="56" x2="26" y2="75" 
-              stroke-dasharray="4 1" 
+<!-- 右图攻击链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<line class="m-line-attack"
+              x1="26" y1="56" x2="26" y2="75"
+              stroke-dasharray="4 1"
               marker-end="url(#arrowhead-attack)" />
       </svg>
-
-      <div style="position:absolute; top:60%; left:10%; transform:translateX(-50%); 
-                  font-size:13px; font-weight:bold; color:#ef4444; 
+<!-- 右图区块链节点攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
+<div style="position:absolute; top:60%; left:10%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#ef4444;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         对区块链节点的<br>网络攻击<br>（持续 t 秒）
       </div>
-      <div style="position:absolute; top:64%; left:43%; transform:translateX(-50%); 
-                  font-size:13px; font-weight:bold; color:#000; 
+<!-- 右图认证请求文字：修改 top/left/font-size/scale 可调整。 -->
+<div style="position:absolute; top:64%; left:43%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         认证请求
       </div>
-      <div style="position:absolute; top:29%; left:55%; transform:translateX(-50%); 
-                  font-size:13px; font-weight:bold; color:#000; 
+<!-- 右图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
+<div style="position:absolute; top:29%; left:55%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入点
       </div>
-      <div style="position:absolute; top:63%; left:63%; transform:translateX(-50%); 
-                  font-size:13px; font-weight:bold; color:#000; 
+<!-- 右图区块链容错说明文字：修改 top/left/font-size/scale 可调整。 -->
+<div style="position:absolute; top:63%; left:63%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         区块链具有节点容错能<br>力，仍能发出认证反馈
       </div>
 
+      <!-- 右图红色攻击高亮框：修改 top/left/width/height 可调整位置和大小。 -->
       <div style="position: absolute;
-            top: 76%;
+top: 76%;
             left: 22%;
             width: 8%;
             height: 11%;
@@ -933,7 +1377,8 @@
               </div>
             </div>
             <div class="action-row">
-              <button class="start-btn" id="start-test-btn" type="button">开始测试</button>
+              <button class="start-btn" id="start-test-btn" type="button">&#x5f00;&#x59cb;&#x6d4b;&#x8bd5;</button>
+              <span class="current-test-indicator" id="current-test-indicator">&#x5f53;&#x524d;&#x72b6;&#x6001;&#xff1a;&#x7b49;&#x5f85;&#x5f00;&#x59cb;</span>
             </div>
           </div>
 
@@ -945,8 +1390,8 @@
                 <path class="gauge-progress" id="single-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="single-needle" x1="110" y1="102" x2="110" y2="34" />
                 <circle class="gauge-center" cx="110" cy="102" r="5" />
-                <text class="gauge-mark" x="26" y="120">0%</text>
-                <text class="gauge-mark" x="183" y="120">100%</text>
+                <text class="gauge-mark" x="23" y="125">0%</text>
+                <text class="gauge-mark" x="180" y="125">100%</text>
               </svg>
               <p class="gauge-value" id="single-value">--</p>
             </section>
@@ -958,8 +1403,8 @@
                 <path class="gauge-progress" id="multi-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="multi-needle" x1="110" y1="102" x2="110" y2="34" />
                 <circle class="gauge-center" cx="110" cy="102" r="5" />
-                <text class="gauge-mark" x="26" y="120">0%</text>
-                <text class="gauge-mark" x="183" y="120">100%</text>
+                <text class="gauge-mark" x="23" y="125">0%</text>
+                <text class="gauge-mark" x="180" y="125">100%</text>
               </svg>
               <p class="gauge-value" id="multi-value">--</p>
             </section>
@@ -971,8 +1416,8 @@
                 <path class="gauge-progress" id="boost-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="boost-needle" x1="110" y1="102" x2="110" y2="34" />
                 <circle class="gauge-center" cx="110" cy="102" r="5" />
-                <text class="gauge-mark" x="26" y="120">0%</text>
-                <text class="gauge-mark" x="176" y="120">100%</text>
+                <text class="gauge-mark" x="23" y="125">0%</text>
+                <text class="gauge-mark" x="173" y="125">100%</text>
               </svg>
               <p class="gauge-value" id="boost-value">--</p>
             </section>
@@ -1013,6 +1458,7 @@
       const multiCountUpBtn = document.getElementById('multi-count-up');
       const multiCountDownBtn = document.getElementById('multi-count-down');
       const startBtn = document.getElementById('start-test-btn');
+      const currentTestIndicator = document.getElementById('current-test-indicator');
 
       const singleLog = document.getElementById('single-log');
       const multiLog = document.getElementById('multi-log');
@@ -1063,11 +1509,38 @@
       function appendLog(target, message) {
         const li = document.createElement('li');
         const dot = document.createElement('span');
+        const line = document.createElement('span');
+        const time = document.createElement('span');
+        const device = document.createElement('span');
+        const content = document.createElement('span');
+        const match = message.match(/^\[([^\]]+)\]\s*(.*)$/);
+
         dot.className = 'dot';
+        line.className = 'log-line';
+        time.className = 'log-time';
+        device.className = 'log-device';
+        content.className = 'log-message';
+        time.textContent = '[' + nowTime() + ']';
+
+        if (match) {
+          device.textContent = '[' + match[1] + ']';
+          content.textContent = match[2];
+        } else {
+          device.textContent = '[\u7cfb\u7edf]';
+          content.textContent = message;
+        }
+
+        line.appendChild(time);
+        line.appendChild(device);
+        line.appendChild(content);
         li.appendChild(dot);
-        li.appendChild(document.createTextNode('[' + nowTime() + '] ' + message));
+        li.appendChild(line);
         target.appendChild(li);
         target.scrollTop = target.scrollHeight;
+      }
+
+      function setCurrentStatus(text) {
+        currentTestIndicator.textContent = text;
       }
 
       function initGauge(gauge) {
@@ -1082,6 +1555,11 @@
           gauge.value.textContent = '--';
           gauge.progress.style.strokeDashoffset = String(gauge.length);
           gauge.needle.style.transform = 'rotate(-90deg)';
+          gauge.progress.style.opacity = '0';
+          gauge.needle.style.opacity = '0';
+          if (gauge.needle.nextElementSibling) {
+            gauge.needle.nextElementSibling.style.opacity = '0';
+          }
           return;
         }
 
@@ -1091,7 +1569,12 @@
         const angle = -90 + ratio * 180;
 
         gauge.progress.style.strokeDashoffset = String(dashOffset);
+        gauge.progress.style.opacity = '1';
         gauge.needle.style.transform = 'rotate(' + angle + 'deg)';
+        gauge.needle.style.opacity = '1';
+        if (gauge.needle.nextElementSibling) {
+          gauge.needle.nextElementSibling.style.opacity = '1';
+        }
         gauge.value.textContent = gauge.format(clamped);
       }
 
@@ -1099,6 +1582,8 @@
         setGauge(gauges.single, null);
         setGauge(gauges.multi, null);
         setGauge(gauges.boost, null);
+        gauges.boost.value.textContent = '\u5f85\u5b8c\u6210';
+        setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u7b49\u5f85\u5f00\u59cb');
         singleMetric.textContent = '单模态当前成功率：--';
         multiMetric.textContent = '多模态当前成功率：--';
       }
@@ -1292,6 +1777,7 @@
         singleLog.innerHTML = '';
         multiLog.innerHTML = '';
         resetView();
+        setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u6d4b\u8bd5\u542f\u52a8');
 
         setControlState(true);
 
@@ -1320,6 +1806,7 @@
 
         for (let i = 1; i <= totalRounds; i += 1) {
           if (runSingle && i <= singleRounds) {
+            setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u5355\u6a21\u6001\u63a5\u5165\u6d4b\u8bd5 ' + i + '/' + singleRounds);
             singleTotal += 1;
             const okSingle = singleOutcomes[i - 1];
             if (okSingle) {
@@ -1329,6 +1816,7 @@
           }
 
           if (runMulti && i <= multiRounds) {
+            setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u591a\u6a21\u6001\u63a5\u5165\u6d4b\u8bd5 ' + i + '/' + multiRounds);
             multiTotal += 1;
             const okMulti = multiOutcomes[i - 1];
             if (okMulti) {
@@ -1360,8 +1848,11 @@
 
         if (finalSingleRate !== null && finalMultiRate !== null) {
           setGauge(gauges.boost, Math.max(0, finalMultiRate - finalSingleRate));
+          setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u6d4b\u8bd5\u5b8c\u6210\uff0c\u63d0\u5347\u7ed3\u679c\u5df2\u751f\u6210');
         } else {
           setGauge(gauges.boost, null);
+          gauges.boost.value.textContent = '\u5f85\u5b8c\u6210';
+          setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u6d4b\u8bd5\u5b8c\u6210');
         }
 
         setControlState(false);

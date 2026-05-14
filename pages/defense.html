@@ -99,8 +99,8 @@
 
     /* 右上攻击示意图左侧：自私接入攻击流程示意 */
     .left-area {
-      flex: 1; 
-      height: 100%; 
+      flex: 1;
+      height: 100%;
       background:
         radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.18), transparent 34%),
         linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
@@ -112,8 +112,8 @@
 
     /* 右上攻击示意图右侧：高频重接入攻击流程示意 */
     .right-area {
-      flex: 1; 
-      height: 100%; 
+      flex: 1;
+      height: 100%;
       background:
         radial-gradient(circle at 70% 18%, rgba(34, 211, 238, 0.18), transparent 34%),
         linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
@@ -126,19 +126,20 @@
     .left-area div[style],
     .right-area div[style] {
       color: #e0f2fe !important;
+      font-size: 19px !important;
       text-shadow:
         0 1px 2px rgba(2, 6, 23, 0.95),
         0 0 10px rgba(34, 211, 238, 0.72);
     }
-    
+
 
     /* 自私接入攻击示意图标题条 */
     .area-title1 {
       background: linear-gradient(90deg, #0f766e, #0ea5e9);
       color: #ecfeff;
-      padding: 8px 16px;
+      padding: 12px 18px;
       font-weight: 900;
-      font-size: 18px;
+      font-size: 22px;
       border-radius: 10px 10px 0 0;
       margin: 4px;
     }
@@ -147,9 +148,9 @@
     .area-title2 {
       background: linear-gradient(90deg, #0f766e, #0ea5e9);
       color: #ecfeff;
-      padding: 8px 16px;
+      padding: 12px 18px;
       font-weight: 900;
-      font-size: 18px;
+      font-size: 22px;
       border-radius: 10px 10px 0 0;
       margin: 4px;
     }
@@ -157,22 +158,26 @@
     .m-line-fail {
       stroke: #f97316;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.58));
     }
 
     /* 成功连线样式*/
     .m-line-success {
       stroke: #38bdf8;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.58));
     }
 
     .m-line-connect {
       stroke: #dbeafe;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(219, 234, 254, 0.5));
     }
 
     .m-line-attack {
       stroke: #ef4444;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.62));
     }
 
     .element {
@@ -596,7 +601,7 @@
       align-content: stretch;
       overflow: hidden;
       min-height: 0;
-      width: 70%;
+      width: 100%;
       height: 100%;
       align-self: center;
       justify-self: start;
@@ -618,13 +623,20 @@
     }
 
     .flow-demo-title {
-      margin: 0;
-      color: #67e8f9;
-      font-size: 19px;
+      margin: 0 0 8px;
+      min-height: 36px;
+      padding: 8px 16px;
+      border: 1px solid rgba(45, 212, 191, 0.72);
+      border-radius: 10px;
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
+        radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
+      color: #ecfeff;
+      font-size: 18px;
       font-weight: 800;
-      letter-spacing: 0.08em;
-      line-height: 1.2;
-      text-shadow: 0 0 8px rgba(34, 211, 238, 0.55);
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.24);
     }
 
     /* 左上流程 SVG：随外部框大小自适应 */
@@ -633,7 +645,9 @@
       height: 100%;
       max-width: 100%;
       max-height: 100%;
-      aspect-ratio: 620 / 360;
+      min-height: 0;
+      object-fit: fill;
+      display: block;
     }
 
     .flow-wrap .flow-svg + .flow-svg {
@@ -688,21 +702,21 @@
 
     .flow-label {
       fill: #e0f2fe;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 800;
       user-select: none;
     }
 
     .flow-label-small {
       fill: #e0f2fe;
-      font-size: 18px;
+      font-size: 21px;
       font-weight: 800;
       user-select: none;
     }
 
     .flow-label-long {
       fill: #e0f2fe;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
       user-select: none;
     }
@@ -905,38 +919,53 @@
       <!-- 左侧区域：标题1 -->
       <!-- 自私接入攻击示意区域 -->
       <div class="left-area">
+        <!-- 左图标题：自私接入攻击；位置/尺寸由 .area-title1 控制 -->
         <div class="area-title1">自私接入攻击</div>
+        <!-- 左图无人机图标：自私接入场景中的 UAV；调 top/left/width 改位置和大小 -->
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; left:25%; width:210px;" alt="UAV"/>
 
+        <!-- 左图接入点图标：无人机请求接入的接入点；调 top/left/width 改位置和大小 -->
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:15%; width:130px;" alt="接入点">
-        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:28%; right:10%; width:105px;" alt="pass">
-        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:30%; right:10%; width:105px;" alt="reject">
+        <!-- 左图允许接入图标：信息匹配成功后的允许接入结果；调 top/right/width 改位置和大小 -->
+        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:28%; right:10%; width:118px;" alt="pass">
+        <!-- 左图拒绝接入图标：信息不匹配后的拒绝接入结果；调 bottom/right/width 改位置和大小 -->
+        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:34%; right:10%; width:118px;" alt="reject">
 
+        <!-- 左图证书图标1：下方查询/匹配链路上的证书信息；调 bottom/left/width 改位置和大小 -->
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; bottom: 20%; left:41%; width:40px;" alt="cert">
+        <!-- 左图证书图标2：上方信息匹配链路上的证书信息；调 top/left/width 改位置和大小 -->
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 40%; left:36%; width:40px;" alt="cert">
 
+        <!-- 左图文字：接入点标签；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 40%; left: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
             接入点
         </div>
+        <!-- 左图文字：信息匹配标签；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 40%; left: 46%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             信息匹配
         </div>
+        <!-- 左图文字：信息不匹配标签；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 62%; left: 45%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             信息不匹配
         </div>
 
+        <!-- 左图文字：允许接入标签；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 23%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             允许接入
         </div>
+        <!-- 左图文字：拒绝接入标签；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 47%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             拒绝接入
         </div>
-        <div style="position: absolute; top: 26%; left: 15%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <!-- 左图说明文字：发送包含设备ID和公钥的请求数据；调 top/left/font-size 改位置和字号 -->
+        <div style="position: absolute; top: 26%; left: 12%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             发送包含设备ID和<br>公钥的请求数据
         </div>
-        <div style="position: absolute; top: 78%; left: 14%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <!-- 左图说明文字：查询区块链获取白名单与匹配信息；调 top/left/font-size 改位置和字号 -->
+        <div style="position: absolute; top: 78%; left: 11%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             查询区块链获取<br>ID白名单与ID和<br>公钥匹配信息
         </div>
+        <!-- 左图说明文字：设备ID/公钥加入黑名单；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 73%; right: 22%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
             设备ID/公钥<br>加入黑名单
         </div>
@@ -945,31 +974,42 @@
       <!-- 右侧区域：标题2 -->
       <!-- 高频重接入攻击示意区域 -->
       <div class="right-area">
+        <!-- 右图标题：高频重接入攻击；位置/尺寸由 .area-title2 控制 -->
         <div class="area-title2">高频重接入攻击</div>
-        
+
+        <!-- 右图无人机图标：高频重接入场景中的 UAV；调 top/right/width 改位置和大小 -->
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; right:43%; width:210px;" alt="UAV"/>
 
+        <!-- 右图接入点图标：高频重接入场景的接入点；调 top/right/width 改位置和大小 -->
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; right:15%; width:130px;" alt="接入点">
-        <img src="../assets/sec-database.png" class="element" style="position: absolute; top:38%; left:10%; width:95px;" alt="database">
-        <div style="position: absolute; top: 40%; right: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
+        <!-- 右图数据库/本地存储图标：接入点本地存储；调 top/left/width/filter 改位置、大小和光效 -->
+        <img src="../assets/database.png" class="element" style="position: absolute; top:38%; left:13%; width:108px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="database">
+        <!-- 右图文字：接入点标签；调 top/right/font-size 改位置和字号 -->
+        <div style="position: absolute; top: 55%; right: 7%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
             接入点
         </div>
 
+        <!-- 右图文字：接入点本地存储标签；调 top/left/font-size 改位置和字号 -->
         <div style="position: absolute; top: 31%; left: 9%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             接入点本地储存
         </div>
-        <div style="position: absolute; top: 30%; left: 59%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <!-- 右图说明文字：高频重接入反复连接断开；调 top/left/font-size 改位置和字号 -->
+        <div style="position: absolute; top: 28%; left: 60%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             高频重接入<br>反复连接断开
         </div>
-        <div style="position: absolute; top:53%; left: 26%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <!-- 右图说明文字：记录接入无人机ID和接入时间；调 top/left/font-size 改位置和字号 -->
+        <div style="position: absolute; top:55%; left: 35%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             记录接入无人机的<br>ID、接入时间
         </div>
-        <div style="position: absolute; top: 65%; left: 20%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <!-- 右图说明文字：重接入频率达到阈值并记录违规；调 top/left/font-size 改位置和字号 -->
+        <div style="position: absolute; top: 69%; left: 24%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             重接入频率到达阈值，<br>记录一次违规行为
         </div>
+        <!-- 右图说明文字：累计违规后加入黑名单；调 top/right/font-size 改位置和字号 -->
         <div style="position: absolute; top: 86%; right:10%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             累计到达n次违规后，将该<br>无人机设备ID加入黑名单
         </div>
+        <!-- 右图拒绝/异常标记：红叉图标；调 top/right/font-size/rotate 改位置、大小和角度 -->
         <div style="position: absolute; top: 40%; right: 39%; color: #2e54a1; font-size: 22px; font-weight: bold; white-space: nowrap; z-index: 100; transform: rotate(-45deg);">
             ❌
         </div>
@@ -978,30 +1018,43 @@
 <!-- 右上攻击示意图连线层：用 SVG 画虚线箭头和攻击路径 -->
 <svg class="connection-svg" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none;" viewBox="0 0 100 100">
   <defs>
+    <!-- SVG箭头定义：旧橙色箭头尖，当前主要保留兼容 -->
     <marker id="arrow1" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
       <polygon points="0 0,1.5 1.5,0 3" fill="#c65f10"/>
     </marker>
+    <!-- SVG箭头定义：旧蓝色箭头尖，当前主要保留兼容 -->
     <marker id="arrow2" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
       <polygon points="0 0,1.5 1.5,0 3" fill="#2e54a1"/>
     </marker>
-    <marker id="arrowhead-success" 
-            markerWidth="4" markerHeight="2.4" 
-            refX="3" refY="1.2" orient="auto">
-      <polygon points="0 0, 4 1.2, 0 2.4" fill="#64748b" />
+    <!-- SVG箭头定义：成功/正常流程箭头尖；被 m-line-success 使用 -->
+    <marker id="arrowhead-success"
+            markerWidth="5.2" markerHeight="3.2"
+            refX="4.4" refY="1.6" orient="auto">
+      <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#64748b" />
     </marker>
 
-    <marker id="arrowhead-fail" 
-            markerWidth="4" markerHeight="2.4" 
+    <!-- SVG箭头定义：失败流程箭头尖；保留给失败线使用 -->
+    <marker id="arrowhead-fail"
+            markerWidth="4" markerHeight="2.4"
             refX="3" refY="1.2" orient="auto">
       <polygon points="0 0, 4 1.2, 0 2.4" fill="#f97316" />
     </marker>
 
+    <!-- SVG箭头定义：黑色箭头尖；保留给旧连接线使用 -->
     <marker id="arrowhead-black"
             markerWidth="4" markerHeight="2.4"
             refX="3" refY="1.2" orient="auto">
       <polygon points="0 0, 4 1.2, 0 2.4" fill="#000" />
     </marker>
 
+    <!-- SVG箭头定义：接入点与区块链/本地存储之间的正常连接箭头尖 -->
+    <marker id="arrowhead-connect"
+            markerWidth="5" markerHeight="3"
+            refX="4" refY="1.5" orient="auto">
+      <polygon points="0 0, 5 1.5, 0 3" fill="#dbeafe" />
+    </marker>
+
+    <!-- SVG箭头定义：攻击/违规流程箭头尖；被 m-line-attack 使用 -->
     <marker id="arrowhead-attack"
             markerWidth="4" markerHeight="2.4"
             refX="3" refY="1.2" orient="auto">
@@ -1010,33 +1063,44 @@
   </defs>
 
   <!-- 橙色#c65f10 -->
-  
-  <line class="m-line-success" x1="-25" y1="32" x2="-50" y2="42" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <line class="m-line-success" x1="-45" y1="54" x2="5" y2="40" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <line class="m-line-attack" x1="-45" y1="60" x2="5" y2="60" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
-  <line class="m-line-connect" x1="-48" y1="70" x2="-23" y2="87" stroke-dasharray="4 1" marker-end="url(#arrowhead-black)"/>
-  <line class="m-line-connect" x1="-27" y1="93" x2="-52" y2="76" stroke-dasharray="4 1" marker-end="url(#arrowhead-black)"/>
+  <!-- 左图线1：UAV/请求数据到信息匹配上方路径；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-success" x1="-20" y1="26" x2="-35" y2="39" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <!-- 左图线2：接入点到信息匹配/允许接入路径；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-success" x1="-27" y1="54" x2="17" y2="37" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <!-- 左图线3：接入点到信息不匹配/拒绝接入的攻击失败路径；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-attack" x1="-27" y1="60" x2="17" y2="60" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
-  <line class="m-line-attack" x1="20" y1="72" x2="20" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
+  <!-- 左图线4：查询区块链请求上行箭头；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-connect" x1="-30" y1="70" x2="-10" y2="87" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect)"/>
+  <!-- 左图线5：区块链查询反馈下行箭头；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-connect" x1="-13" y1="91" x2="-33" y2="74" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect)"/>
+
+  <!-- 左图线6：设备ID/公钥加入黑名单路径；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-attack" x1="25" y1="67" x2="25" y2="84" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
 
   <!-- 蓝色#2e54a1 -->
-  <line class="m-line-success" x1="125" y1="32" x2="145" y2="52" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <line class="m-line-success" x1="147" y1="60" x2="95" y2="46"  stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <line class="m-line-attack" x1="81" y1="56" x2="81" y2="82"  stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
-  <path d="M 120 85 
-         L 130 85 
-         A 5 5 0 0 1 130 95
-         L 120 95" 
-      stroke="#ef4444"; 
+  <!-- 右图线1：UAV 高频重接入请求到接入点路径；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-success" x1="100" y1="28" x2="135" y2="44" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <!-- 右图线2：接入点反馈/断开连接路径；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-success" x1="127" y1="56" x2="90" y2="46"  stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <!-- 右图线3：接入点记录接入时间/ID 到本地存储路径；调 x1/y1/x2/y2 改起终点 -->
+  <line class="m-line-attack" x1="76" y1="56" x2="76" y2="82"  stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
+  <!-- 右图U型箭头：累计违规后加入黑名单的回环路径；调 path 的 M/L/A 坐标改位置和形状 -->
+  <path d="M 102 87
+         L 110 87
+         A 5 5 0 0 1 110 93
+         L 102 93"
+      stroke="#ef4444";
       stroke-width="1";
       stroke-dasharray="4 1"
-      fill="none" 
+      fill="none"
       marker-end="url(#arrowhead-attack)"/>
 
 </svg>
 
-      <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:0%; left:50%;transform: translateX(-50%) scaleX(0.9);" alt="区块链">
+      <!-- 右上示意图底部区块链背景图：横跨左右两种攻击流程；调 bottom/left/scaleX/scaleY 改位置和比例 -->
+      <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:3%; left:50%;transform: translateX(-50%) scaleX(1.02) scaleY(1.12);" alt="区块链">
       </div>
     </div>
 </div>
@@ -1204,6 +1268,7 @@
   <script>
     (function () {
       const DEFAULT_TEST_COUNT = 5;
+      const DEFAULT_HIGHFREQ_TEST_COUNT = 1;
       const MIN_TEST_COUNT = 5;
       const MAX_TEST_COUNT = 10;
       const DEFAULT_HIGHFREQ_INTERVAL_MS = 800;
@@ -1417,13 +1482,13 @@
 
         // 2. 型号代码（2位字母/数字）
         const modelChars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 无IO01
-        const model = Array.from({ length: 2 }, () => 
+        const model = Array.from({ length: 2 }, () =>
           modelChars[Math.floor(Math.random() * modelChars.length)]
         ).join('');
 
         // 3. 10位唯一序列号（数字+大写字母，无歧义）
         const serialChars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-        const serial = Array.from({ length: 10 }, () => 
+        const serial = Array.from({ length: 10 }, () =>
           serialChars[Math.floor(Math.random() * serialChars.length)]
         ).join('');
 
@@ -1584,7 +1649,7 @@
           return;
         }
 
-        const count = parseCount();
+        const count = type === 'highfreq' ? DEFAULT_HIGHFREQ_TEST_COUNT : parseCount();
         if (count === null) {
           statusText.textContent = '输入错误：测试次数需为 ' + MIN_TEST_COUNT + '-' + MAX_TEST_COUNT + ' 的整数';
           appendLog(
@@ -1640,8 +1705,6 @@
 
       initFlows();
       resetMetrics();
-      appendLog(analysisLog, '接入点', '系统就绪，等待攻击测试指令');
-      appendLog(disposeLog, '区块链', '黑名单服务在线，等待处置事件');
     })();
   </script>
 </body>
