@@ -146,16 +146,16 @@
   .left-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
   .left-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
   .left-canvas .base-station { bottom: 40%; right: 37%; width: 90px; height: 120px; }
-  .left-canvas .hacker { bottom: 40%; left: 15%; width: 50px; height: 50px; }
+  .left-canvas .hacker { bottom: 40%; left: 17.5%; width: 50px; height: 50px; }
   .left-canvas .platform { bottom: 5%; left: 20%; right: 20%; height: 50px; border: 3px solid #ef4444; background: #e6f0ff; text-align: center; line-height: 36px; font-weight: bold; font-size: 20px; }
 
   .right-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
   /* 右图 UAV-4 大无人机：top=10%, right=10%, width=90px, height=60px */
   .right-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
   /* 右图接入点/基站图标：bottom=40%, right=37%, width=90px, height=120px */
-  .right-canvas .base-station { bottom: 40%; right: 37%; width: 90px; height: 120px; }
+  .right-canvas .base-station { bottom: 50%; right: 37%; width: 90px; height: 120px; }
   /* 右图攻击者图标：bottom=45%, left=23.5%, width=40px, height=40px */
-  .right-canvas .hacker { bottom: 45%; left: 23.5%; width: 40px; height: 40px; }
+  .right-canvas .hacker { bottom: 45%; left: 16%; width: 40px; height: 40px; }
   /* 右图区块链平台：bottom=5%, left=15%, right=15%, height=80px */
   .right-canvas .blockchain {
     bottom: 5%;
@@ -212,8 +212,8 @@
     }
 
     .m-line-connect {
-      stroke: #000;
-      stroke-width: 0.8;
+      stroke: #fbbf24;
+      stroke-width: 1.2;
     }
 
     .m-line-attack {
@@ -677,7 +677,7 @@
     .log-device {
       color: #fde68a;
       font-weight: 700;
-      text-shadow: 0 0 8px rgba(251, 191, 36, 0.2);
+      text-shadow: none;
     }
 
     .log-message {
@@ -784,14 +784,14 @@
     .log-metric {
       color: #dbeafe !important;
       fill: #dbeafe !important;
-      text-shadow: 0 0 7px rgba(34, 211, 238, 0.42);
+      text-shadow: none;
     }
 
     .canvas div[style],
     svg text {
       color: #dbeafe !important;
       fill: #dbeafe !important;
-      text-shadow: 0 0 8px rgba(34, 211, 238, 0.32), 0 1px 2px rgba(0, 0, 0, 0.75) !important;
+      text-shadow: none;
     }
 
     .image-wrap .canvas {
@@ -803,28 +803,28 @@
 
     .image-wrap .canvas div[style*="font-size"],
     .image-wrap .status-text {
-      padding: 4px 8px;
-      border-radius: 10px;
-      border: 1px solid rgba(125, 211, 252, 0.22);
-      background: rgba(2, 8, 23, 0.58);
-      box-shadow: inset 0 0 12px rgba(34, 211, 238, 0.05);
+      padding: 0;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
     }
 
     .image-wrap .status-text.success {
       color: #86efac !important;
       border-color: rgba(34, 197, 94, 0.28);
-      text-shadow: 0 0 10px rgba(34, 197, 94, 0.35) !important;
+      text-shadow: none;
     }
 
     .image-wrap .status-text.fail {
       color: #fdba74 !important;
       border-color: rgba(249, 115, 22, 0.28);
-      text-shadow: 0 0 10px rgba(249, 115, 22, 0.35) !important;
+      text-shadow: none;
     }
 
     .image-wrap .uav-label {
       color: #dbeafe !important;
-      text-shadow: 0 0 8px rgba(34, 211, 238, 0.28), 0 1px 2px rgba(0, 0, 0, 0.72);
+      text-shadow: none;
     }
 
     .image-wrap .uav-card {
@@ -846,9 +846,15 @@
       overflow: hidden;
     }
 
+    .right-canvas .blockchain {
+      background:
+        linear-gradient(135deg, rgba(14, 165, 233, 0.38), rgba(8, 47, 73, 0.58)),
+        rgba(12, 74, 110, 0.72) !important;
+    }
+
     .left-canvas .platform::after,
     .right-canvas .blockchain::after {
-      content: "";
+      content: none;
       position: absolute;
       inset: 0;
       pointer-events: none;
@@ -860,9 +866,9 @@
     }
 
     .right-canvas .blockchain img {
-      filter: brightness(0.62) contrast(1.22) saturate(0.85) drop-shadow(0 0 8px rgba(34, 211, 238, 0.12));
-      opacity: 0.88;
-      mix-blend-mode: screen;
+      filter: brightness(1) contrast(1.08) saturate(1) drop-shadow(0 0 8px rgba(34, 211, 238, 0.12));
+      opacity: 1;
+      mix-blend-mode: normal;
     }
 
     .status,
@@ -881,7 +887,7 @@
 
     .current-test-indicator {
       color: #67e8f9 !important;
-      text-shadow: 0 0 8px rgba(34, 211, 238, 0.28);
+      text-shadow: none;
       box-shadow: inset 0 0 12px rgba(15, 23, 42, 0.44);
       background:
         radial-gradient(circle at 15% 10%, rgba(251, 191, 36, 0.18), transparent 42%),
@@ -912,7 +918,7 @@
         linear-gradient(90deg, rgba(251, 191, 36, 0.2), rgba(34, 211, 238, 0.12)),
         rgba(2, 6, 23, 0.62) !important;
       color: #fef3c7 !important;
-      text-shadow: 0 0 10px rgba(251, 191, 36, 0.32);
+      text-shadow: none;
       box-shadow: inset 0 0 16px rgba(251, 191, 36, 0.06);
     }
 
@@ -926,7 +932,7 @@
 
     .option-item {
       color: #dbeafe !important;
-      text-shadow: 0 0 7px rgba(34, 211, 238, 0.2);
+      text-shadow: none;
     }
 
     .count-label {
@@ -970,7 +976,7 @@
         linear-gradient(90deg, rgba(34, 211, 238, 0.18), rgba(251, 191, 36, 0.08)),
         rgba(2, 6, 23, 0.7) !important;
       color: #dffbff !important;
-      text-shadow: 0 0 10px rgba(34, 211, 238, 0.38);
+      text-shadow: none;
       box-shadow: inset 0 0 14px rgba(34, 211, 238, 0.06);
     }
 
@@ -978,7 +984,7 @@
       color: #dbeafe !important;
       border: 0 !important;
       background: transparent !important;
-      text-shadow: 0 0 8px rgba(34, 211, 238, 0.24);
+      text-shadow: none;
       box-shadow: none !important;
     }
 
@@ -989,12 +995,12 @@
 
     .gauge-value {
       color: #fef3c7 !important;
-      text-shadow: 0 0 12px rgba(251, 191, 36, 0.36);
+      text-shadow: none;
     }
 
     .gauge-mark {
       fill: #dbeafe !important;
-      text-shadow: 0 0 6px rgba(34, 211, 238, 0.32);
+      text-shadow: none;
     }
 
     .log-box {
@@ -1021,7 +1027,7 @@
     .log-box:nth-child(2) .log-title {
       color: #fde68a !important;
       letter-spacing: 0.04em;
-      text-shadow: 0 0 8px rgba(251, 191, 36, 0.24);
+      text-shadow: none;
       border-bottom-color: rgba(251, 191, 36, 0.24) !important;
     }
 
@@ -1030,6 +1036,56 @@
       color: #93c5fd !important;
       text-shadow: none;
       border-top-color: rgba(251, 191, 36, 0.26) !important;
+    }
+
+    /* 字体整体收紧：保留布局和图标位置，只降低各区域文字视觉占比 */
+    .panel-header {
+      font-size: 16px !important;
+    }
+
+    .image-wrap .canvas div[style*="font-size"],
+    .image-wrap .status-text {
+      font-size: 11px !important;
+    }
+
+    .image-wrap .uav-label {
+      font-size: 10px !important;
+    }
+
+    .left-canvas .platform {
+      font-size: 17px !important;
+    }
+
+    .controls::before,
+    .gauge-row::before {
+      font-size: 14px !important;
+    }
+
+    .option-item,
+    .start-btn,
+    .current-test-indicator,
+    .log-title {
+      font-size: 13px !important;
+    }
+
+    .count-label,
+    .gauge-title,
+    .log-metric {
+      font-size: 11px !important;
+    }
+
+    .count-input,
+    .time-input {
+      font-size: 14px !important;
+    }
+
+    .gauge-value {
+      font-size: 21px !important;
+    }
+
+    .gauge-mark,
+    .log-content {
+      font-size: 10px !important;
     }
   </style>
 </head>
@@ -1072,27 +1128,27 @@
 <!-- 左图攻击者图标：位置和大小由 .hacker 控制。 -->
 <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
 <!-- 左图 WiFi 图标 1：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wifi.svg" class="element icon-wifi" style="top:32%; right:16%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:32%; right:16%;" alt="WiFi">
 <!-- 左图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wifi.svg" class="element icon-wifi" style="top:60%; left:24%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:67%; left:25%;" alt="WiFi">
 <!-- 左图接入失败状态文字：修改 top/right 可移动位置。 -->
 <div class="status-text fail" style="top: 40%; right: 9%;">接入请求失败 ❌</div>
 <!-- 左图集中式信息共享与认证平台：位置和大小由 .platform 控制。 -->
 <div class="element platform">集中式信息共享与认证平台</div>
 <!-- 左图网络攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:67%; left:21%; transform:translateX(-50%);
+<div style="position:absolute; top:67%; left:4%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#ef4444;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         网络攻击<br>（持续 t 秒）
       </div>
 <!-- 左图认证请求文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:67%; left:40%; transform:translateX(-50%);
+<div style="position:absolute; top:70%; left:35%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         认证请求
       </div>
 <!-- 左图认证失败说明文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:67%; left:66%; transform:translateX(-50%);
+<div style="position:absolute; top:70%; left:62%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入认证节点被<br>攻击,
@@ -1124,7 +1180,7 @@
 <marker id="arrowhead-black"
                   markerWidth="4" markerHeight="2.4"
                   refX="3" refY="1.2" orient="auto">
-            <polygon points="0 0, 4 1.2, 0 2.4" fill="#000" />
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#fbbf24" />
           </marker>
 <!-- 箭头定义：攻击路径的箭头尖。 -->
 <marker id="arrowhead-attack"
@@ -1155,17 +1211,17 @@
               marker-end="url(#arrowhead-fail)" />
 <!-- 左图平台请求/反馈链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-connect"
-              x1="60" y1="82.5" x2="60" y2="61"
+              x1="54" y1="80" x2="54" y2="67"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
 <!-- 左图平台请求/反馈链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-connect"
-              x1="52" y1="61" x2="52" y2="82.5"
+              x1="50" y1="67" x2="50" y2="80"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
 <!-- 左图攻击链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-attack"
-              x1="18.5" y1="61" x2="18.5" y2="82.5"
+              x1="22.5" y1="61" x2="22.5" y2="82.5"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-attack)" />
       </svg>
@@ -1209,71 +1265,66 @@
 <!-- 右图攻击者图标：位置和大小由 .hacker 控制。 -->
 <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
       <!-- 右图三角块 1：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/三角块.svg"
+      <img src="../assets/physics/blockchain1.png"
 class="element icon-tri"
-          style="top:20%; right:10%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
-          alt="三角块">
+          style="top:20%; right:10%; transform: scale(0.8);"
+          alt="区块链">
       <!-- 右图三角块 2：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/三角块.svg"
+      <img src="../assets/physics/blockchain1.png"
 class="element icon-tri"
-          style="top: 9%;  left: 36%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
-          alt="三角块">
+          style="top: 9%;  left: 36%; transform: scale(0.8);"
+          alt="区块链">
       <!-- 右图三角块 3：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/三角块.svg"
+      <img src="../assets/physics/blockchain1.png"
 class="element icon-tri"
-          style="top: 13%; left: 21%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
-          alt="三角块">
+          style="top: 13%; left: 21%; transform: scale(0.8);"
+          alt="区块链">
       <!-- 右图三角块 4：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/三角块.svg"
+      <img src="../assets/physics/blockchain1.png"
 class="element icon-tri"
-          style="top: 25%; left: 11%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
-          alt="三角块">
+          style="top: 25%; left: 11%; transform: scale(0.8);"
+          alt="区块链">
       <!-- 右图三角块 5：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/三角块.svg"
+      <img src="../assets/physics/blockchain1.png"
 class="element icon-tri"
-          style="top: 50%; left: 57%; transform: scale(0.8);
-                  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffffff);"
-          alt="三角块">
+          style="top: 50%; left: 57%; transform: scale(0.8);"
+          alt="区块链">
 <!-- 右图 LoRa 图标：修改行内 top/left 可移动位置。 -->
-<img src="../assets/lora.png" class="element icon-lora" style="top:28%; left:24%;" alt="LoRa">
+<img src="../assets/LoRa.png" class="element icon-lora" style="top:28%; left:24%;" alt="LoRa">
 <!-- 右图 WiFi 图标 1：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wifi.svg" class="element icon-wifi" style="top:33%; right:30%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:30%; right:10%;" alt="WiFi">
 <!-- 右图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wifi.svg" class="element icon-wifi" style="top:33%; left:17%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:37%; left:25%;" alt="WiFi">
 <!-- 右图 WiFi 图标 3：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wifi.svg" class="element icon-wifi" style="top:22%; left:33%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:17%; left:41%;" alt="WiFi">
 <!-- 右图 WiFi 图标 4：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wifi.svg" class="element icon-wifi" style="bottom:33%; left:28%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="bottom:33%; left:22%;" alt="WiFi">
 <!-- 右图绿色闪电链路 1：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
 <img src="../assets/flash.svg"
           class="element icon-wifi"
-          style="top:37%; left:30%;
-                  transform: rotate(105deg) scaleX(1.25) scaleY(11);
+          style="top:32%; left:25%;
+                  transform: rotate(105deg) scaleX(0.95) scaleY(6);
                   transform-origin: center;"
           alt="flash">
 <!-- 右图绿色闪电链路 2：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
 <img src="../assets/flash.svg"
           class="element icon-wifi"
-          style="top:30%; left:34%;
-                  transform: rotate(112deg) scaleX(1.2) scaleY(9);
+          style="top:24%; left:28%;
+                  transform: rotate(112deg) scaleX(0.9) scaleY(5);
                   transform-origin: center;"
           alt="flash">
 <!-- 右图绿色闪电链路 3：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
 <img src="../assets/flash.svg"
           class="element icon-wifi"
-          style="top:28%; left:42%;
-                  transform: rotate(120deg) scaleX(1.1) scaleY(5);
+          style="top:20%; left:36%;
+                  transform: rotate(120deg) scaleX(0.8) scaleY(3);
                   transform-origin: center;"
           alt="flash">
 <!-- 右图橙色闪电链路：修改 top/right、rotate、scaleX、scaleY 可调整。 -->
 <img src="../assets/flash2.svg"
           class="element icon-wifi"
-          style="top:35%; right:26%;
-                  transform: rotate(-135deg) scaleX(1.15) scaleY(7);
+          style="top:30%; right:22%;
+                  transform: rotate(-125deg) scaleX(0.9) scaleY(4);
                   transform-origin: center;"
           alt="flash2">
 <!-- 右图接入成功状态文字：修改 top/right 可移动位置。 -->
@@ -1294,34 +1345,34 @@ class="element icon-tri"
 <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
 <!-- 右图区块链请求/反馈链路 1：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-connect"
-              x1="58" y1="80" x2="58" y2="60"
+              x1="54" y1="72" x2="54" y2="57"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
 <!-- 右图区块链请求/反馈链路 2：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-connect"
-              x1="54" y1="60" x2="54" y2="80"
+              x1="50" y1="57" x2="50" y2="72"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
 <!-- 右图攻击链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-attack"
-              x1="26" y1="56" x2="26" y2="75"
+              x1="20" y1="56" x2="20" y2="75"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-attack)" />
       </svg>
 <!-- 右图区块链节点攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:60%; left:10%; transform:translateX(-50%);
+<div style="position:absolute; top:58%; left:2%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#ef4444;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
-        对区块链节点的<br>网络攻击<br>（持续 t 秒）
+        对区块链<br>节点的<br>网络攻击<br>（持续 t 秒）
       </div>
 <!-- 右图认证请求文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:64%; left:43%; transform:translateX(-50%);
+<div style="position:absolute; top:64%; left:35%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         认证请求
       </div>
 <!-- 右图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:29%; left:55%; transform:translateX(-50%);
+<div style="position:absolute; top:16%; left:50%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入点
@@ -1336,8 +1387,8 @@ class="element icon-tri"
       <!-- 右图红色攻击高亮框：修改 top/left/width/height 可调整位置和大小。 -->
       <div style="position: absolute;
 top: 76%;
-            left: 22%;
-            width: 8%;
+            left: 16%;
+            width: 13%;
             height: 11%;
             background-color: #ef4444;
             opacity: 0.5;
@@ -1357,7 +1408,7 @@ top: 76%;
                 <label class="option-item"><input id="single-option" type="checkbox" checked /> 单模态接入测试</label>
                 <label class="count-label" for="single-count">测试次数</label>
                 <div class="count-input-wrap">
-                  <input id="single-count" class="count-input" type="text" inputmode="numeric" placeholder="默认10（1-100）" />
+                  <input id="single-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
                   <div class="count-stepper" aria-hidden="true">
                     <button class="count-step-btn" id="single-count-up" type="button" tabindex="-1">&#9650;</button>
                     <button class="count-step-btn" id="single-count-down" type="button" tabindex="-1">&#9660;</button>
@@ -1368,7 +1419,7 @@ top: 76%;
                 <label class="option-item"><input id="multi-option" type="checkbox" checked /> 多模态接入测试</label>
                 <label class="count-label" for="multi-count">测试次数</label>
                 <div class="count-input-wrap">
-                  <input id="multi-count" class="count-input" type="text" inputmode="numeric" placeholder="默认10（1-100）" />
+                  <input id="multi-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
                   <div class="count-stepper" aria-hidden="true">
                     <button class="count-step-btn" id="multi-count-up" type="button" tabindex="-1">&#9650;</button>
                     <button class="count-step-btn" id="multi-count-down" type="button" tabindex="-1">&#9660;</button>
@@ -1443,7 +1494,7 @@ top: 76%;
 
   <script>
     (function () {
-      const DEFAULT_ROUNDS = 10;
+      const DEFAULT_ROUNDS = 5;
       const MIN_ROUNDS = 1;
       const MAX_ROUNDS = 100;
       const MIN_BOOST_GAP = 20;
