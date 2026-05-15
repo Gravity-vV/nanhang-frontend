@@ -846,6 +846,12 @@
       overflow: hidden;
     }
 
+    .right-canvas .blockchain {
+      background:
+        linear-gradient(135deg, rgba(14, 165, 233, 0.38), rgba(8, 47, 73, 0.58)),
+        rgba(12, 74, 110, 0.72) !important;
+    }
+
     .left-canvas .platform::after,
     .right-canvas .blockchain::after {
       content: none;
@@ -1030,6 +1036,56 @@
       color: #93c5fd !important;
       text-shadow: none;
       border-top-color: rgba(251, 191, 36, 0.26) !important;
+    }
+
+    /* 字体整体收紧：保留布局和图标位置，只降低各区域文字视觉占比 */
+    .panel-header {
+      font-size: 16px !important;
+    }
+
+    .image-wrap .canvas div[style*="font-size"],
+    .image-wrap .status-text {
+      font-size: 11px !important;
+    }
+
+    .image-wrap .uav-label {
+      font-size: 10px !important;
+    }
+
+    .left-canvas .platform {
+      font-size: 17px !important;
+    }
+
+    .controls::before,
+    .gauge-row::before {
+      font-size: 14px !important;
+    }
+
+    .option-item,
+    .start-btn,
+    .current-test-indicator,
+    .log-title {
+      font-size: 13px !important;
+    }
+
+    .count-label,
+    .gauge-title,
+    .log-metric {
+      font-size: 11px !important;
+    }
+
+    .count-input,
+    .time-input {
+      font-size: 14px !important;
+    }
+
+    .gauge-value {
+      font-size: 21px !important;
+    }
+
+    .gauge-mark,
+    .log-content {
+      font-size: 10px !important;
     }
   </style>
 </head>
@@ -1234,7 +1290,7 @@ class="element icon-tri"
           style="top: 50%; left: 57%; transform: scale(0.8);"
           alt="区块链">
 <!-- 右图 LoRa 图标：修改行内 top/left 可移动位置。 -->
-<img src="../assets/lora.png" class="element icon-lora" style="top:28%; left:24%;" alt="LoRa">
+<img src="../assets/LoRa.png" class="element icon-lora" style="top:28%; left:24%;" alt="LoRa">
 <!-- 右图 WiFi 图标 1：修改行内 top/left/right/bottom 可移动位置。 -->
 <img src="../assets/wi-fi.png" class="element icon-wifi" style="top:30%; right:10%;" alt="WiFi">
 <!-- 右图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
