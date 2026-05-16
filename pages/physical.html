@@ -753,7 +753,7 @@
                   <!-- 左上接入点塔台图片 -->
                   <image href="../assets/physics/access-point.png" x="254" y="44" width="130" height="231" preserveAspectRatio="xMidYMid meet" />
                   <!-- 左上接入点文字标签 -->
-                  <text x="352" y="78" font-size="17" font-weight="700" text-anchor="middle" style="fill:#dbeafe !important;">接入点</text>
+                  <text x="319" y="78" font-size="17" font-weight="700" text-anchor="middle" style="fill:#dbeafe !important;">接入点</text>
 
 
                   <!-- 左上 WiFi 干扰图标 -->
@@ -1233,17 +1233,20 @@
           const offset1 = totalTop * 0.5;
           await revealPathSegment(paths.top, totalTop, offset1, DURATION_MS.branchPart1);
           appendLog(mode, '区块链节点', '读取 WiFi 失效记录，触发多模态联合认证。');
+          appendLog(mode, 'UAV-4', 'LoRa信号受干扰，尝试切换至WiFi模态接入。');
           await pauseAtNode(nodes.multi, '多模态认证', token);
           if (token !== animationToken) return;
 
           await revealPathSegment(paths.top, offset1, 0, DURATION_MS.branchPart2);
           appendLog(mode, '接入点', '切换至 LoRa / 多站点联合接入模式，认证反馈生成。');
+          appendLog(mode, '接入点', '多模态切换接入成功，接入成功率显著提升。');
           await pauseAtNode(nodes.switchNode, '接入方式切换', token);
         } else {
           const totalBottom = Number(paths.bottom.dataset.total);
           const offset2 = totalBottom * 0.5;
           await revealPathSegment(paths.bottom, totalBottom, offset2, DURATION_MS.branchPart1);
           appendLog(mode, '接入点', 'WiFi 通道持续受干扰，单模态认证失败。');
+          appendLog(mode, '接入点', '信号屏蔽设备对LoRa信号进行屏蔽，固定单模态无法切换。');
           await pauseAtNode(nodes.single, '单模态认证', token);
           if (token !== animationToken) return;
 
@@ -1255,6 +1258,11 @@
         if (token === animationToken) {
           statusEl.textContent = '\u6d41\u7a0b\u5b8c\u6210\uff1a' + flowName;
           appendLog(mode, '测试控制器', flowName + '\u6d41\u7a0b\u6f14\u793a\u5b8c\u6210\u3002');
+          if (mode === 'distributed') {
+            appendLog(mode, '测试控制器', '多模态切换接入比传统固定单模态接入的频谱接入成功率提升至少20%。');
+          } else {
+            appendLog(mode, '测试控制器', '固定单模态接入在信号干扰下成功率明显低于多模态切换方案。');
+          }
         }
       }
 

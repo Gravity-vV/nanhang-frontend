@@ -1561,26 +1561,30 @@
         let passed = 0;
 
         for (let i = 1; i <= count; i += 1) {
-          appendLog(analysisLog, '接入点', '第' + i + '次测试开始');
-          appendLog(disposeLog, '区块链', '第' + i + '次测试开始');
+          const id = generateId();
+          appendLog(analysisLog, '接入点', '第' + i + '次测试开始，接入无人机ID=' + id);
+          appendLog(disposeLog, '区块链', '第' + i + '次测试开始，接入无人机ID=' + id);
 
           resetFlow('selfish');
           await playStep('selfish', 0);
-          appendLog(analysisLog, '接入点', '检测到自私接入攻击，无人机发送ID和公钥');
+          appendLog(analysisLog, '接入点', '检测到自私接入攻击，无人机ID=' + id + '发送ID和公钥');
+          appendLog(analysisLog, '接入点', '请求数据包含非法的设备ID=' + id + '，启动身份验证流程。');
           await sleep(180);
 
           await playStep('selfish', 1);
-          appendLog(analysisLog, '区块链', '查询区块链身份信息');
+          appendLog(analysisLog, '区块链', '查询区块链身份信息，设备ID=' + id);
+          appendLog(analysisLog, '区块链', '向链上查询该设备ID=' + id + '，确认是否为授权设备。');
           await sleep(180);
 
           await playStep('selfish', 2);
-          appendLog(analysisLog, '区块链', '匹配信息完成，判定异常接入');
+          appendLog(analysisLog, '区块链', '匹配信息完成，判定异常接入，设备ID=' + id);
+          appendLog(analysisLog, '区块链', '链上记录确认设备ID=' + id + '非法，拒绝自私接入。');
           await sleep(180);
 
           await playStep('selfish', 3);
-          const id = generateId();
           selfishBlacklist.add(id);
           appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：自私接入攻击，ID=' + id + '）');
+          appendLog(disposeLog, '区块链', '将该事件记录到区块链上，违规信息已上链存证。');
           updateBlacklistDisplay();
           await sleep(260);
           passed += 1;
@@ -1610,34 +1614,37 @@
         let passed = 0;
 
         for (let i = 1; i <= count; i += 1) {
-          appendLog(analysisLog, '接入点', '第' + i + '次测试开始');
-          appendLog(disposeLog, '区块链', '第' + i + '次测试开始');
+          const id = generateId();
+          appendLog(analysisLog, '接入点', '第' + i + '次测试开始，接入无人机ID=' + id);
+          appendLog(disposeLog, '区块链', '第' + i + '次测试开始，接入无人机ID=' + id);
 
           resetFlow('highfreq');
           await playStep('highfreq', 0);
           if (!isHighfreq) {
-            for(let i =1;i<=5;i+=1){
-              appendLog(analysisLog, '接入点', '收到接入请求');
+            for(let j =1;j<=5;j+=1){
+              appendLog(analysisLog, '接入点', '收到接入请求，无人机ID=' + id);
               await sleep(intervalMs);
             }
             appendLog(analysisLog, '接入点', '接入时间间隔未达到高频条件，本次不记录违规行为');
             continue;
           }
-          for(let i =1;i<=5;i+=1){
-            appendLog(analysisLog, '接入点', '收到接入请求');
+          for(let j =1;j<=5;j+=1){
+            appendLog(analysisLog, '接入点', '收到接入请求，无人机ID=' + id);
             await sleep(intervalMs);
           }
-          appendLog(analysisLog, '接入点', '检测到高频重接入行为（接入时间间隔=' + intervalMs + 'ms）');
+          appendLog(analysisLog, '接入点', '检测到高频重接入行为（无人机ID=' + id + '，接入时间间隔=' + intervalMs + 'ms）');
+          appendLog(analysisLog, '接入点', '10s内重复接入超过3次，触发高频重接入防护规则。');
           await sleep(180);
 
           await playStep('highfreq', 1);
-          appendLog(analysisLog, '区块链', '记录违规行为到链上');
+          appendLog(analysisLog, '区块链', '记录违规行为到链上，无人机ID=' + id);
+          appendLog(analysisLog, '区块链', '接入服务点向链上查询允许高频率重接入的次数，确认违反规则。');
           await sleep(180);
 
           await playStep('highfreq', 2);
-          const id = generateId();
           highfreqBlacklist.add(id);
           appendLog(disposeLog, '接入点', '无人机加入黑名单（原因：高频重接入攻击，ID=' + id + '）');
+          appendLog(disposeLog, '区块链', '该无人机ID=' + id + '已写入链上黑名单，后续接入请求将被自动拒绝。');
           updateBlacklistDisplay();
           await sleep(intervalMs+3000);
           passed += 1;

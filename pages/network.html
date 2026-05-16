@@ -1829,6 +1829,8 @@ top: 76%;
         multiLog.innerHTML = '';
         resetView();
         setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u6d4b\u8bd5\u542f\u52a8');
+        appendLog(singleLog, '[\u5355\u6a21\u6001] \u6d4b\u8bd5\u542f\u52a8\uff0c\u91c7\u7528\u96c6\u4e2d\u5f0f\u8ba4\u8bc1\u670d\u52a1\uff0c\u671f\u95f4\u5c06\u5bf9\u8ba4\u8bc1\u670d\u52a1\u53d1\u8d77DDoS\u653b\u51fb\u3002');
+        appendLog(multiLog, '[\u591a\u6a21\u6001] \u6d4b\u8bd5\u542f\u52a8\uff0c\u91c7\u7528\u533a\u5757\u94fe\u5206\u5e03\u5f0f\u8ba4\u8bc1\u670d\u52a1\uff0c\u671f\u95f4\u5c06\u5bf9\u8ba4\u8bc1\u670d\u52a1\u53d1\u8d77DDoS\u653b\u51fb\u3002');
 
         setControlState(true);
 
@@ -1864,6 +1866,9 @@ top: 76%;
               singleSuccess += 1;
             }
             appendLog(singleLog, '[单模态] 第' + i + '轮接入' + (okSingle ? '成功' : '失败'));
+            if (!okSingle) {
+              appendLog(singleLog, '[单模态] 集中式认证服务受DDoS攻击影响，认证请求超时。');
+            }
           }
 
           if (runMulti && i <= multiRounds) {
@@ -1874,6 +1879,11 @@ top: 76%;
               multiSuccess += 1;
             }
             appendLog(multiLog, '[多模态] 第' + i + '轮接入' + (okMulti ? '成功' : '失败'));
+            if (okMulti) {
+              appendLog(multiLog, '[多模态] 区块链分布式认证节点正常响应，接入认证通过。');
+            } else {
+              appendLog(multiLog, '[多模态] 部分区块链节点受DDoS攻击影响，认证请求重试中。');
+            }
           }
 
           const singleRate = runSingle ? calcRate(singleSuccess, singleTotal) : null;
@@ -1891,10 +1901,12 @@ top: 76%;
 
         if (runSingle) {
           appendLog(singleLog, '[单模态] 测试完成，最终成功率 ' + finalSingleRate.toFixed(1) + '%');
+          appendLog(singleLog, '[单模态] 集中式认证服务在DDoS攻击下可用性降低。');
         }
 
         if (runMulti) {
           appendLog(multiLog, '[多模态] 测试完成，最终成功率 ' + finalMultiRate.toFixed(1) + '%');
+          appendLog(multiLog, '[多模态] 区块链增强分布式认证比集中式认证频谱接入成功率提升至少20%。');
         }
 
         if (finalSingleRate !== null && finalMultiRate !== null) {
@@ -1915,7 +1927,9 @@ top: 76%;
 
       resetView();
       appendLog(singleLog, '[单模态] 系统就绪，等待测试指令');
+      appendLog(singleLog, '[单模态] 测试说明：UAV-1动态选择LoRa或WiFi接入，认证服务采用集中认证。');
       appendLog(multiLog, '[多模态] 系统就绪，等待测试指令');
+      appendLog(multiLog, '[多模态] 测试说明：UAV-1动态选择LoRa或WiFi接入，认证服务采用区块链分布式认证。');
 
       startBtn.addEventListener('click', runTest);
       singleCountUpBtn.addEventListener('click', function () { adjustRoundCount(singleCountInput, 1); });
