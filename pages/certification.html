@@ -76,7 +76,7 @@
 
     .cert-hero {
       position: absolute;
-      top: 44px;
+      top: 10px;
       right: 10px;
       left: 10px;
       width: auto;
@@ -99,25 +99,25 @@
       border: none;
       background: #ffffff;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
-      overflow: visible;
+      overflow: hidden;
       padding: 3px;
+      border-radius: 10px;
     }
 
     .hero-tag {
-      /* 左上角浮动标签：相对 .hero-card 左上角向上偏�?*/
-      position: absolute;
-      left: 10px;
-      top: -26px;
-      margin: 0;
-      padding: 10px 18px 8px;
-      background: #0f4f77;
-      color: #fff;
-      border-radius: 8px;
-      font-size: 12px;
+      position: relative;
+      margin: 4px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #0f766e, #0ea5e9);
+      color: #ecfeff;
+      font-size: 18px;
       font-weight: 700;
-      box-shadow: 0 6px 12px rgba(15, 79, 119, 0.28);
+      border-radius: 10px 10px 0 0;
+      border-color: rgba(45, 212, 191, 0.72);
       line-height: 1;
       white-space: nowrap;
+      top: auto;
+      left: auto;
     }
 
     .hero-diagram {
@@ -127,11 +127,11 @@
     }
 
     .hero-left .hero-diagram {
-      height: 250px;
+      height: 230px;
     }
 
     .hero-right .hero-diagram {
-      height: 375px;
+      height: 340px;
       aspect-ratio: 860 / 420;
     }
 
@@ -147,7 +147,7 @@
       align-items: center;
       padding-top: 132px;
       padding-right: 0;
-      transform: translateX(2px);
+      transform: translateX(-3px);
       position: relative;
       z-index: 6;
       overflow: visible;
@@ -155,8 +155,8 @@
 
     .hero-arrow-combo {
       position: relative;
-      width: 68px;
-      height: 46px;
+      width: 82px;
+      height: 58px;
       background: #d66b16;
       border: none;
       border-radius: 0;
@@ -175,20 +175,20 @@
     .hero-arrow-combo::after {
       content: "";
       position: absolute;
-      right: -7px;
-      top: -8px;
+      right: -11px;
+      top: -23px;
       width: 0;
       height: 0;
-      border-top: 31px solid transparent;
-      border-bottom: 31px solid transparent;
-      border-left: 8px solid #d66b16;
+      border-top: 55px solid transparent;
+      border-bottom: 55px solid transparent;
+      border-left: 12px solid #d66b16;
       transform-origin: left center;
     }
 
     .hero-boost-badge {
       margin: 0;
       color: #fff;
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
       line-height: 1.15;
       text-align: center;
@@ -198,10 +198,10 @@
 
     .hero-arrow-main {
       position: absolute;
-      right: 0;
-      top: -4px;
+      right: -10px;
+      top: 5px;
       transform: scaleX(-1);
-      width: 32px;
+      width: 40px;
       z-index: 3;
       filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.28));
     }
@@ -903,7 +903,10 @@
       background: linear-gradient(135deg, #0f766e, #0ea5e9) !important;
       color: #ecfeff !important;
       border-color: rgba(45, 212, 191, 0.72) !important;
-      box-shadow: 0 0 18px rgba(34, 211, 238, 0.3) !important;
+      border-radius: 10px 10px 0 0 !important;
+      font-size: 18px !important;
+      padding: 8px 16px !important;
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.24) !important;
     }
 
     .hero-summary-title,
@@ -926,7 +929,7 @@
     }
 
     .hero-diagram text {
-      fill: #0f172a !important;
+      fill: #dbeafe !important;
       font-weight: 700;
       text-shadow: none;
     }
@@ -958,39 +961,38 @@
 
     .hero-diagram image {
       opacity: 0.94;
-      filter: saturate(0.9) brightness(0.96) contrast(1.04) drop-shadow(0 0 5px rgba(125, 211, 252, 0.24));
+      filter: none;
     }
 
-    .hero-diagram image[href$="drone-m210.png"],
-    .hero-diagram image[href$="drone-quad.png"] {
+    .hero-diagram image[href$="drone-m210.png"] {
       opacity: 0.96;
-      filter: saturate(1.15) brightness(0.95) contrast(1.08) drop-shadow(0 0 7px rgba(125, 211, 252, 0.5));
+      filter: none;
     }
 
     .hero-diagram image[href$="radio.png"] {
       opacity: 0.98;
-      filter: sepia(0.16) saturate(1.45) hue-rotate(145deg) brightness(1.02) contrast(1.08) drop-shadow(0 0 8px rgba(34, 211, 238, 0.58));
+      filter: none;
     }
 
     .hero-diagram image[href$="gov.png"] {
       opacity: 0.96;
-      filter: sepia(0.42) saturate(1.28) hue-rotate(350deg) brightness(1.03) contrast(1.04) drop-shadow(0 0 7px rgba(251, 191, 36, 0.42));
+      filter: none;
     }
 
     .hero-diagram image[href$="flag-red.png"] {
       opacity: 0.86;
-      filter: saturate(0.72) brightness(0.92) contrast(1.08) drop-shadow(0 0 5px rgba(251, 113, 133, 0.36));
+      filter: none;
     }
 
     .hero-diagram image[href$="cert-green.png"],
     .hero-diagram image[href$="cert-blue.png"] {
       opacity: 0.98;
-      filter: saturate(1.32) brightness(1.08) contrast(1.05) drop-shadow(0 0 7px rgba(52, 211, 153, 0.48));
+      filter: none;
     }
 
     .hero-diagram image[href$="blockchain.png"] {
-      opacity: 0.78;
-      filter: saturate(0.92) brightness(0.82) contrast(1.14) drop-shadow(0 0 10px rgba(34, 211, 238, 0.42));
+      opacity: 1;
+      filter: none;
     }
 
     .flow-base {
@@ -1235,7 +1237,7 @@
           <!-- 左上：集中式身份认证流程图卡�?-->
           <article class="hero-card hero-left">
             <h3 class="hero-tag">&#38598;&#20013;&#24335;&#36523;&#20221;&#35748;&#35777;</h3>
-            <svg class="hero-diagram" viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" aria-label="集中式身份认证流程图">
+            <svg class="hero-diagram" viewBox="0 0 560 324" xmlns="http://www.w3.org/2000/svg" aria-label="集中式身份认证流程图">
               <defs>
                 <marker id="left-arrow-orange" markerWidth="6" markerHeight="6" refX="5.5" refY="3" orient="auto">
                   <path d="M0,0 L6,3 L0,6 Z" fill="#ef7d2c" />
@@ -1245,54 +1247,54 @@
                 </marker>
               </defs>
 
-              <ellipse cx="152" cy="236" rx="144" ry="118" fill="#efd9c8" /> <!-- 椭圆中心(152,236)，半�?rx=144, ry=118) -->
-              <g stroke="#111" stroke-width="3" stroke-dasharray="10 8">
+              <ellipse cx="152" cy="236" rx="144" ry="118" fill="rgba(14, 116, 144, 0.28)" stroke="#22d3ee" stroke-width="1.5" />
+              <g stroke="#38bdf8" stroke-width="3" stroke-dasharray="10 8">
                 <line x1="170" y1="186" x2="85" y2="240" /> <!-- 连线起点(174,186) 终点(70,246) -->
                 <line x1="188" y1="206" x2="128" y2="290" /> <!-- 连线起点(188,206) 终点(120,314) -->
                 <line x1="210" y1="210" x2="220" y2="270" /> <!-- 连线起点(206,194) 终点(220,290) -->
               </g>
 
               <image href="../assets/certification/icons/radio.png" x="168" y="156" width="58" height="58" /> <!-- 图标左上�?168,156)，尺�?8x58 -->
-              <text x="166" y="152" font-size="19" fill="#111">&#25509;&#20837;&#28857;</text> <!-- 文本基线起点(166,152) -->
+              <text x="106" y="182" font-size="19" fill="#111">&#25509;&#20837;&#28857;</text> <!-- 文本基线起点(166,152) -->
 
-              <image href="../assets/certification/icons/drone-m210.png" x="46" y="238" width="52" height="34" /> <!-- UAV-1图标左上�?46,238)，尺�?2x34 -->
+              <image href="../assets/certification/icons/drone-m210.png" x="42" y="233" width="60" height="42" /> <!-- UAV-1放大 -->
               <text x="48" y="286" font-size="20">UAV-1</text> <!-- UAV-1标签基线起点(48,286) -->
-              <image href="../assets/certification/icons/drone-m210.png" x="104" y="290" width="52" height="34" /> <!-- UAV-2图标左上�?104,290)，尺�?2x34 -->
+              <image href="../assets/certification/icons/drone-m210.png" x="100" y="285" width="60" height="42" /> <!-- UAV-2放大 -->
               <text x="110" y="338" font-size="20">UAV-2</text> <!-- UAV-2标签基线起点(110,338) -->
-              <image href="../assets/certification/icons/drone-m210.png" x="200" y="273" width="52" height="34" /> <!-- UAV-3图标左上�?200,273)，尺�?2x34 -->
+              <image href="../assets/certification/icons/drone-m210.png" x="196" y="268" width="60" height="42" /> <!-- UAV-3放大 -->
               <text x="206" y="321" font-size="20">UAV-3</text> <!-- UAV-3标签基线起点(206,321) -->
 
-              <image href="../assets/certification/icons/drone-quad.png" x="468" y="238" width="62" height="62" /> <!-- UAV-4图标左上�?468,238)，尺�?2x62 -->
+              <image href="../assets/certification/icons/drone-m210.png" x="462" y="232" width="72" height="72" /> <!-- UAV-4放大 -->
               <text x="474" y="319" font-size="20">UAV-4</text> <!-- UAV-4标签基线起点(474,309) -->
 
-              <image href="../assets/certification/icons/gov.png" x="220" y="10" width="56" height="56" /> <!-- 根CA1图标左上�?220,10)，尺�?6x56 -->
-              <image href="../assets/certification/icons/flag-red.png" x="268" y="29" width="16" height="16" /> <!-- 根CA1旗标左上�?268,29)，尺�?6x16 -->
-              <text x="286" y="56" font-size="19">&#26681;CA1</text> <!-- 根CA1文字基线起点(236,96) -->
+              <image href="../assets/certification/icons/gov.png" x="70" y="-30" width="56" height="56" />
+              <image href="../assets/certification/icons/flag-red.png" x="118" y="-11" width="16" height="16" />
+              <text x="76" y="40" font-size="19">&#26681;CA1</text>
 
-              <image href="../assets/certification/icons/gov.png" x="416" y="34" width="56" height="56" /> <!-- 根CA2图标左上�?416,34)，尺�?6x56 -->
-              <image href="../assets/certification/icons/flag-red.png" x="464" y="53" width="16" height="16" /> <!-- 根CA2旗标左上�?464,53)，尺�?6x16 -->
-              <text x="423" y="110" font-size="19">&#26681;CA2</text> <!-- 根CA2文字基线起点(406,114) -->
+              <image href="../assets/certification/icons/gov.png" x="240" y="-20" width="56" height="56" />
+              <image href="../assets/certification/icons/flag-red.png" x="288" y="-1" width="16" height="16" />
+              <text x="246" y="50" font-size="19">&#26681;CA2</text>
 
-              <image href="../assets/certification/icons/gov.png" x="468" y="118" width="52" height="52" /> <!-- 子CA2图标左上�?468,118)，尺�?2x52 -->
-              <text x="466" y="192" font-size="19">&#23376;CA2</text> <!-- 子CA2文字基线起点(466,192) -->
+              <image href="../assets/certification/icons/gov.png" x="410" y="80" width="56" height="56" />
+              <text x="408" y="155" font-size="19">&#23376;CA2</text>
 
               <g stroke="#ef7d2c" stroke-width="3.2" marker-end="url(#left-arrow-orange)">
-                <line x1="222" y1="162" x2="242" y2="71" /> <!-- 箭头线起�?222,162) 终点(232,56) -->
-                <line x1="222" y1="162" x2="410" y2="84" /> <!-- 箭头线起�?222,162) 终点(416,84) -->
-                <line x1="222" y1="162" x2="462" y2="152" /> <!-- 箭头线起�?222,162) 终点(462,152) -->
+                <line x1="197" y1="156" x2="112" y2="52" />
+                <line x1="197" y1="156" x2="248" y2="56" />
+                <line x1="197" y1="156" x2="400" y2="130" />
               </g>
 
-              <rect x="196" y="93" width="118" height="32" rx="4" fill="#ffffff" opacity="0.96" /> <!-- step2底板左上�?236,124)，尺�?18x32 -->
-              <text x="202" y="105" font-size="13" fill="#d8671b">step3: &#35831;&#27714;&#39564;&#35777;</text> <!-- step3文案基线起点(202,118) -->
-              <text x="202" y="120" font-size="13" fill="#d8671b">&#26681;CA2&#20132;&#21449;&#35777;&#20070;</text> <!-- step3补充文案基线起点(202,130) -->
+              <rect x="60" y="70" width="130" height="38" rx="4" fill="#020817" />
+              <text x="66" y="84" font-size="16" fill="#d8671b">step3: &#35831;&#27714;&#39564;&#35777;</text>
+              <text x="66" y="101" font-size="16" fill="#d8671b">&#26681;CA1&#20132;&#21449;&#35777;&#20070;</text>
 
-              <rect x="280" y="105" width="118" height="32" rx="4" fill="#ffffff" opacity="0.96" /> <!-- step2底板左上�?236,124)，尺�?18x32 -->
-              <text x="286" y="117" font-size="13" fill="#d8671b">step2: &#35831;&#27714;&#39564;&#35777;</text> <!-- step2文案基线起点(242,136) -->
-              <text x="286" y="129" font-size="13" fill="#d8671b">&#23376;CA2&#35777;&#20070;</text> <!-- step2补充文案基线起点(242,148) -->
+              <rect x="200" y="85" width="130" height="38" rx="4" fill="#020817" />
+              <text x="206" y="99" font-size="16" fill="#d8671b">step2: &#35831;&#27714;&#39564;&#35777;</text>
+              <text x="206" y="116" font-size="16" fill="#d8671b">&#26681;CA2&#35777;&#20070;</text>
 
-              <rect x="318" y="150" width="89" height="32" rx="4" fill="#ffffff" opacity="0.96" /> <!-- step1底板左上�?318,154)，尺�?18x32 -->
-              <text x="324" y="157" font-size="13" fill="#d8671b">step1: &#35831;&#27714;&#39564;&#35777;</text> <!-- step1文案基线起点(324,166) -->
-              <text x="324" y="169" font-size="13" fill="#d8671b">UAV-2&#35777;&#20070;</text> <!-- step1补充文案基线起点(324,178) -->
+              <rect x="240" y="120" width="100" height="38" rx="4" fill="#020817" />
+              <text x="246" y="134" font-size="16" fill="#d8671b">step1: &#35831;&#27714;&#39564;&#35777;</text>
+              <text x="246" y="151" font-size="16" fill="#d8671b">UAV-2&#35777;&#20070;</text>
 
               <line x1="228" y1="180" x2="460" y2="269" stroke="#3c74c9" stroke-width="3.4" marker-end="url(#left-arrow-blue)" /> <!-- 跨域认证线起�?212,220) 终点(476,264) -->
               <text x="328" y="212" font-size="18" font-weight="600" fill="#111" transform="rotate(21 328 222)">
@@ -1334,67 +1336,67 @@
                 <path d="M0,0 L8,4 L0,8 Z" fill="#ef7d2c" />
               </marker>
               <marker id="right-arrow-dark" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-                <path d="M0,0 L8,4 L0,8 Z" fill="#1f2937" />
+                <path d="M0,0 L8,4 L0,8 Z" fill="#7dd3fc" />
               </marker>
               <marker id="right-arrow-gray" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-                <path d="M0,0 L7,3.5 L0,7 Z" fill="#6b7280" />
+                <path d="M0,0 L7,3.5 L0,7 Z" fill="#7dd3fc" />
               </marker>
             </defs>
 
-            <rect x="0" y="312" width="860" height="158" fill="#cfd8e1" /> <!-- Layer1底色左上�?0,292)，尺�?60x128 -->
-            <ellipse cx="232" cy="148" rx="212" ry="130" fill="#efd9c8" /> <!-- 椭圆中心(232,184)，半�?rx=232, ry=108)，左边界与外框对齐且底边贴齐Layer1分界�?-->
+            <rect x="0" y="312" width="860" height="158" fill="rgba(8, 47, 73, 0.56)" /> <!-- Layer1底色 -->
+            <ellipse cx="232" cy="148" rx="212" ry="130" fill="rgba(14, 116, 144, 0.28)" stroke="#22d3ee" stroke-width="1.5" /> <!-- 椭圆 -->
 
-            <text x="20" y="10" font-size="23" font-weight="700">Layer 2 &#26080;&#20154;&#26426;</text> <!-- Layer2标题基线起点(20,34) -->
+            <text x="20" y="-20" font-size="26" font-weight="700">Layer 2 &#26080;&#20154;&#26426;</text> <!-- Layer2标题基线起点(20,34) -->
 
-            <g stroke="#111" stroke-width="3" stroke-dasharray="10 8">
+            <g stroke="#38bdf8" stroke-width="3" stroke-dasharray="10 8">
               <line x1="252" y1="120" x2="172" y2="83" /> <!-- 连线起点(272,160) 终点(146,106) -->
               <line x1="260" y1="160" x2="148" y2="190" /> <!-- 连线起点(300,206) 终点(118,220) -->
               <line x1="336" y1="158" x2="372" y2="176" /> <!-- 连线起点(326,172) 终点(402,226) -->
             </g>
             <image href="../assets/certification/icons/radio.png" x="258" y="108" width="78" height="78" /> <!-- 接入点图标左上角(268,148)，尺�?8x58 -->
-            <text x="278" y="98" font-size="17">&#25509;&#20837;&#28857;</text> <!-- 接入点文字基线起�?274,158) -->
+            <text x="278" y="98" font-size="20">&#25509;&#20837;&#28857;</text> <!-- 接入点文字基线起�?274,158) -->
 
             <image href="../assets/certification/icons/drone-m210.png" x="112" y="64" width="70" height="43" /> <!-- UAV-1图标左上�?112,104)，尺�?8x36 -->
-            <text x="116" y="56" font-size="19">UAV-1</text> <!-- UAV-1标签基线起点(114,83) -->
+            <text x="116" y="56" font-size="22">UAV-1</text> <!-- UAV-1标签基线起点(114,83) -->
             <image href="../assets/certification/icons/drone-m210.png" x="84" y="168" width="70" height="43" /> <!-- UAV-2图标左上�?94,218)，尺�?8x36 -->
-            <text x="96" y="230" font-size="19">UAV-2</text> <!-- UAV-2标签基线起点(96,250) -->
+            <text x="96" y="230" font-size="22">UAV-2</text> <!-- UAV-2标签基线起点(96,250) -->
             <image href="../assets/certification/icons/drone-m210.png" x="372" y="164" width="70" height="43" /> <!-- UAV-3图标左上�?402,214)，尺�?8x36 -->
-            <text x="383" y="160" font-size="19">UAV-3</text> <!-- UAV-3标签基线起点(392,198) -->
+            <text x="383" y="160" font-size="22">UAV-3</text> <!-- UAV-3标签基线起点(392,198) -->
 
-            <image href="../assets/certification/icons/drone-quad.png" x="546" y="36" width="66" height="66" /> <!-- UAV-4图标左上�?586,106)，尺�?6x66 -->
-            <text x="552" y="26" font-size="19">UAV-4</text> <!-- UAV-4标签基线起点(592,86) -->
+            <image href="../assets/certification/icons/drone-m210.png" x="536" y="26" width="82" height="82" /> <!-- UAV-4图标放大 -->
+            <text x="552" y="26" font-size="22">UAV-4</text> <!-- UAV-4标签基线起点(592,86) -->
             <line x1="340" y1="135" x2="530" y2="78" stroke="#3c74c9" stroke-width="3.8" marker-end="url(#right-arrow-blue)" /> <!-- 跨域认证线起�?330,168) 终点(618,138) -->
-            <text x="430" y="102" font-size="19" font-weight="700" transform="rotate(-17 430 112)">
+            <text x="430" y="102" font-size="22" font-weight="700" transform="rotate(-17 430 112)">
               &#36328;&#22495;&#35748;&#35777;
             </text>
 
             <image href="../assets/certification/icons/gov.png" x="714" y="30" width="70" height="70" /> <!-- 子CA2图标左上�?734,130)，尺�?0x50 -->
-            <text x="729" y="116" font-size="18">&#23376;CA2</text> <!-- 子CA2文字基线起点(744,206) -->
+            <text x="729" y="116" font-size="21">&#23376;CA2</text> <!-- 子CA2文字基线起点(744,206) -->
             <image href="../assets/certification/icons/gov.png" x="636" y="166" width="70" height="70" /> <!-- 根CA2图标左上�?636,226)，尺�?0x50 -->
             <image href="../assets/certification/icons/flag-red.png" x="695" y="200" width="17" height="17" /> <!-- 根CA2旗标左上�?680,244)，尺�?2x12 -->
-            <text x="648" y="256" font-size="18">&#26681;CA2</text> <!-- 根CA2文字基线起点(638,296) -->
-            <line x1="704" y1="70" x2="618" y2="62" stroke="#7a7a7a" stroke-width="2.8" marker-end="url(#right-arrow-gray)" /> <!-- 灰色连线起点(734,160) 终点(684,148) -->
-            <line x1="734" y1="128" x2="698" y2="168" stroke="#7a7a7a" stroke-width="2.8" marker-end="url(#right-arrow-gray)" /> <!-- 灰色连线起点(734,208) 终点(698,252) -->
-            <text x="646" y="136" font-size="15" fill="#333">&#39041;&#21457;/&#25764;&#38144;</text> <!-- 说明文字1基线起点(666,196) -->
-            <text x="670" y="150" font-size="15" fill="#333">&#35777;&#20070;</text> <!-- 说明文字2基线起点(690,210) -->
+            <text x="648" y="256" font-size="21">&#26681;CA2</text> <!-- 根CA2文字基线起点(638,296) -->
+            <line x1="704" y1="70" x2="618" y2="62" stroke="#7dd3fc" stroke-width="2.8" marker-end="url(#right-arrow-gray)" />
+            <line x1="734" y1="128" x2="698" y2="168" stroke="#7dd3fc" stroke-width="2.8" marker-end="url(#right-arrow-gray)" />
+            <text x="646" y="136" font-size="18" fill="#333">&#39041;&#21457;/&#25764;&#38144;</text> <!-- 说明文字1基线起点(666,196) -->
+            <text x="670" y="150" font-size="18" fill="#333">&#35777;&#20070;</text> <!-- 说明文字2基线起点(690,210) -->
             <image href="../assets/certification/icons/cert-green.png" x="700" y="268" width="30" height="30" /> <!-- 证书图标左上�?760,258)，尺�?0x30 -->
-            <text x="735" y="275" font-size="15" fill="#374151">&#35777;&#20070;&#31649;&#29702;</text> <!-- 合约说明文字1基线起点(790,270) -->
-            <text x="735" y="291" font-size="15" fill="#374151">&#26234;&#33021;&#21512;&#32422;</text> <!-- 合约说明文字2基线起点(790,286) -->
-            <line x1="686" y1="336" x2="686" y2="265" stroke="#1f2937" stroke-width="2.6" marker-end="url(#right-arrow-dark)" /> <!-- 深色箭头线起�?746,316) 终点(746,286) -->
-            <line x1="664" y1="265" x2="664" y2="336" stroke="#1f2937" stroke-width="2.6" marker-end="url(#right-arrow-dark)" /> <!-- 深色箭头线起�?764,286) 终点(764,316) -->
+            <text x="735" y="275" font-size="18" fill="#374151">&#35777;&#20070;&#31649;&#29702;</text> <!-- 合约说明文字1基线起点(790,270) -->
+            <text x="735" y="291" font-size="18" fill="#374151">&#26234;&#33021;&#21512;&#32422;</text> <!-- 合约说明文字2基线起点(790,286) -->
+            <line x1="686" y1="336" x2="686" y2="265" stroke="#7dd3fc" stroke-width="2.6" marker-end="url(#right-arrow-dark)" />
+            <line x1="664" y1="265" x2="664" y2="336" stroke="#7dd3fc" stroke-width="2.6" marker-end="url(#right-arrow-dark)" />
 
             <image href="../assets/certification/icons/cert-blue.png" x="332" y="280" width="30" height="30" /> <!-- 链上请求图标左上�?352,236)，尺�?0x30 -->
-            <text x="370" y="298" font-size="17">&#38142;&#19978;&#35748;&#35777;&#35831;&#27714;</text> <!-- 链上请求文字基线起点(390,258) -->
+            <text x="370" y="298" font-size="20">&#38142;&#19978;&#35748;&#35777;&#35831;&#27714;</text> <!-- 链上请求文字基线起点(390,258) -->
             <g stroke="#ef7d2c" stroke-width="3" marker-end="url(#right-arrow-orange)">
               <line x1="286" y1="324" x2="286" y2="196" /> <!-- 橙色箭头线起�?286,274) 终点(286,216) -->
               <line x1="312" y1="196" x2="312" y2="324" /> <!-- 橙色箭头线起�?312,216) 终点(312,274) -->
             </g>
-            <text x="232" y="256" font-size="16">&#36820;&#22238;&#35748;</text> <!-- 结果文字1基线起点(212,236) -->
-            <text x="232" y="270" font-size="16">&#35777;&#32467;&#26524;</text> <!-- 结果文字2基线起点(212,250) -->
+            <text x="232" y="256" font-size="19">&#36820;&#22238;&#35748;</text> <!-- 结果文字1基线起点(212,236) -->
+            <text x="232" y="270" font-size="19">&#35777;&#32467;&#26524;</text> <!-- 结果文字2基线起点(212,250) -->
 
             <image href="../assets/blockchain.png" x="50" y="338" width="845" height="105" preserveAspectRatio="xMidYMid meet" /> <!-- 区块链底图左上角(138,338)，尺�?26x78 -->
-            <text x="20" y="344" font-size="23" font-weight="700">Layer 1 &#20027;&#38142;</text> <!-- Layer1标题基线起点(20,334) -->
-            <text x="20" y="368" font-size="19">&#20027;&#38142;&#33410;&#28857;</text> <!-- Layer1说明基线起点(20,358) -->
+            <text x="20" y="344" font-size="26" font-weight="700">Layer 1 &#20027;&#38142;</text> <!-- Layer1标题基线起点(20,334) -->
+            <text x="20" y="368" font-size="22">&#20027;&#38142;&#33410;&#28857;</text> <!-- Layer1说明基线起点(20,358) -->
           </svg>
         </article>
           </div>
