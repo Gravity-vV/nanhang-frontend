@@ -30,7 +30,8 @@
       height: 100%;
       display: grid;
       grid-template-columns: minmax(0, 0.48fr) minmax(0, 0.52fr);
-      grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+      /* 顶行高度与右上缩放画布对齐：720 * 0.6 = 432px */
+      grid-template-rows: 432px minmax(0, 1fr);
       grid-template-areas:
         "flow image"
         "controls logs";
@@ -85,11 +86,11 @@
         #07111f;
       background-size: 32px 32px, 32px 32px, auto, auto;
       position: absolute;
-      top: 0;
+      top: 0px;
       right: 0;
       overflow: hidden;
       display: flex;
-      gap: 80px;
+      gap: 30px;
       width: var(--defense-image-width);
       height: var(--defense-image-height);
       flex: none;
@@ -101,6 +102,7 @@
     .left-area {
       flex: 1;
       height: 100%;
+      padding: 17px;
       background:
         radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.18), transparent 34%),
         linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
@@ -108,12 +110,15 @@
       border-radius: 12px;
       border: 1px solid rgba(56, 189, 248, 0.46);
       box-shadow: inset 0 0 24px rgba(56, 189, 248, 0.12), 0 0 18px rgba(14, 165, 233, 0.18);
+      /* 面板内所有非标题内容下移 8 源 px ≈ 5 视觉 px */
+      transform: translateY(8px);
     }
 
     /* 右上攻击示意图右侧：高频重接入攻击流程示意 */
     .right-area {
       flex: 1;
       height: 100%;
+      padding: 17px;
       background:
         radial-gradient(circle at 70% 18%, rgba(34, 211, 238, 0.18), transparent 34%),
         linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
@@ -133,24 +138,38 @@
 
     /* 自私接入攻击示意图标题条 */
     .area-title1 {
-      background: linear-gradient(90deg, #0f766e, #0ea5e9);
+      margin: 0 0 5px;
+      min-height: 60px;
+      padding: 13px 27px;
+      border: 2px solid rgba(45, 212, 191, 0.72);
+      border-radius: 17px;
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
+        radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
       color: #ecfeff;
-      padding: 12px 18px;
-      font-weight: 900;
-      font-size: 22px;
-      border-radius: 10px 10px 0 0;
-      margin: 4px;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      box-shadow: 0 0 24px rgba(34, 211, 238, 0.24);
     }
 
     /* 高频重接入攻击示意图标题条 */
     .area-title2 {
-      background: linear-gradient(90deg, #0f766e, #0ea5e9);
+      margin: 0 0 5px;
+      min-height: 60px;
+      padding: 13px 27px;
+      border: 2px solid rgba(45, 212, 191, 0.72);
+      border-radius: 17px;
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
+        radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
       color: #ecfeff;
-      padding: 12px 18px;
-      font-weight: 900;
-      font-size: 22px;
-      border-radius: 10px 10px 0 0;
-      margin: 4px;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      box-shadow: 0 0 24px rgba(34, 211, 238, 0.24);
     }
 
     .m-line-fail {
@@ -238,11 +257,12 @@
     /* 左下测试控制框：按钮、测试次数、重接入间隔、黑名单 */
     .controls {
       grid-area: controls;
-      width: 92%;
+      /* 与左上 .flow-area 宽度对齐 */
+      width: 530px;
+      max-width: 100%;
       justify-self: start;
       border: 1px solid rgba(34, 211, 238, 0.36);
       border-radius: 10px;
-      /* border: 1px solid #d1d5db; */
       background: rgba(3, 12, 28, 0.86);
       padding: 6px 14px;
       display: grid;
@@ -294,9 +314,9 @@
     /* 测试参数输入行和黑名单状态区 */
     .input-row {
       display: flex;
-      align-items: center;
-      gap: 7px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
       padding: 0 6px;
     }
 
@@ -304,7 +324,7 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
-      width: 70%;
+      width: 100%;
     }
 
     .input-row label {
@@ -317,10 +337,9 @@
 
     /* 无人机设备 ID 黑名单显示区 */
     .blacklist-area {
-        margin: 8px 0 0;
-        width: 148%;
-        max-width: 148%;
-        min-height: 124px;
+        margin: 0;
+        width: 100%;
+        min-height: 100px;
         display: grid;
         grid-template-columns: 42px minmax(0, 1fr) auto;
         grid-template-rows: 42px minmax(62px, 1fr);
@@ -600,8 +619,9 @@
       overflow: hidden;
       min-height: 0;
       width: min(100%, 530px);
-      height: 100%;
-      align-self: center;
+      /* 与右上 .canvas-scale 缩放后的高度对齐：720 * 0.6 = 432px */
+      height: 432px;
+      align-self: start;
       justify-self: start;
     }
 
@@ -727,12 +747,14 @@
     /* 右下日志区域：攻击分析日志和处置记录日志 */
     .right-panel {
       grid-area: logs;
-      width: calc(100% + 8%);
-      margin-left: -8%;
+      /* 与右上 .canvas-scale 缩放后视觉宽度对齐：1600 * 0.6 = 960px
+         允许向左溢出 cell，模拟 .canvas-scale 的右锚定行为 */
+      width: 960px;
+      justify-self: end;
       min-height: 0;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 18px;
     }
 
     /* 单个命令行日志卡片 */
@@ -769,16 +791,16 @@
       margin: 0;
       padding: 0;
       list-style: none;
-      font-size: 12px;
+      font-size: 14px;
       color: #cbd5e1;
-      line-height: 1.6;
+      line-height: 2;
       overflow-y: auto;
       overflow-x: hidden;
       white-space: pre-wrap;
     }
 
     .log-content li {
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       word-break: break-word;
       display: flex;
       gap: 6px;
@@ -786,21 +808,21 @@
     }
 
     .log-line {
-      display: inline-flex;
-      flex-wrap: wrap;
-      gap: 5px;
+      flex: 1 1 auto;
       min-width: 0;
     }
 
     .log-time {
       color: #7dd3fc;
       text-shadow: none;
+      margin-right: 4px;
     }
 
     .log-device {
       color: #fde68a;
       font-weight: 700;
       text-shadow: none;
+      margin-right: 4px;
     }
 
     .log-message {
@@ -924,7 +946,7 @@
         <!-- 左图标题：自私接入攻击；位置/尺寸由 .area-title1 控制 -->
         <div class="area-title1">自私接入攻击</div>
         <!-- 左图无人机图标：自私接入场景中的 UAV；调 top/left/width 改位置和大小 -->
-        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; left:25%; width:210px;" alt="UAV"/>
+        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:13%; left:25%; width:210px;" alt="UAV"/>
 
         <!-- 左图接入点图标：无人机请求接入的接入点；调 top/left/width 改位置和大小 -->
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:15%; width:130px;" alt="接入点">
@@ -939,7 +961,7 @@
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 40%; left:36%; width:40px;" alt="cert">
 
         <!-- 左图文字：接入点标签；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 40%; left: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
+        <div style="position: absolute; top: 41%; left: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
             接入点
         </div>
         <!-- 左图文字：信息匹配标签；调 top/left/font-size 改位置和字号 -->
@@ -960,7 +982,7 @@
             拒绝接入
         </div>
         <!-- 左图说明文字：发送包含设备ID和公钥的请求数据；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 26%; left: 12%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
+        <div style="position: absolute; top: 26%; left: 10%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
             发送包含设备ID和<br>公钥的请求数据
         </div>
         <!-- 左图说明文字：查询区块链获取白名单与匹配信息；调 top/left/font-size 改位置和字号 -->
@@ -980,7 +1002,7 @@
         <div class="area-title2">高频重接入攻击</div>
 
         <!-- 右图无人机图标：高频重接入场景中的 UAV；调 top/right/width 改位置和大小 -->
-        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:12%; right:43%; width:210px;" alt="UAV"/>
+        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:13%; right:43%; width:210px;" alt="UAV"/>
 
         <!-- 右图接入点图标：高频重接入场景的接入点；调 top/right/width 改位置和大小 -->
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; right:15%; width:130px;" alt="接入点">
@@ -1032,7 +1054,7 @@
     <marker id="arrowhead-success"
             markerWidth="5.2" markerHeight="3.2"
             refX="4.4" refY="1.6" orient="auto">
-      <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#64748b" />
+      <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
     </marker>
 
     <!-- SVG箭头定义：失败流程箭头尖；保留给失败线使用 -->
@@ -1067,7 +1089,7 @@
   <!-- 橙色#c65f10 -->
 
   <!-- 左图线1：UAV/请求数据到信息匹配上方路径；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-success" x1="-20" y1="26" x2="-35" y2="39" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
+  <line class="m-line-success" x1="-20" y1="28" x2="-35" y2="40" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
   <!-- 左图线2：接入点到信息匹配/允许接入路径；调 x1/y1/x2/y2 改起终点 -->
   <line class="m-line-success" x1="-27" y1="54" x2="17" y2="37" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
   <!-- 左图线3：接入点到信息不匹配/拒绝接入的攻击失败路径；调 x1/y1/x2/y2 改起终点 -->
@@ -1488,13 +1510,13 @@
           modelChars[Math.floor(Math.random() * modelChars.length)]
         ).join('');
 
-        // 3. 10位唯一序列号（数字+大写字母，无歧义）
+        // 3. 32位唯一序列号（数字+大写字母，无歧义）—— 加长以填满黑名单一行
         const serialChars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-        const serial = Array.from({ length: 10 }, () =>
+        const serial = Array.from({ length: 32 }, () =>
           serialChars[Math.floor(Math.random() * serialChars.length)]
         ).join('');
 
-        // 4. 拼接：官方 Remote ID（CTA-2063-A 格式）
+        // 4. 拼接：官方 Remote ID（CTA-2063-A 格式 + 加长序列号）
         return `${mfr}-${model}-${serial}`;
       }
 
