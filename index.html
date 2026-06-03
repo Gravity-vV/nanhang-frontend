@@ -42,7 +42,7 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
       display: grid;
-      grid-template-columns: 1fr 8fr;
+      grid-template-columns: 220px 1fr;
       height: calc(95vh - 53.2px);
       overflow: hidden;
     }
@@ -51,6 +51,7 @@
       border-right: 1px solid var(--border);
       padding: 20px 16px;
       background: rgba(2, 8, 23, 0.82);
+      text-align: center;
     }
 
     .brand {
@@ -70,7 +71,6 @@
 
     .subnav {
       margin-top: 6px;
-      padding-left: 10px;
       border-left: 1px dashed rgba(125, 211, 252, 0.32);
       display: none;
     }
@@ -85,7 +85,7 @@
       border: 1px solid transparent;
       background: transparent;
       color: var(--text-main);
-      text-align: left;
+      text-align: center;
       border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
@@ -185,26 +185,27 @@
     <aside class="sidebar">
       <p class="brand">Trusted Security</p>
       <ul class="nav">
+        
         <li>
-          <button class="nav-button is-active" data-role="main-tab" data-tab="certification" type="button">
-            可信安全认证
-          </button>
-        </li>
-        <li>
-          <button class="nav-button" data-role="main-tab" data-tab="access" type="button">
+          <button class="nav-button is-active" data-role="main-tab" data-tab="access" type="button">
             可信安全接入
           </button>
           <ul class="subnav" id="access-subnav">
             <li>
-              <button class="subnav-button" data-role="sub-tab" data-tab="physical" type="button">物理层方案</button>
+              <button class="subnav-button is-active" data-role="sub-tab" data-tab="physical" type="button">多模态增强可信频谱接入</button>
             </li>
             <li>
-              <button class="subnav-button" data-role="sub-tab" data-tab="network" type="button">网络层方案</button>
+              <button class="subnav-button" data-role="sub-tab" data-tab="network" type="button">分布式协同可信接入认证</button>
             </li>
             <li>
-              <button class="subnav-button" data-role="sub-tab" data-tab="defense" type="button">抗攻击能力</button>
+              <button class="subnav-button" data-role="sub-tab" data-tab="defense" type="button">恶意接入攻击安全防御</button>
             </li>
           </ul>
+        </li>
+        <li>
+          <button class="nav-button" data-role="main-tab" data-tab="certification" type="button">
+            可信安全认证
+          </button>
         </li>
       </ul>
     </aside>
@@ -246,7 +247,7 @@
       const accessSubnav = document.getElementById('access-subnav');
       const contentFrames = document.querySelectorAll('.content-frame');
 
-      let activePage = 'certification';
+      let activePage = 'physical';
       let lastAccessSubTab = 'physical';
 
       function setActivePage(pageKey) {
@@ -260,12 +261,10 @@
 
         if (pageKey === 'certification') {
           document.querySelector('[data-role="main-tab"][data-tab="certification"]').classList.add('is-active');
-          accessSubnav.classList.remove('is-open');
           return;
         }
 
         document.querySelector('[data-role="main-tab"][data-tab="access"]').classList.add('is-active');
-        accessSubnav.classList.add('is-open');
         const activeSubTab = document.querySelector('[data-role="sub-tab"][data-tab="' + pageKey + '"]');
         if (activeSubTab) {
           activeSubTab.classList.add('is-active');
@@ -279,7 +278,13 @@
             setActivePage('certification');
             return;
           }
-          setActivePage(lastAccessSubTab || 'physical');
+          // 点击"可信安全接入"：toggle 子栏目。展开时跳转到上次子页。
+          if (accessSubnav.classList.contains('is-open')) {
+            accessSubnav.classList.remove('is-open');
+          } else {
+            accessSubnav.classList.add('is-open');
+            setActivePage(lastAccessSubTab || 'physical');
+          }
         });
       });
 
