@@ -22,7 +22,7 @@
     .page {
       height: 100vh;
       display: grid;
-      grid-template-rows: minmax(0, 0.48fr) minmax(0, 0.52fr);
+      grid-template-rows: minmax(0, 0.55fr) minmax(0, 0.45fr);
       overflow: hidden;
     }
 
@@ -50,7 +50,7 @@
     .cert-top-layout {
       height: 100%;
       display: grid;
-      grid-template-columns: minmax(260px, 0.34fr) minmax(0, 0.66fr);
+      grid-template-columns: minmax(200px, 0.24fr) minmax(0, 0.76fr);
       gap: 14px;
       align-items: stretch;
       min-height: 0;
@@ -78,13 +78,14 @@
       position: absolute;
       top: 10px;
       right: 10px;
+      bottom: 10px;
       left: 10px;
       width: auto;
       height: auto;
       display: grid;
       grid-template-columns: minmax(0, 4.35fr) 72px minmax(0, 7.6fr);
       gap: 8px;
-      align-items: start;
+      align-items: stretch;
       overflow: visible;
     }
 
@@ -131,13 +132,14 @@
     }
 
     .hero-right .hero-diagram {
-      height: 340px;
+      height: 100%;
       aspect-ratio: 860 / 420;
     }
 
     .hero-right {
       width: 100%;
-      justify-self: end;
+      height: 100%;
+      justify-self: stretch;
       padding: 0;
     }
 
@@ -294,7 +296,7 @@
     }
 
     .test-config-label {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       color: #334155;
       white-space: nowrap;
@@ -309,7 +311,7 @@
       border-radius: 8px;
       background: #f8fafc;
       color: #1e40af;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       white-space: nowrap;
     }
@@ -379,9 +381,9 @@
       border-radius: 8px;
       background: #186487;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 20px;
       font-weight: 600;
-      padding: 11px 8px;
+      padding: 15px 16px;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
@@ -417,7 +419,7 @@
       border: 1px solid #d1d5db;
       border-radius: 8px;
       background: #ffffff;
-      padding: 10px;
+      padding: 10px 2px 10px 10px;
       height: auto;
       overflow: hidden;
       display: flex;
@@ -474,6 +476,20 @@
     .flow-label-small {
       fill: #111827;
       font-size: 22px;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .flow-text-label {
+      fill: #111827;
+      font-size: 37px;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .flow-text-label-small {
+      fill: #111827;
+      font-size: 34px;
       font-weight: 600;
       user-select: none;
     }
@@ -864,6 +880,14 @@
       .flow-label-small {
         font-size: 17px;
       }
+
+      .flow-text-label {
+        font-size: 30px;
+      }
+
+      .flow-text-label-small {
+        font-size: 26px;
+      }
     }
     /* 全站科技风主题覆盖：深色背景、青蓝光效、终端化日志 */
     body {
@@ -923,7 +947,9 @@
     .hero-summary-list,
     .input-row label,
     .flow-label,
-    .flow-label-small {
+    .flow-label-small,
+    .flow-text-label,
+    .flow-text-label-small {
       color: #dbeafe !important;
       fill: #dbeafe !important;
     }
@@ -1255,28 +1281,28 @@
               </g>
 
               <image href="../assets/certification/icons/radio.png" x="168" y="156" width="58" height="58" /> <!-- 图标左上�?168,156)，尺�?8x58 -->
-              <text x="106" y="182" font-size="19" fill="#111">&#25509;&#20837;&#28857;</text> <!-- 文本基线起点(166,152) -->
+              <text x="106" y="182" font-size="24" fill="#111">&#25509;&#20837;&#28857;</text> <!-- 文本基线起点(166,152) -->
 
               <image href="../assets/certification/icons/drone-m210.png" x="42" y="233" width="60" height="42" /> <!-- UAV-1放大 -->
-              <text x="48" y="286" font-size="20">UAV-1</text> <!-- UAV-1标签基线起点(48,286) -->
+              <text x="48" y="286" font-size="26">UAV-1</text> <!-- UAV-1标签基线起点(48,286) -->
               <image href="../assets/certification/icons/drone-m210.png" x="100" y="285" width="60" height="42" /> <!-- UAV-2放大 -->
-              <text x="110" y="338" font-size="20">UAV-2</text> <!-- UAV-2标签基线起点(110,338) -->
+              <text x="110" y="338" font-size="26">UAV-2</text> <!-- UAV-2标签基线起点(110,338) -->
               <image href="../assets/certification/icons/drone-m210.png" x="196" y="268" width="60" height="42" /> <!-- UAV-3放大 -->
-              <text x="206" y="321" font-size="20">UAV-3</text> <!-- UAV-3标签基线起点(206,321) -->
+              <text x="206" y="321" font-size="26">UAV-3</text> <!-- UAV-3标签基线起点(206,321) -->
 
               <image href="../assets/certification/icons/drone-m210.png" x="462" y="232" width="72" height="72" /> <!-- UAV-4放大 -->
-              <text x="474" y="319" font-size="20">UAV-4</text> <!-- UAV-4标签基线起点(474,309) -->
+              <text x="474" y="319" font-size="26">UAV-4</text> <!-- UAV-4标签基线起点(474,309) -->
 
               <image href="../assets/certification/icons/gov.png" x="70" y="-30" width="56" height="56" />
               <image href="../assets/certification/icons/flag-red.png" x="118" y="-11" width="16" height="16" />
-              <text x="76" y="40" font-size="19">&#26681;CA1</text>
+              <text x="76" y="40" font-size="24">&#26681;CA1</text>
 
               <image href="../assets/certification/icons/gov.png" x="240" y="-20" width="56" height="56" />
               <image href="../assets/certification/icons/flag-red.png" x="288" y="-1" width="16" height="16" />
-              <text x="246" y="50" font-size="19">&#26681;CA2</text>
+              <text x="246" y="50" font-size="24">&#26681;CA2</text>
 
               <image href="../assets/certification/icons/gov.png" x="410" y="80" width="56" height="56" />
-              <text x="408" y="155" font-size="19">&#23376;CA2</text>
+              <text x="408" y="155" font-size="24">&#23376;CA2</text>
 
               <g stroke="#ef7d2c" stroke-width="3.2" marker-end="url(#left-arrow-orange)">
                 <line x1="197" y1="156" x2="112" y2="52" />
@@ -1285,19 +1311,19 @@
               </g>
 
               <rect x="60" y="70" width="130" height="38" rx="4" fill="#020817" />
-              <text x="66" y="84" font-size="16" fill="#d8671b">step3: &#35831;&#27714;&#39564;&#35777;</text>
-              <text x="66" y="101" font-size="16" fill="#d8671b">&#26681;CA1&#20132;&#21449;&#35777;&#20070;</text>
+              <text x="66" y="84" font-size="20" fill="#d8671b">step3: &#35831;&#27714;&#39564;&#35777;</text>
+              <text x="66" y="101" font-size="20" fill="#d8671b">&#26681;CA1&#20132;&#21449;&#35777;&#20070;</text>
 
               <rect x="200" y="85" width="130" height="38" rx="4" fill="#020817" />
-              <text x="206" y="99" font-size="16" fill="#d8671b">step2: &#35831;&#27714;&#39564;&#35777;</text>
-              <text x="206" y="116" font-size="16" fill="#d8671b">&#26681;CA2&#35777;&#20070;</text>
+              <text x="206" y="99" font-size="20" fill="#d8671b">step2: &#35831;&#27714;&#39564;&#35777;</text>
+              <text x="206" y="116" font-size="20" fill="#d8671b">&#26681;CA2&#35777;&#20070;</text>
 
               <rect x="240" y="120" width="100" height="38" rx="4" fill="#020817" />
-              <text x="246" y="134" font-size="16" fill="#d8671b">step1: &#35831;&#27714;&#39564;&#35777;</text>
-              <text x="246" y="151" font-size="16" fill="#d8671b">UAV-2&#35777;&#20070;</text>
+              <text x="246" y="134" font-size="20" fill="#d8671b">step1: &#35831;&#27714;&#39564;&#35777;</text>
+              <text x="246" y="151" font-size="20" fill="#d8671b">UAV-2&#35777;&#20070;</text>
 
               <line x1="228" y1="180" x2="460" y2="269" stroke="#3c74c9" stroke-width="3.4" marker-end="url(#left-arrow-blue)" /> <!-- 跨域认证线起�?212,220) 终点(476,264) -->
-              <text x="328" y="212" font-size="18" font-weight="600" fill="#111" transform="rotate(21 328 222)">
+              <text x="328" y="212" font-size="23" font-weight="600" fill="#111" transform="rotate(21 328 222)">
                 &#36328;&#22495;&#35748;&#35777;
               </text>
             </svg>
@@ -1440,25 +1466,25 @@
           </div>
 
           <div class="flow-wrap">
-            <svg class="flow-svg" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" aria-label="认证流程图">
-              <path class="flow-base" d="M50 175 L375 175" />
-              <path class="flow-base" d="M375 175 C455 175 455 95 560 95 L700 95" />
-              <path class="flow-base" d="M375 175 C455 175 455 255 560 255 L700 255" />
+            <svg class="flow-svg" viewBox="0 0 1100 320" xmlns="http://www.w3.org/2000/svg" aria-label="认证流程图">
+              <path class="flow-base" d="M50 175 L550 175" />
+              <path class="flow-base" d="M550 175 C660 175 660 95 760 95 L1000 95" />
+              <path class="flow-base" d="M550 175 C660 175 660 255 760 255 L1000 255" />
 
               <path id="active-seg-1" class="flow-active" d="M50 175 L190 175" />
-              <path id="active-seg-2" class="flow-active" d="M190 175 L375 175" />
-              <path id="active-seg-top" class="flow-active" d="M375 175 C455 175 455 95 560 95 L700 95" />
-              <path id="active-seg-bottom" class="flow-active" d="M375 175 C455 175 455 255 560 255 L700 255" />
+              <path id="active-seg-2" class="flow-active" d="M190 175 L550 175" />
+              <path id="active-seg-top" class="flow-active" d="M550 175 C660 175 660 95 760 95 L1000 95" />
+              <path id="active-seg-bottom" class="flow-active" d="M550 175 C660 175 660 255 760 255 L1000 255" />
 
               <circle id="node-issue" class="flow-node" cx="190" cy="175" r="10" />
-              <circle id="node-request" class="flow-node" cx="375" cy="175" r="10" />
-              <circle id="node-distributed" class="flow-node" cx="700" cy="95" r="10" />
-              <circle id="node-centralized" class="flow-node" cx="700" cy="255" r="10" />
+              <circle id="node-request" class="flow-node" cx="550" cy="175" r="10" />
+              <circle id="node-distributed" class="flow-node" cx="1000" cy="95" r="10" />
+              <circle id="node-centralized" class="flow-node" cx="1000" cy="255" r="10" />
 
-              <text class="flow-label" x="125" y="225">证书颁发</text>
-              <text class="flow-label" x="260" y="225">无人机认证请求</text>
-              <text class="flow-label-small" x="560" y="80">分布式认证</text>
-              <text class="flow-label-small" x="560" y="286">集中式认证</text>
+              <text class="flow-text-label" x="100" y="235">证书颁发</text>
+              <text class="flow-text-label" x="320" y="235">无人机认证请求</text>
+              <text class="flow-text-label" x="810" y="70">分布式认证</text>
+              <text class="flow-text-label" x="810" y="300">集中式认证</text>
             </svg>
           </div>
 
@@ -1467,11 +1493,11 @@
 
         <aside class="latency-panel" aria-label="时延汇总">
           <section class="latency-card">
-            <p class="latency-label">集中式平均时延</p>
+            <p class="latency-label">集中式认证平均时延</p>
             <p class="latency-value" id="summary-centralized-value-old">--</p>
           </section>
           <section class="latency-card">
-            <p class="latency-label">分布式平均时延</p>
+            <p class="latency-label">分布式认证平均时延</p>
             <p class="latency-value" id="summary-distributed-value-old">--</p>
           </section>
           <section class="latency-card">

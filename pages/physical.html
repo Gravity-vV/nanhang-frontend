@@ -1007,8 +1007,8 @@
       <div class="bottom-layout">
         <div class="left-panel">
           <div class="mode-buttons">
-            <button class="mode-btn" type="button" data-mode="centralized">单模态认证演示</button>
-            <button class="mode-btn" type="button" data-mode="distributed">区块链增强多模态认证演示</button>
+            <button class="mode-btn" type="button" data-mode="centralized">单模态接入演示</button>
+            <button class="mode-btn" type="button" data-mode="distributed">区块链增强多模态接入演示</button>
             <p class="flow-status" id="flow-status">正在执行：等待开始。</p>
           </div>
 
@@ -1032,9 +1032,9 @@
               <circle id="node-backoff" class="flow-node" cx="680" cy="280" r="10" />
 
               <text class="flow-label-small" x="96" y="220">接入请求</text>
-              <text class="flow-label-small" x="360" y="52">多模态认证</text>
+              <text class="flow-label-small" x="360" y="52">多模态接入</text>
               <text class="flow-label-small" x="566" y="52">接入方式切换</text>
-              <text class="flow-label-small" x="360" y="320">单模态认证</text>
+              <text class="flow-label-small" x="360" y="320">单模态接入</text>
               <text class="flow-label-small" x="618" y="320">退避接入</text>
             </svg>
           </div>
@@ -1042,12 +1042,12 @@
 
         <div class="right-panel">
           <article class="log-box">
-            <h3 class="log-title">单模态认证日志</h3>
+            <h3 class="log-title">单模态接入日志</h3>
             <ul class="log-content"></ul>
           </article>
 
           <article class="log-box">
-            <h3 class="log-title">多模态认证日志</h3>
+            <h3 class="log-title">多模态接入日志</h3>
             <ul class="log-content"></ul>
           </article>
         </div>
@@ -1232,20 +1232,20 @@
           const totalTop = Number(paths.top.dataset.total);
           const offset1 = totalTop * 0.5;
           await revealPathSegment(paths.top, totalTop, offset1, DURATION_MS.branchPart1);
-          appendLog(mode, '区块链节点', '读取 WiFi 失效记录，触发多模态联合认证。');
+          appendLog(mode, '区块链节点', '读取 WiFi 失效记录，触发多模态联合接入。');
           appendLog(mode, 'UAV-4', 'LoRa信号受干扰，尝试切换至WiFi模态接入。');
           await pauseAtNode(nodes.multi, '多模态认证', token);
           if (token !== animationToken) return;
 
           await revealPathSegment(paths.top, offset1, 0, DURATION_MS.branchPart2);
-          appendLog(mode, '接入点', '切换至 LoRa / 多站点联合接入模式，认证反馈生成。');
+          appendLog(mode, '接入点', '切换至 LoRa / 多站点联合接入模式，接入反馈生成。');
           appendLog(mode, '接入点', '多模态切换接入成功，接入成功率显著提升。');
           await pauseAtNode(nodes.switchNode, '接入方式切换', token);
         } else {
           const totalBottom = Number(paths.bottom.dataset.total);
           const offset2 = totalBottom * 0.5;
           await revealPathSegment(paths.bottom, totalBottom, offset2, DURATION_MS.branchPart1);
-          appendLog(mode, '接入点', 'WiFi 通道持续受干扰，单模态认证失败。');
+          appendLog(mode, '接入点', 'WiFi 通道持续受干扰，单模态接入失败。');
           appendLog(mode, '接入点', '信号屏蔽设备对LoRa信号进行屏蔽，固定单模态无法切换。');
           await pauseAtNode(nodes.single, '单模态认证', token);
           if (token !== animationToken) return;
