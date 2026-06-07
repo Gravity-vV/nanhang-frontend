@@ -1,11 +1,29 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>安全防御</title>
   <style>
+    /* 全局深色主题滚动条 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(2, 6, 23, 0.6);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.35);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(56, 189, 248, 0.55);
+    }
     * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(56, 189, 248, 0.35) rgba(2, 6, 23, 0.6);
       box-sizing: border-box;
     }
 
@@ -29,14 +47,13 @@
     .page {
       height: 100%;
       display: grid;
-      grid-template-columns: minmax(0, 0.48fr) minmax(0, 0.52fr);
-      /* 顶行高度与右上缩放画布对齐：720 * 0.6 = 432px */
-      grid-template-rows: 432px minmax(0, 1fr);
+      grid-template-columns: minmax(280px, 0.32fr) minmax(0, 0.68fr);
+      grid-template-rows: minmax(0, 0.56fr) minmax(0, 0.44fr);
       grid-template-areas:
         "flow image"
         "controls logs";
       gap: 14px;
-      padding: 6px 16px;
+      padding: 12px 16px;
       background:
         linear-gradient(rgba(34, 211, 238, 0.055) 1px, transparent 1px),
         linear-gradient(90deg, rgba(34, 211, 238, 0.055) 1px, transparent 1px),
@@ -52,124 +69,61 @@
       position: relative;
       z-index: 2;
       display: grid;
-      align-items: start;
-      justify-items: end;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
       height: 100%;
       min-height: 0;
-      overflow: visible;
+      overflow: hidden;
       background: transparent;
       padding: 0;
     }
 
-    /* 右上角攻击示意图外层定位容器 */
-    .canvas {
-      position: relative;
-      overflow: visible;
-      display: grid;
-      align-items: start;
-      justify-items: end;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      /* padding: 0 20px; */
-    }
-
-    /* 右上角攻击示意图缩放画布：内部所有元素跟随该画布整体缩放 */
-    .canvas-scale {
-      --defense-image-scale: 0.6;
-      --defense-image-width: 1600px;
-      --defense-image-height: 720px;
-      background:
-        linear-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(14, 165, 233, 0.08) 1px, transparent 1px),
-        radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.16), transparent 46%),
-        #07111f;
-      background-size: 32px 32px, 32px 32px, auto, auto;
-      position: absolute;
-      top: 0px;
-      right: 0;
-      overflow: hidden;
-      display: flex;
-      gap: 30px;
-      width: var(--defense-image-width);
-      height: var(--defense-image-height);
-      flex: none;
-      transform: scale(var(--defense-image-scale));
-      transform-origin: top right;
-    }
-
-    /* 右上攻击示意图左侧：自私接入攻击流程示意 */
-    .left-area {
-      flex: 1;
-      height: 100%;
-      padding: 17px;
+    /* 右上角攻击示意图卡片面板（与 network 页 .diagram-panel 结构一致） */
+    .diagram-panel {
       background:
         radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.18), transparent 34%),
         linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
-      position: relative;
       border-radius: 12px;
       border: 1px solid rgba(56, 189, 248, 0.46);
       box-shadow: inset 0 0 24px rgba(56, 189, 248, 0.12), 0 0 18px rgba(14, 165, 233, 0.18);
-      /* 面板内所有非标题内容下移 8 源 px ≈ 5 视觉 px */
-      transform: translateY(8px);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
     }
 
-    /* 右上攻击示意图右侧：高频重接入攻击流程示意 */
-    .right-area {
+    /* 攻击示意图标题栏 */
+  .panel-header {
+    margin: 4px;
+    min-height: 50px;
+    padding: 13px 27px;
+    border: 2px solid rgba(45, 212, 191, 0.72);
+    border-radius: 12px;
+    background:
+      linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
+      radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
+    color: #ecfeff;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    box-shadow: 0 0 14px rgba(34, 211, 238, 0.24);
+  }
+
+    /* 示意图画布：内部元素使用绝对定位 */
+    .canvas {
       flex: 1;
-      height: 100%;
-      padding: 17px;
-      background:
-        radial-gradient(circle at 70% 18%, rgba(34, 211, 238, 0.18), transparent 34%),
-        linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
       position: relative;
-      border-radius: 12px;
-      border: 1px solid rgba(56, 189, 248, 0.46);
-      box-shadow: inset 0 0 24px rgba(56, 189, 248, 0.12), 0 0 18px rgba(14, 165, 233, 0.18);
+      min-height: 0;
+      padding: 10px;
+      overflow: hidden;
     }
 
-    .left-area div[style],
-    .right-area div[style] {
+    .canvas div[style] {
       color: #e0f2fe !important;
-      font-size: 19px !important;
+      font-size: 13px !important;
       text-shadow: none;
-    }
-
-
-    /* 自私接入攻击示意图标题条 */
-    .area-title1 {
-      margin: 0 0 5px;
-      min-height: 60px;
-      padding: 13px 27px;
-      border: 2px solid rgba(45, 212, 191, 0.72);
-      border-radius: 17px;
-      background:
-        linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
-        radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
-      color: #ecfeff;
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      line-height: 1.15;
-      box-shadow: 0 0 24px rgba(34, 211, 238, 0.24);
-    }
-
-    /* 高频重接入攻击示意图标题条 */
-    .area-title2 {
-      margin: 0 0 5px;
-      min-height: 60px;
-      padding: 13px 27px;
-      border: 2px solid rgba(45, 212, 191, 0.72);
-      border-radius: 17px;
-      background:
-        linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
-        radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
-      color: #ecfeff;
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      line-height: 1.15;
-      box-shadow: 0 0 24px rgba(34, 211, 238, 0.24);
     }
 
     .m-line-fail {
@@ -192,7 +146,7 @@
     }
 
     .m-line-attack {
-      stroke: #ef4444;
+      stroke: #a91f23;
       stroke-width: 1;
       filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.62));
     }
@@ -257,10 +211,8 @@
     /* 左下测试控制框：按钮、测试次数、重接入间隔、黑名单 */
     .controls {
       grid-area: controls;
-      /* 与左上 .flow-area 宽度对齐 */
-      width: 530px;
+      width: 100%;
       max-width: 100%;
-      justify-self: start;
       border: 1px solid rgba(34, 211, 238, 0.36);
       border-radius: 10px;
       background: rgba(3, 12, 28, 0.86);
@@ -269,7 +221,7 @@
       grid-template-rows: auto auto 1fr;
       gap: 7px;
       min-height: 0;
-      overflow: visible;
+      overflow: hidden;
       box-shadow: inset 0 0 24px rgba(34, 211, 238, 0.08), 0 0 20px rgba(14, 165, 233, 0.14);
     }
 
@@ -288,7 +240,7 @@
         linear-gradient(135deg, rgba(15, 118, 110, 0.96), rgba(14, 165, 233, 0.94)),
         radial-gradient(circle at 20% 0%, rgba(236, 254, 255, 0.32), transparent 42%);
       color: #ecfeff;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
       min-height: 52px;
       padding: 10px 10px;
@@ -318,6 +270,8 @@
       align-items: stretch;
       gap: 8px;
       padding: 0 6px;
+      min-height: 0;
+      overflow: hidden;
     }
 
     .parameter-group {
@@ -328,7 +282,7 @@
     }
 
     .input-row label {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       color: #dff7ff;
       letter-spacing: 0.03em;
@@ -339,24 +293,24 @@
     .blacklist-area {
         margin: 0;
         width: 100%;
-        min-height: 100px;
+        min-height: 0;
+        max-height: 100%;
         display: grid;
-        grid-template-columns: 42px minmax(0, 1fr) auto;
-        grid-template-rows: 42px minmax(62px, 1fr);
+        grid-template-columns: 30px minmax(0, 1fr) auto;
+        grid-template-rows: 30px minmax(40px, 1fr);
         align-items: center;
-        gap: 8px 10px;
-        padding: 9px 13px;
+        gap: 6px 8px;
+        padding: 6px 10px;
         background:
           linear-gradient(135deg, rgba(127, 29, 29, 0.32), rgba(15, 23, 42, 0.9)),
           radial-gradient(circle at 0% 0%, rgba(248, 113, 113, 0.2), transparent 46%);
-        border-radius: 18px;
+        border-radius: 10px;
         border: 1px solid rgba(248, 113, 113, 0.58);
         box-shadow:
           inset 0 0 26px rgba(248, 113, 113, 0.08),
           0 0 18px rgba(239, 68, 68, 0.2);
 
-        overflow: visible;
-        contain: layout paint;
+        overflow: hidden;
         z-index: 3;
     }
 
@@ -369,15 +323,15 @@
       align-items: center;
       column-gap: 12px;
       padding: 12px 14px;
-      border-radius: 14px;
+      border-radius: 8px;
       background: rgba(2, 6, 23, 0.5);
       border: 1px solid rgba(248, 113, 113, 0.28);
     }
 
     .blacklist-icon {
       grid-area: icon;
-      width: 34px;
-      height: 34px;
+      width: 24px;
+      height: 24px;
       display: grid;
       place-items: center;
       border-radius: 50%;
@@ -388,7 +342,7 @@
     .blacklist-label {
         font-weight: 900;
         color: #fecaca;
-        font-size: 21px;
+        font-size: 15px;
         line-height: 1.25;
         text-align: left;
         letter-spacing: 0.04em;
@@ -402,12 +356,12 @@
     .blacklist-area > .blacklist-label:first-child {
         grid-column: 1;
         grid-row: 1;
-        width: 42px;
-        height: 42px;
+        width: 30px;
+        height: 30px;
         display: grid;
         place-items: center;
         border-radius: 50%;
-        font-size: 22px;
+        font-size: 16px;
         padding: 0;
         background: rgba(220, 38, 38, 0.22);
         box-shadow: inset 0 0 12px rgba(248, 113, 113, 0.2);
@@ -419,7 +373,7 @@
         display: flex;
         align-items: center;
         white-space: nowrap;
-        min-height: 42px;
+        min-height: 30px;
         padding: 0;
         border-radius: 0;
         background: transparent;
@@ -434,14 +388,14 @@
       margin: 0;
       background: #dc2626;
       color: white;
-      border-radius: 14px;
-      min-width: 48px;
-      height: 34px;
+      border-radius: 8px;
+      min-width: 36px;
+      height: 24px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        font-size: 20px;
+        font-size: 14px;
         padding: 0 8px;
         text-shadow: none;
         box-shadow: 0 0 14px rgba(220, 38, 38, 0.42);
@@ -451,16 +405,15 @@
       grid-column: 1 / 4;
       grid-row: 2;
       margin-left: 0;
-      font-size: 17px;
+      font-size: 13px;
       color: #fecaca;
       width: 100%;
       min-width: 0;
       height: 100%;
       min-height: 62px;
-      max-height: 150px;
       overflow-y: auto;
       border: 1px solid rgba(248, 113, 113, 0.42);
-      border-radius: 14px;
+      border-radius: 8px;
       padding: 8px;
       background: rgba(2, 6, 23, 0.56);
       outline: none;
@@ -469,6 +422,23 @@
       flex-wrap: wrap;
       align-content: flex-start;
       gap: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(248, 113, 113, 0.5) rgba(127, 29, 29, 0.3);
+    }
+
+    .blacklist-select::-webkit-scrollbar {
+      width: 5px;
+    }
+    .blacklist-select::-webkit-scrollbar-track {
+      background: rgba(127, 29, 29, 0.3);
+      border-radius: 3px;
+    }
+    .blacklist-select::-webkit-scrollbar-thumb {
+      background: rgba(248, 113, 113, 0.5);
+      border-radius: 3px;
+    }
+    .blacklist-select::-webkit-scrollbar-thumb:hover {
+      background: rgba(248, 113, 113, 0.75);
     }
 
     .blacklist-id-chip,
@@ -507,7 +477,7 @@
       border-radius: 8px;
       background: rgba(2, 6, 23, 0.86);
       color: #e0f2fe;
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 800;
       letter-spacing: 0.02em;
       padding: 0 34px 0 10px;
@@ -583,7 +553,7 @@
     /* 当前测试状态提示文本 */
     .status {
       margin: 0;
-      font-size: 19px;
+      font-size: 14px;
       color: #cffafe;
       font-weight: 800;
       letter-spacing: 0.03em;
@@ -605,24 +575,19 @@
       grid-area: flow;
       position: relative;
       z-index: 1;
-      border: 1px solid #e5e7eb;
-      /* border: 1px solid #d1d5db; */
-      border-radius: 10px;
-      background: rgba(2, 8, 23, 0.92);
-      border: 1px solid rgba(34, 211, 238, 0.4);
-      box-shadow: 0 0 28px rgba(34, 211, 238, 0.22);
-      padding: 10px;
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      gap: 8px;
-      align-content: stretch;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.18), transparent 34%),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.46);
+      box-shadow: inset 0 0 24px rgba(56, 189, 248, 0.12), 0 0 18px rgba(14, 165, 233, 0.18);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
       min-height: 0;
-      width: min(100%, 530px);
-      /* 与右上 .canvas-scale 缩放后的高度对齐：720 * 0.6 = 432px */
-      height: 432px;
-      align-self: start;
-      justify-self: start;
+      width: 100%;
+      height: 100%;
     }
 
     /* 流程 SVG 的自适应包裹容器 */
@@ -630,7 +595,7 @@
       border: 0;
       border-radius: 0;
       background: transparent;
-      padding: 0;
+      padding: 10px;
       width: 100%;
       height: 100%;
       min-height: 0;
@@ -641,11 +606,11 @@
     }
 
     .flow-demo-title {
-      margin: 0 0 8px;
-      min-height: 36px;
-      padding: 8px 16px;
-      border: 1px solid rgba(45, 212, 191, 0.72);
-      border-radius: 10px;
+      margin: 4px;
+      min-height: 50px;
+      padding: 13px 27px;
+      border: 2px solid rgba(45, 212, 191, 0.72);
+      border-radius: 12px;
       background:
         linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
         radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
@@ -653,7 +618,7 @@
       font-size: 18px;
       font-weight: 800;
       letter-spacing: 0.04em;
-      line-height: 1.15;
+      line-height: 1;
       box-shadow: 0 0 14px rgba(34, 211, 238, 0.24);
     }
 
@@ -727,14 +692,14 @@
 
     .flow-label-small {
       fill: #e0f2fe;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       user-select: none;
     }
 
     .flow-label-long {
       fill: #e0f2fe;
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 700;
       user-select: none;
     }
@@ -747,10 +712,7 @@
     /* 右下日志区域：攻击分析日志和处置记录日志 */
     .right-panel {
       grid-area: logs;
-      /* 与右上 .canvas-scale 缩放后视觉宽度对齐：1600 * 0.6 = 960px
-         允许向左溢出 cell，模拟 .canvas-scale 的右锚定行为 */
-      width: 960px;
-      justify-self: end;
+      width: 100%;
       min-height: 0;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -849,10 +811,10 @@
       line-height: 1.4;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1180px) {
       .page {
         grid-template-columns: 1fr;
-        grid-template-rows: minmax(220px, auto) minmax(260px, auto) minmax(220px, auto) minmax(320px, auto);
+        grid-template-rows: minmax(360px, auto) minmax(360px, auto) minmax(160px, auto) minmax(320px, auto);
         grid-template-areas:
           "flow"
           "image"
@@ -861,12 +823,6 @@
         height: auto;
         min-height: 100%;
         overflow: auto;
-      }
-
-      .canvas-scale {
-        width: 100%;
-        height: 100%;
-        transform: none;
       }
 
       .bottom-layout {
@@ -921,7 +877,7 @@
     .controls,
     .flow-area,
     .log-box,
-    .canvas-scale {
+    .diagram-panel {
       backdrop-filter: blur(10px);
     }
 
@@ -935,198 +891,96 @@
   <main class="page">
   <!-- 右上区域：攻击防御示意图容器 -->
   <div class="image-wrap">
-    <!-- 示意图定位层：负责把缩放画布放到右上角 -->
+  <!-- 左图区块容器：自私接入攻击示意 -->
+  <div class="diagram-panel">
+    <div class="panel-header">自私接入攻击</div>
     <div class="canvas">
-      <!-- 示意图缩放层：左右攻击图、箭头、区块链底图整体缩放 -->
-      <div class="canvas-scale">
-
-      <!-- 左侧区域：标题1 -->
-      <!-- 自私接入攻击示意区域 -->
-      <div class="left-area">
-        <!-- 左图标题：自私接入攻击；位置/尺寸由 .area-title1 控制 -->
-        <div class="area-title1">自私接入攻击</div>
-        <!-- 左图无人机图标：自私接入场景中的 UAV；调 top/left/width 改位置和大小 -->
-        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:13%; left:25%; width:210px;" alt="UAV"/>
-
-        <!-- 左图接入点图标：无人机请求接入的接入点；调 top/left/width 改位置和大小 -->
-        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:15%; width:130px;" alt="接入点">
-        <!-- 左图允许接入图标：信息匹配成功后的允许接入结果；调 top/right/width 改位置和大小 -->
-        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:28%; right:10%; width:118px;" alt="pass">
-        <!-- 左图拒绝接入图标：信息不匹配后的拒绝接入结果；调 bottom/right/width 改位置和大小 -->
-        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:34%; right:10%; width:118px;" alt="reject">
-
-        <!-- 左图证书图标1：下方查询/匹配链路上的证书信息；调 bottom/left/width 改位置和大小 -->
-        <img src="../assets/sec-cert.png" class="element" style="position: absolute; bottom: 20%; left:41%; width:40px;" alt="cert">
-        <!-- 左图证书图标2：上方信息匹配链路上的证书信息；调 top/left/width 改位置和大小 -->
-        <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 40%; left:36%; width:40px;" alt="cert">
-
-        <!-- 左图文字：接入点标签；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 41%; left: 21%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
-            接入点
-        </div>
-        <!-- 左图文字：信息匹配标签；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 40%; left: 46%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
-            信息匹配
-        </div>
-        <!-- 左图文字：信息不匹配标签；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 62%; left: 45%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
-            信息不匹配
-        </div>
-
-        <!-- 左图文字：允许接入标签；调 top/right/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 23%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
-            允许接入
-        </div>
-        <!-- 左图文字：拒绝接入标签；调 top/right/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 47%; right: 12.5%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
-            拒绝接入
-        </div>
-        <!-- 左图说明文字：发送包含设备ID和公钥的请求数据；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 26%; left: 10%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
-            发送包含设备ID和<br>公钥的请求数据
-        </div>
-        <!-- 左图说明文字：查询区块链获取白名单与匹配信息；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 78%; left: 11%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
-            查询区块链获取<br>ID白名单与ID和<br>公钥匹配信息
-        </div>
-        <!-- 左图说明文字：设备ID/公钥加入黑名单；调 top/right/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 73%; right: 22%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap;">
-            设备ID/公钥<br>加入黑名单
-        </div>
-      </div>
-
-      <!-- 右侧区域：标题2 -->
-      <!-- 高频重接入攻击示意区域 -->
-      <div class="right-area">
-        <!-- 右图标题：高频重接入攻击；位置/尺寸由 .area-title2 控制 -->
-        <div class="area-title2">高频重接入攻击</div>
-
-        <!-- 右图无人机图标：高频重接入场景中的 UAV；调 top/right/width 改位置和大小 -->
-        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:13%; right:43%; width:210px;" alt="UAV"/>
-
-        <!-- 右图接入点图标：高频重接入场景的接入点；调 top/right/width 改位置和大小 -->
-        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; right:15%; width:130px;" alt="接入点">
-        <!-- 右图数据库/本地存储图标：接入点本地存储；调 top/left/width/filter 改位置、大小和光效 -->
-        <img src="../assets/database.png" class="element" style="position: absolute; top:38%; left:13%; width:108px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="database">
-        <!-- 右图文字：接入点标签；调 top/right/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 55%; right: 7%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">
-            接入点
-        </div>
-
-        <!-- 右图文字：接入点本地存储标签；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 31%; left: 9%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
-            接入点本地储存
-        </div>
-        <!-- 右图说明文字：高频重接入反复连接断开；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 28%; left: 60%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
-            高频重接入<br>反复连接断开
-        </div>
-        <!-- 右图说明文字：记录接入无人机ID和接入时间；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top:55%; left: 35%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
-            记录接入无人机的<br>ID、接入时间
-        </div>
-        <!-- 右图说明文字：重接入频率达到阈值并记录违规；调 top/left/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 69%; left: 24%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
-            重接入频率到达阈值，<br>记录一次违规行为
-        </div>
-        <!-- 右图说明文字：累计违规后加入黑名单；调 top/right/font-size 改位置和字号 -->
-        <div style="position: absolute; top: 86%; right:10%; color: #000000; font-size: 17px; font-weight: bold; white-space: nowrap; text-align: center;">
-            累计到达n次违规后，将该<br>无人机设备ID加入黑名单
-        </div>
-        <!-- 右图拒绝/异常标记：红叉图标；调 top/right/font-size/rotate 改位置、大小和角度 -->
-        <div style="position: absolute; top: 40%; right: 39%; color: #2e54a1; font-size: 22px; font-weight: bold; white-space: nowrap; z-index: 100; transform: rotate(-45deg);">
-            ❌
-        </div>
-      </div>
-
-<!-- 右上攻击示意图连线层：用 SVG 画虚线箭头和攻击路径 -->
-<svg class="connection-svg" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none;" viewBox="0 0 100 100">
-  <defs>
-    <!-- SVG箭头定义：旧橙色箭头尖，当前主要保留兼容 -->
-    <marker id="arrow1" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
-      <polygon points="0 0,1.5 1.5,0 3" fill="#c65f10"/>
-    </marker>
-    <!-- SVG箭头定义：旧蓝色箭头尖，当前主要保留兼容 -->
-    <marker id="arrow2" markerWidth="1.5" markerHeight="3" refX="1" refY="1.5" orient="auto">
-      <polygon points="0 0,1.5 1.5,0 3" fill="#2e54a1"/>
-    </marker>
-    <!-- SVG箭头定义：成功/正常流程箭头尖；被 m-line-success 使用 -->
-    <marker id="arrowhead-success"
-            markerWidth="5.2" markerHeight="3.2"
-            refX="4.4" refY="1.6" orient="auto">
-      <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
-    </marker>
-
-    <!-- SVG箭头定义：失败流程箭头尖；保留给失败线使用 -->
-    <marker id="arrowhead-fail"
-            markerWidth="4" markerHeight="2.4"
-            refX="3" refY="1.2" orient="auto">
-      <polygon points="0 0, 4 1.2, 0 2.4" fill="#f97316" />
-    </marker>
-
-    <!-- SVG箭头定义：黑色箭头尖；保留给旧连接线使用 -->
-    <marker id="arrowhead-black"
-            markerWidth="4" markerHeight="2.4"
-            refX="3" refY="1.2" orient="auto">
-      <polygon points="0 0, 4 1.2, 0 2.4" fill="#000" />
-    </marker>
-
-    <!-- SVG箭头定义：接入点与区块链/本地存储之间的正常连接箭头尖 -->
-    <marker id="arrowhead-connect"
-            markerWidth="5" markerHeight="3"
-            refX="4" refY="1.5" orient="auto">
-      <polygon points="0 0, 5 1.5, 0 3" fill="#dbeafe" />
-    </marker>
-
-    <!-- SVG箭头定义：攻击/违规流程箭头尖；被 m-line-attack 使用 -->
-    <marker id="arrowhead-attack"
-            markerWidth="4" markerHeight="2.4"
-            refX="3" refY="1.2" orient="auto">
-      <polygon points="0 0, 4 1.2, 0 2.4" fill="#ef4444" />
-    </marker>
-  </defs>
-
-  <!-- 橙色#c65f10 -->
-
-  <!-- 左图线1：UAV/请求数据到信息匹配上方路径；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-success" x1="-20" y1="28" x2="-35" y2="40" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <!-- 左图线2：接入点到信息匹配/允许接入路径；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-success" x1="-27" y1="54" x2="17" y2="37" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <!-- 左图线3：接入点到信息不匹配/拒绝接入的攻击失败路径；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-attack" x1="-27" y1="60" x2="17" y2="60" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
-
-  <!-- 左图线4：查询区块链请求上行箭头；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-connect" x1="-30" y1="70" x2="-10" y2="87" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect)"/>
-  <!-- 左图线5：区块链查询反馈下行箭头；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-connect" x1="-13" y1="91" x2="-33" y2="74" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect)"/>
-
-  <!-- 左图线6：设备ID/公钥加入黑名单路径；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-attack" x1="25" y1="67" x2="25" y2="84" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
-
-  <!-- 蓝色#2e54a1 -->
-  <!-- 右图线1：UAV 高频重接入请求到接入点路径；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-success" x1="100" y1="28" x2="135" y2="44" stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <!-- 右图线2：接入点反馈/断开连接路径；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-success" x1="127" y1="56" x2="90" y2="46"  stroke-dasharray="4 1" marker-end="url(#arrowhead-success)"/>
-  <!-- 右图线3：接入点记录接入时间/ID 到本地存储路径；调 x1/y1/x2/y2 改起终点 -->
-  <line class="m-line-attack" x1="76" y1="56" x2="76" y2="82"  stroke-dasharray="4 1" marker-end="url(#arrowhead-attack)"/>
-  <!-- 右图U型箭头：累计违规后加入黑名单的回环路径；调 path 的 M/L/A 坐标改位置和形状 -->
-  <path d="M 102 87
-         L 110 87
-         A 5 5 0 0 1 110 93
-         L 102 93"
-      stroke="#ef4444";
-      stroke-width="1";
-      stroke-dasharray="4 1"
-      fill="none"
-      marker-end="url(#arrowhead-attack)"/>
-
-</svg>
-
-      <!-- 右上示意图底部区块链背景图：横跨左右两种攻击流程；调 bottom/left/scaleX/scaleY 改位置和比例 -->
-      <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:3%; left:50%;transform: translateX(-50%) scaleX(1.02) scaleY(1.12);" alt="区块链">
-      </div>
+        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:3%; left:25%; width:160px;" alt="UAV"/>
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:5%; width:110px;" alt="接入点">
+        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:18%; right:5%; width:100px;" alt="pass">
+        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:32%; right:5%; width:100px;" alt="reject">
+        <img src="../assets/sec-cert.png" class="element" style="position: absolute; bottom: 39%; left:38%; width:30px;" alt="cert">
+        <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 31%; left:39%; width:30px;" alt="cert">
+        <div style="position: absolute; top: 41%; left: 11.5%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">接入点</div>
+        <div style="position: absolute; top: 32%; left: 46%; color: #4ade80 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">信息匹配</div>
+        <div style="position: absolute; top: 56%; left: 45%; color: #f87171 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">信息不匹配</div>
+        <div style="position: absolute; top: 14%; right: 9.5%; color: #4ade80 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">允许接入</div>
+        <div style="position: absolute; top: 43%; right: 9.5%; color: #f87171 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">拒绝接入</div>
+        <div style="position: absolute; top: 26%; left: 7%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">发送包含设备ID和<br>公钥的请求数据</div>
+        <div style="position: absolute; top: 78%; left: 11%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">查询区块链获取<br>ID白名单与ID和<br>公钥匹配信息</div>
+        <div style="position: absolute; top: 68%; right: 18%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">设备ID/公钥<br>加入黑名单</div>
+        <!-- 左图连线层 -->
+        <svg class="connection-svg" viewBox="0 0 100 100">
+          <defs>
+            <marker id="arrowhead-success-l" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
+              <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
+            </marker>
+            <marker id="arrowhead-connect-l" markerWidth="5" markerHeight="3" refX="4" refY="1.5" orient="auto">
+              <polygon points="0 0, 5 1.5, 0 3" fill="#dbeafe" />
+            </marker>
+            <marker id="arrowhead-attack-l" markerWidth="4" markerHeight="2.4" refX="3" refY="1.2" orient="auto">
+              <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
+            </marker>
+            <marker id="arrowhead-allow-l" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
+              <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#227624" />
+            </marker>
+          </defs>
+          <!-- UAV到信息匹配 -->
+          <line class="m-line-success" x1="40" y1="19" x2="20" y2="43" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-l)"/>
+          <!-- 接入点到允许接入 -->
+          <line stroke="#227624" stroke-width="1" filter="drop-shadow(0 0 4px rgba(34, 118, 36, 0.58))" x1="27" y1="48" x2="80" y2="30" stroke-dasharray="4 1" marker-end="url(#arrowhead-allow-l)"/>
+          <!-- 接入点到拒绝接入 -->
+          <line class="m-line-attack" x1="27" y1="54" x2="80" y2="54" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-l)"/>
+          <!-- 查询区块链上行 -->
+          <line class="m-line-connect" x1="25" y1="64" x2="38" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect-l)"/>
+          <!-- 区块链反馈下行 -->
+          <line class="m-line-connect" x1="36" y1="86" x2="23" y2="68" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect-l)"/>
+          <!-- 加入黑名单 -->
+          <line class="m-line-attack" x1="90" y1="69" x2="90" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-l)"/>
+        </svg>
     </div>
+  </div>
+
+  <!-- 右图区块容器：高频重接入攻击示意 -->
+  <div class="diagram-panel">
+    <div class="panel-header">高频重接入攻击</div>
+    <div class="canvas">
+        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:3%; right:43%; width:160px;" alt="UAV"/>
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:35%; right:5%; width:140px;" alt="接入点">
+        <img src="../assets/database.png" class="element" style="position: absolute; top:38%; left:6%; width:85px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="database">
+        <div style="position: absolute; top: 32%; right: 15%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">接入点</div>
+        <div style="position: absolute; top: 31%; left: 5%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">接入点本地储存</div>
+        <div style="position: absolute; top: 22%; left: 57%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">高频重接入<br>反复连接断开</div>
+        <div style="position: absolute; top: 52%; left: 40%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">记录接入无人机的<br>ID、接入时间</div>
+        <div style="position: absolute; top: 69%; left: 19%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">重接入频率到达阈值，<br>记录一次违规行为</div>
+        <div style="position: absolute; top: 85%; right:3%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">累计到达n次违规后，将该<br>无人机设备ID加入黑名单</div>
+        <div style="position: absolute; top: 33%; right:43%; color: #2e54a1; font-size: 25px !important; font-weight: bold; white-space: nowrap; z-index: 100;">❌</div>
+        <!-- 右图连线层 -->
+        <svg class="connection-svg" viewBox="0 0 100 100">
+          <defs>
+            <marker id="arrowhead-success-r" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
+              <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
+            </marker>
+            <marker id="arrowhead-attack-r" markerWidth="4" markerHeight="2.4" refX="3" refY="1.2" orient="auto">
+              <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
+            </marker>
+          </defs>
+          <!-- UAV到接入点 -->
+          <line class="m-line-success" x1="40" y1="20" x2="73" y2="42" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-r)"/>
+          <!-- 接入点反馈 -->
+          <line class="m-line-success" x1="73" y1="50" x2="22" y2="50" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-r)"/>
+          <!-- 接入点到本地存储 -->
+          <line class="m-line-attack" x1="10" y1="60" x2="10" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-r)"/>
+          <!-- 累计违规U型箭头 -->
+          <path d="M 55 86.5 L 62 86.5 A 3 3 0 0 1 62 92.5 L 55 92.5"
+              stroke="#a91f23" stroke-width="1" stroke-dasharray="4 1"
+              fill="none" marker-end="url(#arrowhead-attack-r)"/>
+        </svg>
+    </div>
+  </div>
+
+  <!-- 区块链背景图：横跨两个栏目，直接放在 image-wrap 上 -->
+  <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:0%; left:50%;transform: translateX(-50%) scaleX(0.78) scaleY(0.95); z-index: 10;" alt="区块链">
 </div>
 
     <!-- 其余三块模块的结构容器：实际位置由 CSS grid-area 决定 -->
@@ -1213,14 +1067,14 @@
               <text class="flow-label flow-heading" x="34" y="234">高频重接入攻击流程</text>
               <text class="flow-label-long" x="34" y="258">接入间隔低于阈值时，记录违规行为并触发处置。</text>
               <path class="flow-base" d="M74 296 L552 296" />
-              <path id="highfreq-seg-0" class="flow-active" d="M74 296 L246 296" />
-              <path id="highfreq-seg-1" class="flow-active" d="M246 296 L414 296" />
-              <path id="highfreq-seg-2" class="flow-active" d="M414 296 L552 296" />
-              <circle id="highfreq-node-0" class="flow-node" cx="246" cy="296" r="10" />
-              <circle id="highfreq-node-1" class="flow-node" cx="414" cy="296" r="10" />
+              <path id="highfreq-seg-0" class="flow-active" d="M74 296 L190 296" />
+              <path id="highfreq-seg-1" class="flow-active" d="M190 296 L370 296" />
+              <path id="highfreq-seg-2" class="flow-active" d="M370 296 L552 296" />
+              <circle id="highfreq-node-0" class="flow-node" cx="190" cy="296" r="10" />
+              <circle id="highfreq-node-1" class="flow-node" cx="370" cy="296" r="10" />
               <circle id="highfreq-node-2" class="flow-node" cx="552" cy="296" r="10" />
-              <text class="flow-label-small" x="246" y="326" text-anchor="middle">高频重接入</text>
-              <text class="flow-label-small" x="414" y="326" text-anchor="middle">记录违规</text>
+              <text class="flow-label-small" x="190" y="326" text-anchor="middle">高频重接入</text>
+              <text class="flow-label-small" x="370" y="326" text-anchor="middle">记录违规</text>
               <text class="flow-label-small" x="552" y="326" text-anchor="middle">加入黑名单</text>
             </svg>
             <svg class="flow-svg" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" aria-label="攻击处置流程图">
@@ -1253,17 +1107,17 @@
               <path class="flow-base" d="M80 248 L680 248" />
 
               <!-- 高频重接入攻击流程动画段 1-3 -->
-              <path id="highfreq-seg-0" class="flow-active" d="M80 248 L180 248" />
-              <path id="highfreq-seg-1" class="flow-active" d="M180 248 L430 248" />
-              <path id="highfreq-seg-2" class="flow-active" d="M430 248 L680 248" />
+              <path id="highfreq-seg-0" class="flow-active" d="M80 248 L140 248" />
+              <path id="highfreq-seg-1" class="flow-active" d="M140 248 L370 248" />
+              <path id="highfreq-seg-2" class="flow-active" d="M370 248 L680 248" />
 
               <!-- 高频重接入攻击流程节点 1-3 -->
-              <circle id="highfreq-node-0" class="flow-node" cx="180" cy="248" r="10" />
-              <circle id="highfreq-node-1" class="flow-node" cx="430" cy="248" r="10" />
+              <circle id="highfreq-node-0" class="flow-node" cx="140" cy="248" r="10" />
+              <circle id="highfreq-node-1" class="flow-node" cx="330" cy="248" r="10" />
               <circle id="highfreq-node-2" class="flow-node" cx="680" cy="248" r="10" />
 
-              <text class="flow-label-small" x="180" y="300" text-anchor="middle">高频重接入</text>
-              <text class="flow-label-small" x="430" y="300" text-anchor="middle">记录违规行为</text>
+              <text class="flow-label-small" x="140" y="300" text-anchor="middle">高频重接入</text>
+              <text class="flow-label-small" x="370" y="300" text-anchor="middle">记录违规行为</text>
               <text class="flow-label-small" x="680" y="300" text-anchor="middle">加入黑名单</text>
             </svg>
           </div>
@@ -1506,13 +1360,13 @@
 
         // 2. 型号代码（2位字母/数字）
         const modelChars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 无IO01
-        const model = Array.from({ length: 2 }, () =>
+        const model = Array.from({ length: 4 }, () =>
           modelChars[Math.floor(Math.random() * modelChars.length)]
         ).join('');
 
         // 3. 32位唯一序列号（数字+大写字母，无歧义）—— 加长以填满黑名单一行
         const serialChars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-        const serial = Array.from({ length: 32 }, () =>
+        const serial = Array.from({ length: 24 }, () =>
           serialChars[Math.floor(Math.random() * serialChars.length)]
         ).join('');
 
