@@ -7,6 +7,7 @@
 ```bash
 cd /Users/hh/MacCodes/nanhang-frontend
 python3 -m http.server 5500
+python -m http.server 5500
 ```
 
 浏览器访问：
