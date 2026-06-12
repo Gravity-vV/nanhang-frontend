@@ -5,7 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>网络层接入测试</title>
   <style>
+    /* 全局深色主题滚动条 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(2, 6, 23, 0.6);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.35);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(56, 189, 248, 0.55);
+    }
     * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(56, 189, 248, 0.35) rgba(2, 6, 23, 0.6);
       box-sizing: border-box;
     }
 
@@ -17,8 +35,11 @@
     body {
       margin: 0;
       font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-      background: #ffffff;
-      color: #1f2937;
+      background:
+        radial-gradient(circle at 14% 18%, rgba(34, 211, 238, 0.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(59, 130, 246, 0.18), transparent 30%),
+        linear-gradient(135deg, #020617 0%, #08111f 48%, #020617 100%);
+      color: #dbeafe;
       overflow: auto;
     }
 
@@ -45,18 +66,20 @@
     }
 
     .section + .section {
-      border-top: 1px dashed #cbd5e1;
+      border-top: 1px dashed rgba(125, 211, 252, 0.28);
     }
 
 
   /* 左右两个大卡片 */
   .diagram-panel {
-    background: #ffffff;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.18), transparent 34%),
+      linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
     border-radius: 12px;
-    border: 1px solid #d1d5db;
+    border: 1px solid rgba(56, 189, 248, 0.46);
+    box-shadow: inset 0 0 24px rgba(56, 189, 248, 0.12), 0 0 18px rgba(14, 165, 233, 0.18);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     min-height: 0;
@@ -64,34 +87,34 @@
 
   /* 顶部标题栏 */
   .panel-header {
-    background: linear-gradient(to right, #2b4c7e, #567ebb);
-    color: white;
-    padding: 8px 16px;
-    font-weight: bold;
-    font-size: 18px;
-    border-radius: 10px 10px 0 0;
     margin: 4px;
+    min-height: 50px;
+    padding: 13px 27px;
+    border: 2px solid rgba(45, 212, 191, 0.72);
+    border-radius: 12px;
+    background:
+      linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
+      radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
+    color: #ecfeff;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    box-shadow: 0 0 14px rgba(34, 211, 238, 0.24);
   }
 
  /* 确保绘图区域有足够空间 */
   .canvas {
     flex: 1;
     position: relative;
-    min-height: 250px;
-    /* 背景图替换为你的图片 */
-    /* background-image: url("../assets/背景.jpg"); */
-    background-size: cover;       /* 铺满面板 */
-    background-position: center;  /* 居中 */
-    background-repeat: no-repeat; /* 不重复 */
+    min-height: 0;
+    padding: 10px;
+    overflow: hidden;
   }
 
   .element {
     position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    transform: scale(1.33);
+    pointer-events: none;
   }
 
   /* 确保图片不拉伸 */
@@ -103,7 +126,7 @@
 
 /* 无人机卡片容器 */
 .uav-card {
-  border: 1.5px solid #f97316; /* 橙色边框 */
+  border: 1.5px solid #86efac; /* 浅绿边框 */
   border-radius: 6px;          /* 圆角 */
   background: rgba(255, 255, 255, 0.6); /* 半透明背景，防止背景杂乱 */
   padding: 4px;                /* 让边框和图片之间有一点呼吸感 */
@@ -114,10 +137,12 @@
 
 /* 调整字体大小 */
 .uav-label {
-  font-size: 12px;             /* 在这里调整字体大小 */
+  text-align: center;
+  font-size: 12px;
   font-weight: bold;
-  color: #1f2937;
-  margin-bottom: 2px;          /* 文字与图片间的间距 */
+  margin-top: 4px;
+  position: relative;
+  z-index: 10;
 }
 
 
@@ -135,6 +160,9 @@
   .element.icon-lora {
     width: 26px;
     height: 26px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
   }
   .element.icon-wifi {
     width: 28px;
@@ -145,22 +173,22 @@
   }
   .left-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
   .left-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
-  .left-canvas .base-station { bottom: 40%; right: 37%; width: 90px; height: 120px; }
+  .left-canvas .base-station { bottom: 38%; right: 37%; width: 95px; height: 130px; }
   .left-canvas .hacker { bottom: 40%; left: 17.5%; width: 50px; height: 50px; }
-  .left-canvas .platform { bottom: 5%; left: 20%; right: 20%; height: 50px; border: 3px solid #ef4444; background: #e6f0ff; text-align: center; line-height: 36px; font-weight: bold; font-size: 20px; }
+  .left-canvas .platform { bottom: 5%; left: 12%; right: 12%; height: 50px; border: 3px solid #ef4444; background: #e6f0ff; text-align: center; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; }
 
   .right-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
   /* 右图 UAV-4 大无人机：top=10%, right=10%, width=90px, height=60px */
   .right-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
   /* 右图接入点/基站图标：bottom=40%, right=37%, width=90px, height=120px */
-  .right-canvas .base-station { bottom: 50%; right: 37%; width: 90px; height: 120px; }
+  .right-canvas .base-station { bottom: 48%; right: 37%; width: 95px; height: 130px; }
   /* 右图攻击者图标：bottom=45%, left=23.5%, width=40px, height=40px */
-  .right-canvas .hacker { bottom: 45%; left: 16%; width: 40px; height: 40px; }
+  .right-canvas .hacker { bottom: 45%; left: 21.5%; width: 40px; height: 40px; }
   /* 右图区块链平台：bottom=5%, left=15%, right=15%, height=80px */
   .right-canvas .blockchain {
     bottom: 5%;
-    left: 15%;
-    right: 15%;
+    left: 6%;
+    right: 6%;
     height: 80px;
     display: flex;
     align-items: center;
@@ -176,17 +204,16 @@
   /* --- 右侧面板：UAV群组位置微调 --- */
   .right-canvas .pos-1 { top: 24%; left: 5%; } /* 右图 UAV-1：top=24%, left=5%, width/height 继承 .uav-node */
   .right-canvas .pos-2 { top: 12%; left: 15%; } /* 右图 UAV-2：top=12%, left=15%, width/height 继承 .uav-node */
-  .right-canvas .pos-3 { top: 8%;  left: 30%; } /* 右图 UAV-3：top=8%, left=30%, width/height 继承 .uav-node */
+  .right-canvas .pos-3 { top: 8%;  left: 28%; } /* 右图 UAV-3：top=8%, left=30%, width/height 继承 .uav-node */
 
   /* 状态文字 */
   .status-text {
-    position: absolute;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
-    transform: scale(1.33);
+    text-align: center;
   }
-  .fail { color: #f97316; }
-  .success { color: #10b981; }
+  .status-text.fail { color: #f97316; }
+  .status-text.success { color: #16a34a; }
 
     /* 确保 SVG 铺满 canvas 容器 */
     .connection-svg {
@@ -203,22 +230,26 @@
     .m-line-fail {
       stroke: #f97316;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.58));
     }
 
     /* 成功连线样式*/
     .m-line-success {
-      stroke: #64748b;
+      stroke: #38bdf8;
       stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.58));
     }
 
     .m-line-connect {
-      stroke: #fbbf24;
-      stroke-width: 1.2;
+      stroke: #dbeafe;
+      stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(219, 234, 254, 0.5));
     }
 
     .m-line-attack {
-      stroke: #ef4444;
-      stroke-width: 0.8;
+      stroke: #a91f23;
+      stroke-width: 1;
+      filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.62));
     }
 
     .image-wrap {
@@ -242,40 +273,29 @@
     }
 
     .left-panel {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      background: #f9fafb;
-      padding: 12px;
       display: contents;
     }
 
     .controls {
       grid-area: controls;
-      border: 1px solid #d1d5db;
-      border-radius: 16px;
-      background: #ffffff;
-      padding: 14px;
+      border: 1px solid rgba(34, 211, 238, 0.36);
+      border-radius: 10px;
+      background: rgba(3, 12, 28, 0.86);
+      padding: 6px 14px;
       display: grid;
       grid-template-rows: auto 1fr auto;
-      gap: 12px;
+      gap: 7px;
       min-height: 0;
-      overflow: hidden;
-      position: relative;
+      overflow: visible;
+      box-shadow: inset 0 0 24px rgba(34, 211, 238, 0.08), 0 0 20px rgba(14, 165, 233, 0.14);
     }
 
-    .controls::before {
-      content: "\6d4b\8bd5\53c2\6570\4e0e\72b6\6001\63a7\5236";
-      display: flex;
-      align-items: center;
-      min-height: 34px;
-      padding: 0 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(34, 211, 238, 0.36);
-      background: linear-gradient(90deg, rgba(34, 211, 238, 0.16), rgba(251, 191, 36, 0.12));
-      color: #0f172a;
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: 0.04em;
+    .input-row label {
+      font-size: 15px;
+      font-weight: 800;
+      color: #dff7ff;
+      letter-spacing: 0.03em;
+      text-shadow: none;
     }
 
     .option-row {
@@ -292,12 +312,12 @@
       align-items: center;
       gap: 10px;
       padding: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.28);
+      border: 1px solid rgba(125, 211, 252, 0.25);
       border-radius: 14px;
       background:
-        linear-gradient(135deg, rgba(15, 23, 42, 0.06), rgba(14, 165, 233, 0.08)),
-        rgba(248, 250, 252, 0.92);
-      box-shadow: inset 0 0 18px rgba(14, 165, 233, 0.05);
+        linear-gradient(135deg, rgba(8, 47, 73, 0.72), rgba(2, 6, 23, 0.78)),
+        radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.12), transparent 38%);
+      box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.06);
     }
 
     .current-test-indicator {
@@ -305,16 +325,20 @@
       align-items: center;
       min-height: 46px;
       padding: 0 12px;
-      border: 1px solid #cbd5e1;
+      border: 1px solid rgba(125, 211, 252, 0.45);
       border-radius: 14px;
-      background: #f8fafc;
-      color: #1e40af;
-      font-size: 13px;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(251, 191, 36, 0.18), transparent 42%),
+        linear-gradient(135deg, rgba(8, 47, 73, 0.88), rgba(2, 6, 23, 0.9));
+      color: #67e8f9;
+      font-size: 16px;
       font-weight: 700;
       white-space: normal;
       line-height: 1.35;
       justify-content: center;
       text-align: center;
+      text-shadow: none;
+      box-shadow: inset 0 0 12px rgba(15, 23, 42, 0.44);
     }
 
     .option-item {
@@ -322,11 +346,12 @@
       align-items: center;
       gap: 6px;
       font-size: 15px;
-      color: #334155;
+      color: #dbeafe;
       font-weight: 850;
       cursor: pointer;
       user-select: none;
       min-width: 0;
+      text-shadow: none;
     }
 
     .option-item input {
@@ -337,8 +362,8 @@
     }
 
     .count-label {
-      font-size: 12px;
-      color: #475569;
+      font-size: 15px;
+      color: #93c5fd;
       font-weight: 800;
       white-space: nowrap;
     }
@@ -352,11 +377,11 @@
     .count-input {
       width: 100%;
       height: 38px;
-      border: 1px solid #cbd5e1;
+      border: 1px solid rgba(125, 211, 252, 0.45);
       border-radius: 10px;
-      background: #ffffff;
-      color: #0f172a;
-      font-size: 16px;
+      background: rgba(2, 6, 23, 0.86);
+      color: #e0f2fe;
+      font-size: 14px;
       font-weight: 900;
       padding: 0 34px 0 10px;
       outline: none;
@@ -381,26 +406,28 @@
       gap: 2px;
       padding: 1px;
       border-radius: 7px;
-      background: rgba(15, 23, 42, 0.16);
+      background: rgba(2, 6, 23, 0.58);
+      box-shadow: inset 0 0 8px rgba(34, 211, 238, 0.06);
     }
 
     .count-step-btn {
-      border: 1px solid #cbd5e1;
+      border: 1px solid rgba(125, 211, 252, 0.34);
       border-radius: 5px;
-      background: #f8fafc;
-      color: #334155;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.92));
+      color: #bfdbfe;
       font-size: 10px;
       line-height: 1;
       padding: 0;
       cursor: pointer;
       display: grid;
       place-items: center;
+      box-shadow: inset 0 0 8px rgba(34, 211, 238, 0.06);
     }
 
     .count-step-btn:hover:not(:disabled) {
-      background: #eef2ff;
-      border-color: #93c5fd;
-      color: #1d4ed8;
+      background: linear-gradient(180deg, rgba(8, 47, 73, 0.96), rgba(14, 116, 144, 0.72));
+      border-color: rgba(34, 211, 238, 0.56);
+      color: #67e8f9;
     }
 
     .count-step-btn:disabled {
@@ -422,11 +449,13 @@
     }
 
     .start-btn {
-      border: 1px solid #0a7661;
+      border: 1px solid rgba(45, 212, 191, 0.72);
       border-radius: 14px;
-      background: linear-gradient(135deg, #0f766e, #0ea5e9);
-      color: #ffffff;
-      font-size: 15px;
+      background:
+        linear-gradient(135deg, #0f766e, #0ea5e9),
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.22), transparent 34%);
+      color: #ecfeff;
+      font-size: 16px;
       font-weight: 900;
       padding: 0 18px;
       cursor: pointer;
@@ -434,6 +463,7 @@
       min-height: 46px;
       width: 100%;
       letter-spacing: 0.06em;
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
     }
 
     .start-btn:hover:not(:disabled) {
@@ -453,34 +483,17 @@
       border: 1px solid #d1d5db;
       border-radius: 16px;
       background: #ffffff;
-      padding: 14px;
-      display: grid;
-      grid-template-rows: auto repeat(3, minmax(0, 1fr));
-      grid-template-columns: 1fr;
-      gap: 12px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
       min-height: 0;
       height: 100%;
       overflow: hidden;
     }
 
-    .gauge-row::before {
-      content: "\7f51\7edc\63a5\5165\6d4b\8bd5\7ed3\679c";
-      display: flex;
-      align-items: center;
-      min-height: 32px;
-      padding: 0 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(34, 211, 238, 0.32);
-      background:
-        linear-gradient(90deg, rgba(34, 211, 238, 0.16), rgba(14, 165, 233, 0.06)),
-        rgba(255, 255, 255, 0.72);
-      color: #0f172a;
-      font-size: 16px;
-      font-weight: 950;
-      letter-spacing: 0.08em;
-    }
-
     .gauge-card {
+      flex: 1 1 0;
       border: 1px solid #e2e8f0;
       border-radius: 14px;
       background: #f8fafc;
@@ -491,6 +504,7 @@
       align-items: center;
       justify-items: stretch;
       gap: 2px 12px;
+      margin: 0 4px;
     }
 
     .gauge-row .gauge-card {
@@ -508,7 +522,7 @@
     .gauge-title {
       margin: 0;
       width: 100%;
-      font-size: 15px;
+      font-size: 17px;
       color: #0f172a;
       font-weight: 900;
       text-align: left;
@@ -577,13 +591,13 @@
 
     .gauge-mark {
       fill: #64748b;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 900;
     }
 
     .gauge-value {
       margin: 0;
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 800;
       color: #0f172a;
       line-height: 1.2;
@@ -593,17 +607,20 @@
 
     .right-panel {
       grid-area: logs;
+      width: 100%;
       min-height: 0;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 18px;
     }
 
     .log-box {
-      border: 1px solid #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.28);
       border-radius: 10px;
-      background: #ffffff;
-      color: #3b82f6;
+      background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96)),
+        radial-gradient(circle at 0% 0%, rgba(251, 191, 36, 0.08), transparent 36%);
+      color: #dbeafe;
       padding: 10px;
       display: grid;
       grid-template-rows: auto minmax(0, 1fr) auto;
@@ -611,52 +628,33 @@
       min-height: 0;
       overflow: hidden;
       font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      box-shadow: inset 0 0 22px rgba(15, 23, 42, 0.88), 0 0 18px rgba(15, 23, 42, 0.36);
     }
 
     .log-title {
       margin: 0;
       font-size: 15px;
-      color: #3b82f6;
-      border-bottom: 1px solid #e5e7eb;
+      color: #fde68a;
+      border-bottom: 1px solid rgba(251, 191, 36, 0.24);
       padding-bottom: 8px;
+      letter-spacing: 0.04em;
+      text-shadow: none;
     }
 
     .log-content {
       margin: 0;
       padding: 0;
       list-style: none;
-      font-size: 12px;
-      color: #3b82f6;
-      line-height: 1.6;
-      overflow-y: scroll;
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 2;
+      overflow-y: auto;
       overflow-x: hidden;
-      scrollbar-gutter: stable;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(59, 130, 246, 0.7) rgba(219, 234, 254, 0.9);
       white-space: pre-wrap;
     }
 
-    .log-content::-webkit-scrollbar {
-      width: 10px;
-    }
-
-    .log-content::-webkit-scrollbar-track {
-      background: rgba(219, 234, 254, 0.9);
-      border-radius: 10px;
-    }
-
-    .log-content::-webkit-scrollbar-thumb {
-      background: rgba(59, 130, 246, 0.7);
-      border-radius: 10px;
-      border: 2px solid rgba(219, 234, 254, 0.9);
-    }
-
     .log-content li {
-      margin: 0 0 7px;
-      padding: 6px 8px;
-      border-radius: 8px;
-      border: 1px solid rgba(56, 189, 248, 0.12);
-      background: rgba(15, 23, 42, 0.42);
+      margin: 0 0 10px;
       word-break: break-word;
       display: flex;
       gap: 6px;
@@ -664,24 +662,24 @@
     }
 
     .log-line {
-      display: inline-flex;
-      flex-wrap: wrap;
-      gap: 5px;
+      flex: 1 1 auto;
       min-width: 0;
     }
 
     .log-time {
-      color: #94a3b8;
+      color: #7dd3fc;
+      margin-right: 4px;
     }
 
     .log-device {
       color: #fde68a;
       font-weight: 700;
       text-shadow: none;
+      margin-right: 4px;
     }
 
     .log-message {
-      color: #bfdbfe;
+      color: #dbeafe;
     }
 
     .dot {
@@ -697,10 +695,10 @@
     .log-metric {
       margin: 0;
       padding-top: 6px;
-      border-top: 1px dashed rgba(148, 163, 184, 0.45);
+      border-top: 1px dashed rgba(251, 191, 36, 0.28);
       font-size: 12px;
       font-weight: 700;
-      color: #3b82f6;
+      color: #93c5fd;
       line-height: 1.4;
     }
 
@@ -734,30 +732,8 @@
       }
     }
     /* 全站科技风主题覆盖：深色背景、青蓝光效、终端化日志 */
-    body {
-      background:
-        radial-gradient(circle at 12% 16%, rgba(34, 211, 238, 0.16), transparent 30%),
-        radial-gradient(circle at 88% 12%, rgba(59, 130, 246, 0.16), transparent 32%),
-        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px),
-        #020617;
-      background-size: auto, auto, 34px 34px, 34px 34px, auto;
-      color: #dbeafe;
-    }
 
-    .page,
-    .section {
-      background: transparent !important;
-    }
-
-    .section + .section {
-      border-top-color: rgba(125, 211, 252, 0.28);
-    }
-
-    .diagram-panel,
-    .controls,
-    .gauge-row,
-    .log-box {
+    .gauge-row {
       background: rgba(2, 8, 23, 0.88) !important;
       border: 1px solid rgba(34, 211, 238, 0.36) !important;
       box-shadow: inset 0 0 24px rgba(34, 211, 238, 0.08), 0 0 22px rgba(14, 165, 233, 0.16) !important;
@@ -768,7 +744,6 @@
       background-color: transparent !important;
     }
 
-    .panel-header,
     .action-btn {
       background:
         linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
@@ -778,10 +753,7 @@
       box-shadow: 0 0 14px rgba(34, 211, 238, 0.24);
     }
 
-    .input-row label,
-    .status,
-    .log-title,
-    .log-metric {
+    .status {
       color: #dbeafe !important;
       fill: #dbeafe !important;
       text-shadow: none;
@@ -833,6 +805,12 @@
       box-shadow: inset 0 0 12px rgba(249, 115, 22, 0.08), 0 0 14px rgba(249, 115, 22, 0.18);
     }
 
+    /* 右图 UAV-4 边框与"获得认证反馈"同色 */
+    .right-canvas .uav-card.uav-single {
+      border-color: #10b981 !important;
+      box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.08), 0 0 14px rgba(16, 185, 129, 0.18) !important;
+    }
+
     .left-canvas .platform,
     .right-canvas .blockchain {
       background:
@@ -871,95 +849,6 @@
       mix-blend-mode: normal;
     }
 
-    .status,
-    .log-title,
-    .log-metric {
-      color: #67e8f9 !important;
-    }
-
-    .count-input,
-    .time-input,
-    .current-test-indicator {
-      background: rgba(2, 6, 23, 0.86) !important;
-      border-color: rgba(125, 211, 252, 0.45) !important;
-      color: #e0f2fe !important;
-    }
-
-    .current-test-indicator {
-      color: #67e8f9 !important;
-      text-shadow: none;
-      box-shadow: inset 0 0 12px rgba(15, 23, 42, 0.44);
-      background:
-        radial-gradient(circle at 15% 10%, rgba(251, 191, 36, 0.18), transparent 42%),
-        linear-gradient(135deg, rgba(8, 47, 73, 0.88), rgba(2, 6, 23, 0.9)) !important;
-    }
-
-    .count-stepper {
-      background: rgba(2, 6, 23, 0.58) !important;
-      box-shadow: inset 0 0 8px rgba(34, 211, 238, 0.06);
-    }
-
-    .count-step-btn {
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.92)) !important;
-      border-color: rgba(125, 211, 252, 0.34) !important;
-      color: #bfdbfe !important;
-      box-shadow: inset 0 0 8px rgba(34, 211, 238, 0.06);
-    }
-
-    .count-step-btn:hover:not(:disabled) {
-      background: linear-gradient(180deg, rgba(8, 47, 73, 0.96), rgba(14, 116, 144, 0.72)) !important;
-      border-color: rgba(34, 211, 238, 0.56) !important;
-      color: #67e8f9 !important;
-    }
-
-    .controls::before {
-      border-color: rgba(251, 191, 36, 0.4) !important;
-      background:
-        linear-gradient(90deg, rgba(251, 191, 36, 0.2), rgba(34, 211, 238, 0.12)),
-        rgba(2, 6, 23, 0.62) !important;
-      color: #fef3c7 !important;
-      text-shadow: none;
-      box-shadow: inset 0 0 16px rgba(251, 191, 36, 0.06);
-    }
-
-    .option-line {
-      border-color: rgba(125, 211, 252, 0.25) !important;
-      background:
-        linear-gradient(135deg, rgba(8, 47, 73, 0.72), rgba(2, 6, 23, 0.78)),
-        radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.12), transparent 38%) !important;
-      box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.06);
-    }
-
-    .option-item {
-      color: #dbeafe !important;
-      text-shadow: none;
-    }
-
-    .count-label {
-      color: #93c5fd !important;
-    }
-
-    .start-btn {
-      border-color: rgba(45, 212, 191, 0.72) !important;
-      background:
-        linear-gradient(135deg, #0f766e, #0ea5e9),
-        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.22), transparent 34%) !important;
-      color: #ecfeff !important;
-      box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
-    }
-
-    .log-content {
-      color: #93c5fd !important;
-    }
-
-    .log-title {
-      border-bottom-color: rgba(125, 211, 252, 0.24) !important;
-    }
-
-    .log-metric {
-      border-top-color: rgba(125, 211, 252, 0.28) !important;
-    }
-
     .gauge-card {
       background:
         linear-gradient(90deg, rgba(8, 47, 73, 0.86), rgba(2, 6, 23, 0.78)),
@@ -968,16 +857,6 @@
       box-shadow:
         inset 0 0 18px rgba(34, 211, 238, 0.06),
         0 0 0 1px rgba(15, 23, 42, 0.22);
-    }
-
-    .gauge-row::before {
-      border-color: rgba(34, 211, 238, 0.34) !important;
-      background:
-        linear-gradient(90deg, rgba(34, 211, 238, 0.18), rgba(251, 191, 36, 0.08)),
-        rgba(2, 6, 23, 0.7) !important;
-      color: #dffbff !important;
-      text-shadow: none;
-      box-shadow: inset 0 0 14px rgba(34, 211, 238, 0.06);
     }
 
     .gauge-title {
@@ -1003,18 +882,6 @@
       text-shadow: none;
     }
 
-    .log-box {
-      background:
-        linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96)),
-        radial-gradient(circle at 0% 0%, rgba(251, 191, 36, 0.08), transparent 36%) !important;
-      background-size: auto !important;
-      border-color: rgba(148, 163, 184, 0.28) !important;
-      color: #dbeafe !important;
-      box-shadow:
-        inset 0 0 22px rgba(15, 23, 42, 0.88),
-        0 0 18px rgba(15, 23, 42, 0.36) !important;
-    }
-
     .log-box:nth-child(1) {
       border-color: rgba(251, 191, 36, 0.28) !important;
     }
@@ -1023,68 +890,28 @@
       border-color: rgba(125, 211, 252, 0.28) !important;
     }
 
-    .log-box:nth-child(1) .log-title,
-    .log-box:nth-child(2) .log-title {
-      color: #fde68a !important;
-      letter-spacing: 0.04em;
-      text-shadow: none;
-      border-bottom-color: rgba(251, 191, 36, 0.24) !important;
-    }
-
-    .log-box:nth-child(1) .log-metric,
-    .log-box:nth-child(2) .log-metric {
-      color: #93c5fd !important;
-      text-shadow: none;
-      border-top-color: rgba(251, 191, 36, 0.26) !important;
-    }
-
-    /* 字体整体收紧：保留布局和图标位置，只降低各区域文字视觉占比 */
-    .panel-header {
-      font-size: 16px !important;
-    }
-
     .image-wrap .canvas div[style*="font-size"],
     .image-wrap .status-text {
       font-size: 11px !important;
     }
 
     .image-wrap .uav-label {
-      font-size: 10px !important;
+      font-size: 12px !important;
     }
 
     .left-canvas .platform {
       font-size: 17px !important;
     }
 
-    .controls::before,
-    .gauge-row::before {
-      font-size: 14px !important;
-    }
-
-    .option-item,
-    .start-btn,
-    .current-test-indicator,
-    .log-title {
-      font-size: 13px !important;
-    }
-
-    .count-label,
-    .gauge-title,
-    .log-metric {
-      font-size: 11px !important;
-    }
-
-    .count-input,
-    .time-input {
-      font-size: 14px !important;
+    .gauge-title {
+      font-size: 15px !important;
     }
 
     .gauge-value {
       font-size: 21px !important;
     }
 
-    .gauge-mark,
-    .log-content {
+    .gauge-mark {
       font-size: 10px !important;
     }
   </style>
@@ -1128,34 +955,37 @@
 <!-- 左图攻击者图标：位置和大小由 .hacker 控制。 -->
 <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
 <!-- 左图 WiFi 图标 1：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:32%; right:16%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:27%; right:15%;" alt="WiFi">
 <!-- 左图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
 <img src="../assets/wi-fi.png" class="element icon-wifi" style="top:67%; left:25%;" alt="WiFi">
-<!-- 左图接入失败状态文字：修改 top/right 可移动位置。 -->
-<div class="status-text fail" style="top: 40%; right: 9%;">接入请求失败 ❌</div>
 <!-- 左图集中式信息共享与认证平台：位置和大小由 .platform 控制。 -->
 <div class="element platform">集中式信息共享与认证平台</div>
+<div style="position:absolute; top: 35%; right: 8%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#f97316 !important;
+                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+        接入请求失败 ❌
+      </div>
 <!-- 左图网络攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:67%; left:4%; transform:translateX(-50%);
-                  font-size:13px; font-weight:bold; color:#ef4444;
+<div style="position:absolute; top:67%; left:6%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#ef4444 !important;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         网络攻击<br>（持续 t 秒）
       </div>
 <!-- 左图认证请求文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:70%; left:35%; transform:translateX(-50%);
+<div style="position:absolute; top:70%; left:37%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         认证请求
       </div>
 <!-- 左图认证失败说明文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:70%; left:62%; transform:translateX(-50%);
+<div style="position:absolute; top:70%; left:60%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入认证节点被<br>攻击,
         <span style="color:#f97316;">接入失败</span>
       </div>
 <!-- 左图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:23%; left:48%; transform:translateX(-50%);
+<div style="position:absolute; top:27%; left:50%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入点
@@ -1168,7 +998,7 @@
 <marker id="arrowhead-success"
                   markerWidth="4" markerHeight="2.4"
                   refX="3" refY="1.2" orient="auto">
-            <polygon points="0 0, 4 1.2, 0 2.4" fill="#64748b" />
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#38bdf8" />
           </marker>
 <!-- 箭头定义：失败链路的箭头尖。 -->
 <marker id="arrowhead-fail"
@@ -1180,43 +1010,43 @@
 <marker id="arrowhead-black"
                   markerWidth="4" markerHeight="2.4"
                   refX="3" refY="1.2" orient="auto">
-            <polygon points="0 0, 4 1.2, 0 2.4" fill="#fbbf24" />
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#dbeafe" />
           </marker>
 <!-- 箭头定义：攻击路径的箭头尖。 -->
 <marker id="arrowhead-attack"
                   markerWidth="4" markerHeight="2.4"
                   refX="3" refY="1.2" orient="auto">
-            <polygon points="0 0, 4 1.2, 0 2.4" fill="#ef4444" />
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
           </marker>
         </defs>
 <!-- 左图普通链路 1：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-success"
-              x1="32" y1="20" x2="45" y2="30"
+              x1="32" y1="22" x2="46" y2="37"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-success)" />
 <!-- 左图普通链路 2：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-success"
-              x1="20" y1="22" x2="45" y2="35"
+              x1="20" y1="26" x2="45" y2="42"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-success)" />
 <!-- 左图普通链路 3：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-success"
-              x1="15" y1="28" x2="45" y2="40"
+              x1="15" y1="31" x2="45" y2="47"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-success)" />
 <!-- 左图 UAV-4 单模态接入失败链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-fail"
-              x1="80" y1="27" x2="65" y2="35"
+              x1="80" y1="26" x2="63" y2="42"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-fail)" />
 <!-- 左图平台请求/反馈链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-connect"
-              x1="54" y1="80" x2="54" y2="67"
+              x1="54" y1="82.5" x2="54" y2="65"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
 <!-- 左图平台请求/反馈链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-connect"
-              x1="50" y1="67" x2="50" y2="80"
+              x1="50" y1="65" x2="50" y2="82.5"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
 <!-- 左图攻击链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
@@ -1272,7 +1102,7 @@ class="element icon-tri"
       <!-- 右图三角块 2：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
       <img src="../assets/physics/blockchain1.png"
 class="element icon-tri"
-          style="top: 9%;  left: 36%; transform: scale(0.8);"
+          style="top: 9%;  left: 34%; transform: scale(0.8);"
           alt="区块链">
       <!-- 右图三角块 3：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
       <img src="../assets/physics/blockchain1.png"
@@ -1290,45 +1120,44 @@ class="element icon-tri"
           style="top: 50%; left: 57%; transform: scale(0.8);"
           alt="区块链">
 <!-- 右图 LoRa 图标：修改行内 top/left 可移动位置。 -->
-<img src="../assets/LoRa.png" class="element icon-lora" style="top:28%; left:24%;" alt="LoRa">
+<img src="../assets/lora.png" class="element icon-lora" style="top:28%; left:26%;" alt="LoRa">
 <!-- 右图 WiFi 图标 1：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:30%; right:10%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:30%; right:15%;" alt="WiFi">
 <!-- 右图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:37%; left:25%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="top:34%; left:20%;" alt="WiFi">
 <!-- 右图 WiFi 图标 3：修改行内 top/left/right/bottom 可移动位置。 -->
 <img src="../assets/wi-fi.png" class="element icon-wifi" style="top:17%; left:41%;" alt="WiFi">
 <!-- 右图 WiFi 图标 4：修改行内 top/left/right/bottom 可移动位置。 -->
-<img src="../assets/wi-fi.png" class="element icon-wifi" style="bottom:33%; left:22%;" alt="WiFi">
+<img src="../assets/wi-fi.png" class="element icon-wifi" style="bottom:33%; left:27.5%;" alt="WiFi">
 <!-- 右图绿色闪电链路 1：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
-<img src="../assets/flash.svg"
+<img src="../assets/flash3.svg"
           class="element icon-wifi"
           style="top:32%; left:25%;
                   transform: rotate(105deg) scaleX(0.95) scaleY(6);
                   transform-origin: center;"
           alt="flash">
 <!-- 右图绿色闪电链路 2：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
-<img src="../assets/flash.svg"
+<img src="../assets/flash3.svg"
           class="element icon-wifi"
           style="top:24%; left:28%;
                   transform: rotate(112deg) scaleX(0.9) scaleY(5);
                   transform-origin: center;"
           alt="flash">
 <!-- 右图绿色闪电链路 3：修改 top/left、rotate、scaleX、scaleY 可调整。 -->
-<img src="../assets/flash.svg"
+<img src="../assets/flash3.svg"
           class="element icon-wifi"
           style="top:20%; left:36%;
-                  transform: rotate(120deg) scaleX(0.8) scaleY(3);
+                  transform: rotate(125deg) scaleX(0.8) scaleY(3);
                   transform-origin: center;"
           alt="flash">
 <!-- 右图橙色闪电链路：修改 top/right、rotate、scaleX、scaleY 可调整。 -->
-<img src="../assets/flash2.svg"
+<img src="../assets/flash.svg"
           class="element icon-wifi"
-          style="top:30%; right:22%;
+          style="top:30%; right:25%;
                   transform: rotate(-125deg) scaleX(0.9) scaleY(4);
                   transform-origin: center;"
           alt="flash2">
-<!-- 右图接入成功状态文字：修改 top/right 可移动位置。 -->
-<div class="status-text success" style="top: 38%; right: 10%;">获得认证反馈<br>成功接入 ✅</div>
+
 <!-- 右图区块链平台块：位置和大小由 .blockchain 控制。 -->
 <div class="element blockchain" style="border-radius:8px;">
 <!-- 区块链平台内部图片：修改 width/height/transform 可调整贴合方式。 -->
@@ -1338,47 +1167,53 @@ class="element icon-tri"
                     height: 100%;
                     object-fit: contain;
                     background: transparent;
-                    transform: scaleX(1.1);
+                    transform: scaleX(1);
                     transform-origin: center;" />
       </div>
 <!-- 右图 SVG 连线层：包含区块链查询、反馈和攻击路径虚线。 -->
 <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
 <!-- 右图区块链请求/反馈链路 1：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-connect"
-              x1="54" y1="72" x2="54" y2="57"
+              x1="54" y1="74" x2="54" y2="55"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
 <!-- 右图区块链请求/反馈链路 2：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-connect"
-              x1="50" y1="57" x2="50" y2="72"
+              x1="50" y1="55" x2="50" y2="74"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
 <!-- 右图攻击链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-attack"
-              x1="20" y1="56" x2="20" y2="75"
+              x1="25.5" y1="56" x2="25.5" y2="75"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-attack)" />
       </svg>
 <!-- 右图区块链节点攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:58%; left:2%; transform:translateX(-50%);
-                  font-size:13px; font-weight:bold; color:#ef4444;
+<div style="position:absolute; top: 38%; right: 10%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#10b981 !important;
+                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+        获得认证反馈<br>成功接入 ✅
+      </div>
+
+<div style="position:absolute; top:58%; left:8.5%; transform:translateX(-50%);
+                  font-size:13px; font-weight:bold; color:#ef4444 !important;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         对区块链<br>节点的<br>网络攻击<br>（持续 t 秒）
       </div>
 <!-- 右图认证请求文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:64%; left:35%; transform:translateX(-50%);
+<div style="position:absolute; top:64%; left:37%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         认证请求
       </div>
 <!-- 右图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:16%; left:50%; transform:translateX(-50%);
+<div style="position:absolute; top:17%; left:50%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入点
       </div>
 <!-- 右图区块链容错说明文字：修改 top/left/font-size/scale 可调整。 -->
-<div style="position:absolute; top:63%; left:63%; transform:translateX(-50%);
+<div style="position:absolute; top:63%; left:61%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         区块链具有节点容错能<br>力，仍能发出认证反馈
@@ -1386,9 +1221,9 @@ class="element icon-tri"
 
       <!-- 右图红色攻击高亮框：修改 top/left/width/height 可调整位置和大小。 -->
       <div style="position: absolute;
-top: 76%;
-            left: 16%;
-            width: 13%;
+            top: 76%;
+            left: 21%;
+            width: 11%;
             height: 11%;
             background-color: #ef4444;
             opacity: 0.5;
@@ -1403,6 +1238,7 @@ top: 76%;
       <div class="bottom-layout">
         <article class="left-panel">
           <div class="controls">
+            <h3 class="panel-header">测试参数与状态控制</h3>
             <div class="option-row">
               <div class="option-line">
                 <label class="option-item"><input id="single-option" type="checkbox" checked /> 单模态接入测试</label>
@@ -1428,12 +1264,13 @@ top: 76%;
               </div>
             </div>
             <div class="action-row">
-              <button class="start-btn" id="start-test-btn" type="button">&#x5f00;&#x59cb;&#x6d4b;&#x8bd5;</button>
-              <span class="current-test-indicator" id="current-test-indicator">&#x5f53;&#x524d;&#x72b6;&#x6001;&#xff1a;&#x7b49;&#x5f85;&#x5f00;&#x59cb;</span>
+              <button class="start-btn" id="start-test-btn" type="button">开始测试</button>
+              <span class="current-test-indicator" id="current-test-indicator">当前状态：等待开始</span>
             </div>
           </div>
 
           <div class="gauge-row">
+            <h3 class="panel-header">网络接入测试结果</h3>
             <section class="gauge-card">
               <h3 class="gauge-title">单模态接入成功率</h3>
               <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="单模态接入成功率仪表盘">
@@ -1497,8 +1334,8 @@ top: 76%;
       const DEFAULT_ROUNDS = 5;
       const MIN_ROUNDS = 1;
       const MAX_ROUNDS = 100;
-      const MIN_BOOST_GAP = 20;
-      const STEP_DELAY_MS = 280;
+      const MIN_BOOST_RATIO = 0.20;
+      const STEP_DELAY_MS = 420;
 
       const singleOption = document.getElementById('single-option');
       const multiOption = document.getElementById('multi-option');
@@ -1702,6 +1539,27 @@ top: 76%;
         return min + Math.random() * (max - min);
       }
 
+      function randomLatency() {
+        return Math.floor(randomInRange(15, 180));
+      }
+
+      function randomSignalDbm() {
+        return Math.floor(randomInRange(-82, -38));
+      }
+
+      function pickChannel() {
+        return Math.random() < 0.5 ? 'LoRa' : 'WiFi';
+      }
+
+      function randomAttackType() {
+        var types = ['SYN Flood', 'UDP Flood', 'ICMP Flood', 'HTTP GET Flood'];
+        return types[Math.floor(Math.random() * types.length)];
+      }
+
+      function randomAttackBandwidth() {
+        return (randomInRange(0.5, 5.0)).toFixed(1);
+      }
+
       function clamp(value, min, max) {
         return Math.min(max, Math.max(min, value));
       }
@@ -1742,21 +1600,22 @@ top: 76%;
         return multiRate - singleRate;
       }
 
-      function enforceMinGap(singleOutcomes, multiOutcomes, minGap) {
-        let gap = calcGap(singleOutcomes, multiOutcomes);
+      function enforceMinBoostRatio(singleOutcomes, multiOutcomes, minRatio) {
+        var singleRate = calcRate(countSuccess(singleOutcomes), singleOutcomes.length);
+        var multiRate = calcRate(countSuccess(multiOutcomes), multiOutcomes.length);
 
-        while (gap !== null && gap < minGap) {
+        while (singleRate !== null && multiRate !== null && multiRate < singleRate * (1 + minRatio)) {
           const multiFailIndex = multiOutcomes.findIndex(function (ok) { return !ok; });
           if (multiFailIndex !== -1) {
             multiOutcomes[multiFailIndex] = true;
-            gap = calcGap(singleOutcomes, multiOutcomes);
+            multiRate = calcRate(countSuccess(multiOutcomes), multiOutcomes.length);
             continue;
           }
 
           const singleSuccessIndex = singleOutcomes.findIndex(function (ok) { return ok; });
           if (singleSuccessIndex !== -1) {
             singleOutcomes[singleSuccessIndex] = false;
-            gap = calcGap(singleOutcomes, multiOutcomes);
+            singleRate = calcRate(countSuccess(singleOutcomes), singleOutcomes.length);
             continue;
           }
 
@@ -1769,20 +1628,21 @@ top: 76%;
         let multiOutcomes = [];
 
         for (let attempt = 0; attempt < 200; attempt += 1) {
-          const targetGap = randomInRange(20, 40);
           const singleMeanRate = randomInRange(55, 72);
-          const multiMeanRate = clamp(singleMeanRate + targetGap, singleMeanRate + 1, 98);
+          const targetBoost = randomInRange(0.25, 0.45);
+          const multiMeanRate = clamp(singleMeanRate * (1 + targetBoost), singleMeanRate + 1, 98);
 
           singleOutcomes = buildOutcomeListAroundMean(singleRounds, singleMeanRate, 6);
           multiOutcomes = buildOutcomeListAroundMean(multiRounds, multiMeanRate, 6);
 
-          const gap = calcGap(singleOutcomes, multiOutcomes);
-          if (gap !== null && gap >= MIN_BOOST_GAP) {
+          const singleRate = calcRate(countSuccess(singleOutcomes), singleOutcomes.length);
+          const multiRate = calcRate(countSuccess(multiOutcomes), multiOutcomes.length);
+          if (singleRate !== null && multiRate !== null && multiRate >= singleRate * (1 + MIN_BOOST_RATIO)) {
             return { singleOutcomes: singleOutcomes, multiOutcomes: multiOutcomes };
           }
         }
 
-        enforceMinGap(singleOutcomes, multiOutcomes, MIN_BOOST_GAP);
+        enforceMinBoostRatio(singleOutcomes, multiOutcomes, MIN_BOOST_RATIO);
         return { singleOutcomes: singleOutcomes, multiOutcomes: multiOutcomes };
       }
 
@@ -1829,8 +1689,18 @@ top: 76%;
         multiLog.innerHTML = '';
         resetView();
         setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u6d4b\u8bd5\u542f\u52a8');
-        appendLog(singleLog, '[\u5355\u6a21\u6001] \u6d4b\u8bd5\u542f\u52a8\uff0c\u91c7\u7528\u96c6\u4e2d\u5f0f\u8ba4\u8bc1\u670d\u52a1\uff0c\u671f\u95f4\u5c06\u5bf9\u8ba4\u8bc1\u670d\u52a1\u53d1\u8d77DDoS\u653b\u51fb\u3002');
-        appendLog(multiLog, '[\u591a\u6a21\u6001] \u6d4b\u8bd5\u542f\u52a8\uff0c\u91c7\u7528\u533a\u5757\u94fe\u5206\u5e03\u5f0f\u8ba4\u8bc1\u670d\u52a1\uff0c\u671f\u95f4\u5c06\u5bf9\u8ba4\u8bc1\u670d\u52a1\u53d1\u8d77DDoS\u653b\u51fb\u3002');
+        if (runSingle) {
+          appendLog(singleLog, '[\u5355\u6a21\u6001] \u6d4b\u8bd5\u542f\u52a8\uff0c\u91c7\u7528\u96c6\u4e2d\u5f0f\u8ba4\u8bc1\u670d\u52a1');
+          appendLog(singleLog, '[\u7cfb\u7edf] \u653b\u51fb\u8005\u5df2\u5c31\u4f4d\uff0c\u6a21\u62dfDDoS\u653b\u51fb\u73af\u5883');
+          appendLog(singleLog, '[\u7cfb\u7edf] \u96c6\u4e2d\u5f0f\u8ba4\u8bc1\u5e73\u53f0\u521d\u59cb\u5316\u5b8c\u6210\uff0c\u76d1\u542c\u7aef\u53e3 8443');
+          appendLog(singleLog, '[\u7cfb\u7edf] \u63a5\u5165\u70b9\u5df2\u542f\u52a8\uff0c\u7b49\u5f85UAV\u8fde\u63a5\u8bf7\u6c42');
+        }
+        if (runMulti) {
+          appendLog(multiLog, '[\u591a\u6a21\u6001] \u6d4b\u8bd5\u542f\u52a8\uff0c\u91c7\u7528\u533a\u5757\u94fe\u5206\u5e03\u5f0f\u8ba4\u8bc1\u670d\u52a1');
+          appendLog(multiLog, '[\u7cfb\u7edf] \u653b\u51fb\u8005\u5df2\u5c31\u4f4d\uff0c\u6a21\u62dfDDoS\u653b\u51fb\u73af\u5883');
+          appendLog(multiLog, '[\u7cfb\u7edf] \u533a\u5757\u94fe\u7f51\u7edc\u521d\u59cb\u5316\uff1a\u5171\u8bc6\u8282\u70b9\u6570 7\uff0c\u5bb9\u9519\u9608\u503c f=2');
+          appendLog(multiLog, '[\u7cfb\u7edf] \u63a5\u5165\u70b9\u5df2\u542f\u52a8\uff0cLoRa + WiFi \u53cc\u6a21\u4fe1\u9053\u5c31\u7eea');
+        }
 
         setControlState(true);
 
@@ -1859,30 +1729,64 @@ top: 76%;
 
         for (let i = 1; i <= totalRounds; i += 1) {
           if (runSingle && i <= singleRounds) {
-            setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u5355\u6a21\u6001\u63a5\u5165\u6d4b\u8bd5 ' + i + '/' + singleRounds);
+            setCurrentStatus('当前状态：单模态接入测试 ' + i + '/' + singleRounds);
             singleTotal += 1;
             const okSingle = singleOutcomes[i - 1];
+            const signal = randomSignalDbm();
+            const attackType = randomAttackType();
+            const attackBw = randomAttackBandwidth();
+
+            appendLog(singleLog, '[UAV] 选择 LoRa 信道发起接入请求');
+            appendLog(singleLog, '[UAV] 信号强度：' + signal + 'dBm');
+
             if (okSingle) {
               singleSuccess += 1;
-            }
-            appendLog(singleLog, '[单模态] 第' + i + '轮接入' + (okSingle ? '成功' : '失败'));
-            if (!okSingle) {
-              appendLog(singleLog, '[单模态] 集中式认证服务受DDoS攻击影响，认证请求超时。');
+              const latency = randomLatency();
+              appendLog(singleLog, '[接入点] 收到UAV请求，转发至集中式认证平台');
+              appendLog(singleLog, '[认证平台] 验证UAV身份凭证...');
+              appendLog(singleLog, '[认证平台] 认证响应延迟：' + latency + 'ms');
+              appendLog(singleLog, '[结果] 第' + i + '轮接入 ✓ 成功');
+            } else {
+              const latency = Math.floor(randomInRange(200, 500));
+              appendLog(singleLog, '[接入点] 收到UAV请求，转发至集中式认证平台');
+              appendLog(singleLog, '[攻击] DDoS攻击导致认证平台负载过高');
+              appendLog(singleLog, '[认证平台] 认证请求排队中，等待超时...');
+              appendLog(singleLog, '[认证平台] 响应延迟：' + latency + 'ms，超过阈值');
+              appendLog(singleLog, '[结果] 第' + i + '轮接入 ✗ 失败 — 认证服务不可用');
             }
           }
 
           if (runMulti && i <= multiRounds) {
-            setCurrentStatus('\u5f53\u524d\u72b6\u6001\uff1a\u591a\u6a21\u6001\u63a5\u5165\u6d4b\u8bd5 ' + i + '/' + multiRounds);
+            setCurrentStatus('当前状态：多模态接入测试 ' + i + '/' + multiRounds);
             multiTotal += 1;
             const okMulti = multiOutcomes[i - 1];
+            const channel = pickChannel();
+            const signal = randomSignalDbm();
+            const attackType = randomAttackType();
+            const attackBw = randomAttackBandwidth();
+            const activeNodes = Math.floor(randomInRange(4, 7));
+            const attackedNodes = Math.floor(randomInRange(1, 3));
+
+            appendLog(multiLog, '[UAV] 选择 ' + channel + ' 信道发起接入请求');
+            appendLog(multiLog, '[UAV] 信号强度：' + signal + 'dBm');
+            appendLog(multiLog, '[区块链] 当前活跃共识节点：' + activeNodes + '/7');
+
             if (okMulti) {
               multiSuccess += 1;
-            }
-            appendLog(multiLog, '[多模态] 第' + i + '轮接入' + (okMulti ? '成功' : '失败'));
-            if (okMulti) {
-              appendLog(multiLog, '[多模态] 区块链分布式认证节点正常响应，接入认证通过。');
+              const latency = randomLatency();
+              appendLog(multiLog, '[接入点] 收到UAV请求，向区块链节点广播认证请求');
+              appendLog(multiLog, '[区块链] ' + attackedNodes + '个节点受攻击影响，' + (activeNodes - attackedNodes) + '个节点正常响应');
+              appendLog(multiLog, '[区块链] 达成共识，认证通过');
+              appendLog(multiLog, '[区块链] 认证响应延迟：' + latency + 'ms');
+              appendLog(multiLog, '[结果] 第' + i + '轮接入 ✓ 成功');
             } else {
-              appendLog(multiLog, '[多模态] 部分区块链节点受DDoS攻击影响，认证请求重试中。');
+              const latency = Math.floor(randomInRange(200, 500));
+              appendLog(multiLog, '[接入点] 收到UAV请求，向区块链节点广播认证请求');
+              appendLog(multiLog, '[区块链] ' + attackedNodes + '个节点受攻击影响，正在重试...');
+              appendLog(multiLog, '[区块链] 重试第1次：请求转发至备用节点');
+              appendLog(multiLog, '[区块链] 重试第2次：共识超时，节点响应不足');
+              appendLog(multiLog, '[区块链] 响应延迟：' + latency + 'ms，超过阈值');
+              appendLog(multiLog, '[结果] 第' + i + '轮接入 ✗ 失败 — 共识未达成');
             }
           }
 
@@ -1900,13 +1804,21 @@ top: 76%;
         const finalMultiRate = runMulti ? calcRate(multiSuccess, multiTotal) : null;
 
         if (runSingle) {
-          appendLog(singleLog, '[单模态] 测试完成，最终成功率 ' + finalSingleRate.toFixed(1) + '%');
-          appendLog(singleLog, '[单模态] 集中式认证服务在DDoS攻击下可用性降低。');
+          appendLog(singleLog, '[统计] 单模态接入测试完成，共 ' + singleRounds + ' 轮');
+          appendLog(singleLog, '[统计] 成功：' + singleSuccess + ' 次，失败：' + (singleTotal - singleSuccess) + ' 次');
+          appendLog(singleLog, '[统计] 最终成功率：' + finalSingleRate.toFixed(1) + '%');
+          appendLog(singleLog, '[结论] 单点认证架构存在单点故障风险，抗攻击能力有限');
         }
 
         if (runMulti) {
-          appendLog(multiLog, '[多模态] 测试完成，最终成功率 ' + finalMultiRate.toFixed(1) + '%');
-          appendLog(multiLog, '[多模态] 区块链增强分布式认证比集中式认证频谱接入成功率提升至少20%。');
+          appendLog(multiLog, '[统计] 多模态接入测试完成，共 ' + multiRounds + ' 轮');
+          appendLog(multiLog, '[统计] 成功：' + multiSuccess + ' 次，失败：' + (multiTotal - multiSuccess) + ' 次');
+          appendLog(multiLog, '[统计] 最终成功率：' + finalMultiRate.toFixed(1) + '%');
+          if (finalSingleRate !== null) {
+            const improvement = (((finalMultiRate - finalSingleRate) / finalSingleRate) * 100).toFixed(1);
+            appendLog(multiLog, '[对比] 多模态较单模态提升：' + improvement + '%');
+          }
+          appendLog(multiLog, '[结论] 区块链分布式认证具备节点容错能力，抗攻击能力显著优于集中式');
         }
 
         if (finalSingleRate !== null && finalMultiRate !== null) {
@@ -1926,10 +1838,12 @@ top: 76%;
       });
 
       resetView();
-      appendLog(singleLog, '[单模态] 系统就绪，等待测试指令');
-      appendLog(singleLog, '[单模态] 测试说明：UAV-1动态选择LoRa或WiFi接入，认证服务采用集中认证。');
-      appendLog(multiLog, '[多模态] 系统就绪，等待测试指令');
-      appendLog(multiLog, '[多模态] 测试说明：UAV-1动态选择LoRa或WiFi接入，认证服务采用区块链分布式认证。');
+      appendLog(singleLog, '[系统] 网络层接入测试平台初始化完成');
+      appendLog(singleLog, '[系统] 单模态模式：集中式认证服务，LoRa信道接入');
+      appendLog(singleLog, '[系统] UAV节点已上线，等待测试指令');
+      appendLog(multiLog, '[系统] 网络层接入测试平台初始化完成');
+      appendLog(multiLog, '[系统] 多模态模式：区块链分布式认证，LoRa + WiFi双信道接入');
+      appendLog(multiLog, '[系统] UAV节点已上线，等待测试指令');
 
       startBtn.addEventListener('click', runTest);
       singleCountUpBtn.addEventListener('click', function () { adjustRoundCount(singleCountInput, 1); });
