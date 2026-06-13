@@ -49,8 +49,8 @@
       grid-template-columns: minmax(280px, 0.32fr) minmax(0, 0.68fr);
       grid-template-rows: minmax(0, 0.56fr) minmax(0, 0.44fr);
       grid-template-areas:
-        "gauges image"
-        "controls logs";
+        "left image"
+        "left logs";
       gap: 14px;
       padding: 12px 16px;
       overflow: hidden;
@@ -160,9 +160,7 @@
   .element.icon-lora {
     width: 26px;
     height: 26px;
-    background: rgba(255, 255, 255, 0.85);
     border-radius: 50%;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
   }
   .element.icon-wifi {
     width: 28px;
@@ -276,8 +274,21 @@
       display: contents;
     }
 
+    /* 左侧列容器：测试结果 + 测试控制，用 CSS 变量控制两者占比 */
+    .left-col {
+      --gauges-flex: 0.62;    /* “网络接入测试结果”占比（约62%） */
+      --controls-flex: 0.38;  /* “测试参数与状态控制”占比（约38%） */
+      grid-area: left;
+      grid-row: 1 / 3;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
     .controls {
-      grid-area: controls;
+      flex: var(--controls-flex) 1 0;
       border: 1px solid rgba(34, 211, 238, 0.36);
       border-radius: 10px;
       background: rgba(3, 12, 28, 0.86);
@@ -288,6 +299,11 @@
       min-height: 0;
       overflow: visible;
       box-shadow: inset 0 0 24px rgba(34, 211, 238, 0.08), 0 0 20px rgba(14, 165, 233, 0.14);
+    }
+
+    /* 让“测试参数与状态控制”标题相对容器的位置与“网络接入测试结果”一致 */
+    .controls > .panel-header {
+      margin: -2px -10px 4px;
     }
 
     .input-row label {
@@ -479,7 +495,7 @@
     }
 
     .gauge-row {
-      grid-area: gauges;
+      flex: var(--gauges-flex) 1 0;
       border: 1px solid #d1d5db;
       border-radius: 16px;
       background: #ffffff;
@@ -488,7 +504,6 @@
       flex-direction: column;
       gap: 0;
       min-height: 0;
-      height: 100%;
       overflow: hidden;
     }
 
@@ -705,13 +720,16 @@
     @media (max-width: 1180px) {
       .page {
         grid-template-columns: 1fr;
-        grid-template-rows: minmax(360px, auto) minmax(360px, auto) minmax(160px, auto) minmax(320px, auto);
+        grid-template-rows: minmax(360px, auto) minmax(360px, auto) minmax(320px, auto);
         grid-template-areas:
-          "gauges"
+          "left"
           "image"
-          "controls"
           "logs";
         overflow: auto;
+      }
+
+      .left-col {
+        grid-row: auto;
       }
 
       .right-panel {
@@ -921,7 +939,7 @@
 <div class="image-wrap">
   <!-- 右上图区块容器：左右两个图都放在 image-wrap 里。 -->
   <div class="diagram-panel">
-<div class="panel-header">单模态接入</div>
+<div class="panel-header">集中式接入认证</div>
     <!-- 左图画布：内部元素使用绝对定位，以该画布作为坐标容器。 -->
     <div class="canvas left-canvas">
 <!-- 左图无人机群边界框：修改 top/left/width/height 可调整位置和大小。 -->
@@ -1061,7 +1079,7 @@
   <!-- 右上图区块容器：右侧多模态接入图所在面板。 -->
   <div class="diagram-panel">
 <!-- 右图标题栏：区块链增强的多模态接入。 -->
-<div class="panel-header">区块链增强的多模态接入</div>
+<div class="panel-header">区块链增强的分布式接入认证</div>
     <!-- 右图画布：内部元素使用绝对定位，以该画布作为坐标容器。 -->
     <div class="canvas right-canvas">
 <!-- 右图无人机群边界框：修改 top/left/width/height 可调整位置和大小。 -->
@@ -1120,7 +1138,7 @@ class="element icon-tri"
           style="top: 50%; left: 57%; transform: scale(0.8);"
           alt="区块链">
 <!-- 右图 LoRa 图标：修改行内 top/left 可移动位置。 -->
-<img src="../assets/lora.png" class="element icon-lora" style="top:28%; left:26%;" alt="LoRa">
+<img src="../assets/physics/LoRa (2).png" class="element icon-lora" style="top:28%; left:26%;" alt="LoRa">
 <!-- 右图 WiFi 图标 1：修改行内 top/left/right/bottom 可移动位置。 -->
 <img src="../assets/wi-fi.png" class="element icon-wifi" style="top:30%; right:15%;" alt="WiFi">
 <!-- 右图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
@@ -1159,7 +1177,7 @@ class="element icon-tri"
           alt="flash2">
 
 <!-- 右图区块链平台块：位置和大小由 .blockchain 控制。 -->
-<div class="element blockchain" style="border-radius:8px;">
+<div class="element blockchain" style="border-radius:8px; background:#e8dcc0 !important; box-shadow:inset 0 0 28px rgba(120,90,40,0.45) !important;">
 <!-- 区块链平台内部图片：修改 width/height/transform 可调整贴合方式。 -->
 <img src="../assets/blockchain.png"
             alt="区块链"
@@ -1237,11 +1255,12 @@ class="element icon-tri"
     <section class="section">
       <div class="bottom-layout">
         <article class="left-panel">
+          <div class="left-col">
           <div class="controls">
             <h3 class="panel-header">测试参数与状态控制</h3>
             <div class="option-row">
               <div class="option-line">
-                <label class="option-item"><input id="single-option" type="checkbox" checked /> 单模态接入测试</label>
+                <label class="option-item"><input id="single-option" type="checkbox" checked /> 集中式接入认证测试</label>
                 <label class="count-label" for="single-count">测试次数</label>
                 <div class="count-input-wrap">
                   <input id="single-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
@@ -1252,7 +1271,7 @@ class="element icon-tri"
                 </div>
               </div>
               <div class="option-line">
-                <label class="option-item"><input id="multi-option" type="checkbox" checked /> 多模态接入测试</label>
+                <label class="option-item"><input id="multi-option" type="checkbox" checked /> 分布式接入认证测试</label>
                 <label class="count-label" for="multi-count">测试次数</label>
                 <div class="count-input-wrap">
                   <input id="multi-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
@@ -1270,10 +1289,10 @@ class="element icon-tri"
           </div>
 
           <div class="gauge-row">
-            <h3 class="panel-header">网络接入测试结果</h3>
+            <h3 class="panel-header">接入认证测试结果</h3>
             <section class="gauge-card">
-              <h3 class="gauge-title">单模态接入成功率</h3>
-              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="单模态接入成功率仪表盘">
+              <h3 class="gauge-title">集中式接入认证成功率</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="集中式接入认证成功率仪表盘">
                 <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
                 <path class="gauge-progress" id="single-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="single-needle" x1="110" y1="102" x2="110" y2="34" />
@@ -1285,8 +1304,8 @@ class="element icon-tri"
             </section>
 
             <section class="gauge-card">
-              <h3 class="gauge-title">多模态接入成功率</h3>
-              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="多模态接入成功率仪表盘">
+              <h3 class="gauge-title">分布式接入认证成功率</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="分布式接入认证成功率仪表盘">
                 <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
                 <path class="gauge-progress" id="multi-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="multi-needle" x1="110" y1="102" x2="110" y2="34" />
@@ -1298,8 +1317,8 @@ class="element icon-tri"
             </section>
 
             <section class="gauge-card">
-              <h3 class="gauge-title">多模态相较单模态提升</h3>
-              <svg class="gauge-svg" viewBox="0 0 220 118" aria-label="多模态提升仪表盘">
+              <h3 class="gauge-title">分布式相较集中式提升</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 118" aria-label="分布式提升仪表盘">
                 <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
                 <path class="gauge-progress" id="boost-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="boost-needle" x1="110" y1="102" x2="110" y2="34" />
@@ -1310,19 +1329,20 @@ class="element icon-tri"
               <p class="gauge-value" id="boost-value">--</p>
             </section>
           </div>
+          </div>
         </article>
 
         <article class="right-panel">
           <section class="log-box">
-            <h3 class="log-title">单模态接入测试日志</h3>
+            <h3 class="log-title">集中式接入认证测试日志</h3>
             <ul class="log-content" id="single-log"></ul>
-            <p class="log-metric" id="single-metric">单模态接入当前成功率：--</p>
+            <p class="log-metric" id="single-metric">集中式接入认证当前成功率：--</p>
           </section>
 
           <section class="log-box">
-            <h3 class="log-title">多模态接入测试日志</h3>
+            <h3 class="log-title">分布式接入认证测试日志</h3>
             <ul class="log-content" id="multi-log"></ul>
-            <p class="log-metric" id="multi-metric">多模态接入当前成功率：--</p>
+            <p class="log-metric" id="multi-metric">分布式接入认证当前成功率：--</p>
           </section>
         </article>
       </div>
@@ -1477,8 +1497,8 @@ class="element icon-tri"
         setGauge(gauges.boost, null);
         gauges.boost.value.textContent = '待完成';
         setCurrentStatus('当前状态：等待开始');
-        singleMetric.textContent = '单模态当前成功率：--';
-        multiMetric.textContent = '多模态当前成功率：--';
+        singleMetric.textContent = '集中式接入认证当前成功率：--';
+        multiMetric.textContent = '分布式接入认证当前成功率：--';
       }
 
       function setControlState(disabled) {
@@ -1612,39 +1632,23 @@ class="element icon-tri"
       }
 
       function createPairedOutcomes(singleRounds, multiRounds) {
-        let singleOutcomes = [];
-        let multiOutcomes = [];
-
-        for (let attempt = 0; attempt < 200; attempt += 1) {
-          const singleMeanRate = randomInRange(55, 72);
-          const targetBoost = randomInRange(0.25, 0.45);
-          const multiMeanRate = clamp(singleMeanRate * (1 + targetBoost), singleMeanRate + 1, 98);
-
-          singleOutcomes = buildOutcomeListAroundMean(singleRounds, singleMeanRate, 6);
-          multiOutcomes = buildOutcomeListAroundMean(multiRounds, multiMeanRate, 6);
-
-          const singleRate = calcRate(countSuccess(singleOutcomes), singleOutcomes.length);
-          const multiRate = calcRate(countSuccess(multiOutcomes), multiOutcomes.length);
-          if (singleRate !== null && multiRate !== null && multiRate >= singleRate * (1 + MIN_BOOST_RATIO)) {
-            return { singleOutcomes: singleOutcomes, multiOutcomes: multiOutcomes };
-          }
-        }
-
-        enforceMinBoostRatio(singleOutcomes, multiOutcomes, MIN_BOOST_RATIO);
+        // 集中式接入认证成功率约 60%，分布式接入认证成功率 100%
+        let singleOutcomes = buildOutcomeList(singleRounds, 0.60);
+        let multiOutcomes = buildOutcomeList(multiRounds, 1.0);
         return { singleOutcomes: singleOutcomes, multiOutcomes: multiOutcomes };
       }
 
       function updateMetrics(singleRate, multiRate) {
         if (singleRate === null) {
-          singleMetric.textContent = '单模态当前成功率：--';
+          singleMetric.textContent = '集中式接入认证当前成功率：--';
         } else {
-          singleMetric.textContent = '单模态当前成功率：' + singleRate.toFixed(1) + '%';
+          singleMetric.textContent = '集中式接入认证当前成功率：' + singleRate.toFixed(1) + '%';
         }
 
         if (multiRate === null) {
-          multiMetric.textContent = '多模态当前成功率：--';
+          multiMetric.textContent = '分布式接入认证当前成功率：--';
         } else {
-          multiMetric.textContent = '多模态当前成功率：' + multiRate.toFixed(1) + '%';
+          multiMetric.textContent = '分布式接入认证当前成功率：' + multiRate.toFixed(1) + '%';
         }
       }
 
@@ -1675,13 +1679,14 @@ class="element icon-tri"
 
         resetView();
         setCurrentStatus('当前状态：测试启动');
+        const channelInfo = '[AP] WiFi/LoRa双模态，默认WiFi，信号不足时切换LoRa。';
         if (runSingle) {
-          appendLog(singleLog, '[AP] 单模态接入测试启动');
-          appendLog(singleLog, '[AP] 固定WiFi信道，信号阈值：' + WIFI_THRESHOLD + ' dBm');
+          appendLog(singleLog, '[AP] 集中式接入认证测试启动');
+          appendLog(singleLog, channelInfo);
         }
         if (runMulti) {
-          appendLog(multiLog, '[AP] 多模态接入测试启动');
-          appendLog(multiLog, '[AP] WiFi阈值 下行：' + WIFI_DL_THRESHOLD + ' dBm 上行：' + WIFI_UL_THRESHOLD + ' dBm；LoRa阈值 下行：' + LORA_DL_THRESHOLD + ' dBm 上行：' + LORA_UL_THRESHOLD + ' dBm');
+          appendLog(multiLog, '[AP] 分布式接入认证测试启动');
+          appendLog(multiLog, channelInfo);
         }
 
         setControlState(true);
@@ -1700,10 +1705,10 @@ class="element icon-tri"
           multiOutcomes = paired.multiOutcomes;
         } else {
           if (runSingle) {
-            singleOutcomes = buildOutcomeList(singleRounds, 0.70);
+            singleOutcomes = buildOutcomeList(singleRounds, 0.60);
           }
           if (runMulti) {
-            multiOutcomes = buildOutcomeList(multiRounds, 0.93);
+            multiOutcomes = buildOutcomeList(multiRounds, 1.0);
           }
         }
 
@@ -1711,98 +1716,103 @@ class="element icon-tri"
 
         for (let i = 1; i <= totalRounds; i += 1) {
           if (runSingle && i <= singleRounds) {
-            setCurrentStatus('当前状态：单模态接入测试 ' + i + '/' + singleRounds);
+            setCurrentStatus('当前状态：集中式接入认证测试 ' + i + '/' + singleRounds);
             singleTotal += 1;
             const okSingle = singleOutcomes[i - 1];
 
-            const detectSignal = randomSignalDbm();
-            appendLog(singleLog, '[UAV] 检测WiFi信号强度：' + detectSignal + ' dBm');
+            appendLog(singleLog, '[AP] 本轮第 ' + i + '/' + singleRounds + ' 次集中式接入认证测试');
 
-            let wifiDl, wifiUl;
-            if (okSingle) {
-              wifiDl = Math.floor(randomInRange(-68, -40));
-              wifiUl = Math.floor(randomInRange(-68, -40));
+            // WiFi/LoRa双模态：默认WiFi，WiFi信号有概率不足则切换LoRa
+            appendLog(singleLog, '[UAV] 检测WiFi信号强度');
+            const wifiInsufficient = Math.random() < 0.35;
+            let channel;
+            if (wifiInsufficient) {
+              // WiFi至少一个方向低于阈值
+              const wifiDl = Math.random() < 0.5
+                ? Math.floor(randomInRange(-95, -72))
+                : Math.floor(randomInRange(-68, -40));
+              const wifiUl = (wifiDl <= -72)
+                ? Math.floor(randomInRange(-63, -40))
+                : Math.floor(randomInRange(-95, -67));
+              appendLog(singleLog, '[UAV] WiFi下行：' + wifiDl + ' dBm（阈值：' + WIFI_DL_THRESHOLD + ' dBm），上行：' + wifiUl + ' dBm（阈值：' + WIFI_UL_THRESHOLD + ' dBm）');
+              appendLog(singleLog, '[UAV] WiFi信号强度不足');
+              appendLog(singleLog, '[UAV] 切换至LoRa信道');
+              const loraDl = Math.floor(randomInRange(-116, -85));
+              const loraUl = Math.floor(randomInRange(-108, -85));
+              appendLog(singleLog, '[UAV] LoRa下行：' + loraDl + ' dBm（阈值：' + LORA_DL_THRESHOLD + ' dBm），上行：' + loraUl + ' dBm（阈值：' + LORA_UL_THRESHOLD + ' dBm）');
+              appendLog(singleLog, '[UAV] LoRa信号达到阈值，使用LoRa信道发起集中式接入认证请求');
+              channel = 'LoRa';
             } else {
-              if (Math.random() < 0.5) {
-                wifiDl = Math.floor(randomInRange(-95, -72));
-                wifiUl = Math.floor(randomInRange(-68, -40));
-              } else {
-                wifiDl = Math.floor(randomInRange(-68, -40));
-                wifiUl = Math.floor(randomInRange(-95, -72));
-              }
+              const wifiDl = Math.floor(randomInRange(-68, -40));
+              const wifiUl = Math.floor(randomInRange(-63, -40));
+              appendLog(singleLog, '[UAV] WiFi下行：' + wifiDl + ' dBm（阈值：' + WIFI_DL_THRESHOLD + ' dBm），上行：' + wifiUl + ' dBm（阈值：' + WIFI_UL_THRESHOLD + ' dBm）');
+              appendLog(singleLog, '[UAV] WiFi信号达到阈值，使用WiFi信道发起集中式接入认证请求');
+              channel = 'WiFi';
             }
-
-            appendLog(singleLog, '[UAV] WiFi下行：' + wifiDl + ' dBm（阈值：' + WIFI_THRESHOLD + ' dBm）');
-            appendLog(singleLog, '[UAV] WiFi上行：' + wifiUl + ' dBm（阈值：' + WIFI_THRESHOLD + ' dBm）');
 
             if (okSingle) {
               singleSuccess += 1;
-              appendLog(singleLog, '[UAV] WiFi上行+下行信号达到阈值，接入成功');
+              const latency = Math.floor(randomInRange(15, 80));
+              appendLog(singleLog, '[AP] 收到UAV接入认证请求（' + channel + '），转发至集中式认证平台');
+              appendLog(singleLog, '[集中式认证平台] 验证UAV身份凭证，认证通过（响应延迟 ' + latency + ' ms）');
+              appendLog(singleLog, '[AP] 集中式接入认证成功');
             } else {
-              appendLog(singleLog, '[UAV] WiFi信号不足，接入失败');
+              appendLog(singleLog, '[AP] 收到UAV接入认证请求（' + channel + '），转发至集中式认证平台');
+              appendLog(singleLog, '[集中式认证平台] 认证请求排队中，等待超时...');
+              appendLog(singleLog, '[AP] 集中式接入认证服务不可用，认证失败');
             }
           }
 
           if (runMulti && i <= multiRounds) {
-            setCurrentStatus('当前状态：多模态接入测试 ' + i + '/' + multiRounds);
+            setCurrentStatus('当前状态：分布式接入认证测试 ' + i + '/' + multiRounds);
             multiTotal += 1;
-            const okMulti = multiOutcomes[i - 1];
+            // 分布式接入认证成功率 100%
+            multiSuccess += 1;
 
-            appendLog(multiLog, '[UAV] 多模态信号检测');
+            appendLog(multiLog, '[AP] 本轮第 ' + i + '/' + multiRounds + ' 次分布式接入认证测试');
 
-            let wifiDl, wifiUl, loraDl, loraUl;
-            let path;
-
-            if (okMulti) {
-              if (Math.random() < 0.7) {
-                wifiDl = Math.floor(randomInRange(-68, -40));
-                wifiUl = Math.floor(randomInRange(-63, -40));
-                path = 'wifi';
-              } else {
-                if (Math.random() < 0.5) {
-                  wifiDl = Math.floor(randomInRange(-95, -72));
-                  wifiUl = Math.floor(randomInRange(-63, -40));
-                } else {
-                  wifiDl = Math.floor(randomInRange(-68, -40));
-                  wifiUl = Math.floor(randomInRange(-95, -67));
-                }
-                loraDl = Math.floor(randomInRange(-116, -85));
-                loraUl = Math.floor(randomInRange(-108, -85));
-                path = 'lora';
-              }
-            } else {
-              if (Math.random() < 0.5) {
-                wifiDl = Math.floor(randomInRange(-95, -72));
-                wifiUl = Math.floor(randomInRange(-63, -40));
-              } else {
-                wifiDl = Math.floor(randomInRange(-68, -40));
-                wifiUl = Math.floor(randomInRange(-95, -67));
-              }
-              if (Math.random() < 0.5) {
-                loraDl = Math.floor(randomInRange(-140, -120));
-                loraUl = Math.floor(randomInRange(-108, -85));
-              } else {
-                loraDl = Math.floor(randomInRange(-116, -85));
-                loraUl = Math.floor(randomInRange(-140, -112));
-              }
-              path = 'fail';
-            }
-
-            appendLog(multiLog, '[UAV] WiFi下行：' + wifiDl + ' dBm（阈值：' + WIFI_DL_THRESHOLD + ' dBm），上行：' + wifiUl + ' dBm（阈值：' + WIFI_UL_THRESHOLD + ' dBm）');
-
-            if (path === 'wifi') {
-              multiSuccess += 1;
-              appendLog(multiLog, '[UAV] WiFi上行+下行信号达到阈值，通过WiFi接入成功');
-            } else {
-              appendLog(multiLog, '[UAV] WiFi信号不足，切换至LoRa');
+            // WiFi/LoRa双模态：默认WiFi，WiFi信号有概率不足则切换LoRa
+            appendLog(multiLog, '[UAV] 检测WiFi信号强度');
+            const wifiInsufficient = Math.random() < 0.35;
+            let channel;
+            if (wifiInsufficient) {
+              const wifiDl = Math.random() < 0.5
+                ? Math.floor(randomInRange(-95, -72))
+                : Math.floor(randomInRange(-68, -40));
+              const wifiUl = (wifiDl <= -72)
+                ? Math.floor(randomInRange(-63, -40))
+                : Math.floor(randomInRange(-95, -67));
+              appendLog(multiLog, '[UAV] WiFi下行：' + wifiDl + ' dBm（阈值：' + WIFI_DL_THRESHOLD + ' dBm），上行：' + wifiUl + ' dBm（阈值：' + WIFI_UL_THRESHOLD + ' dBm）');
+              appendLog(multiLog, '[UAV] WiFi信号强度不足');
+              appendLog(multiLog, '[UAV] 切换至LoRa信道');
+              const loraDl = Math.floor(randomInRange(-116, -85));
+              const loraUl = Math.floor(randomInRange(-108, -85));
               appendLog(multiLog, '[UAV] LoRa下行：' + loraDl + ' dBm（阈值：' + LORA_DL_THRESHOLD + ' dBm），上行：' + loraUl + ' dBm（阈值：' + LORA_UL_THRESHOLD + ' dBm）');
-              if (path === 'lora') {
-                multiSuccess += 1;
-                appendLog(multiLog, '[UAV] LoRa上行+下行信号达到阈值，通过LoRa接入成功');
-              } else {
-                appendLog(multiLog, '[UAV] LoRa上行+下行均低于阈值，接入失败');
-              }
+              appendLog(multiLog, '[UAV] LoRa信号达到阈值，使用LoRa信道发起分布式接入认证请求');
+              channel = 'LoRa';
+            } else {
+              const wifiDl = Math.floor(randomInRange(-68, -40));
+              const wifiUl = Math.floor(randomInRange(-63, -40));
+              appendLog(multiLog, '[UAV] WiFi下行：' + wifiDl + ' dBm（阈值：' + WIFI_DL_THRESHOLD + ' dBm），上行：' + wifiUl + ' dBm（阈值：' + WIFI_UL_THRESHOLD + ' dBm）');
+              appendLog(multiLog, '[UAV] WiFi信号达到阈值，使用WiFi信道发起分布式接入认证请求');
+              channel = 'WiFi';
             }
+
+            appendLog(multiLog, '[AP] 收到UAV接入认证请求（' + channel + '），向区块链节点广播');
+            // 有时区块链节点1无响应，转到节点2/3/4
+            if (Math.random() < 0.4) {
+              const backupNodes = [2, 3, 4];
+              const targetNode = backupNodes[Math.floor(Math.random() * backupNodes.length)];
+              const latency = Math.floor(randomInRange(20, 90));
+              appendLog(multiLog, '[区块链] 区块链节点1无响应（受攻击影响）');
+              appendLog(multiLog, '[区块链] 转到区块链节点' + targetNode + '进行接入认证');
+              appendLog(multiLog, '[区块链服务组件] 达成共识，认证通过（响应延迟 ' + latency + ' ms）');
+            } else {
+              const latency = Math.floor(randomInRange(15, 70));
+              appendLog(multiLog, '[区块链服务组件] 区块链节点1响应正常');
+              appendLog(multiLog, '[区块链服务组件] 达成共识，认证通过（响应延迟 ' + latency + ' ms）');
+            }
+            appendLog(multiLog, '[区块链] 分布式接入认证成功');
           }
 
           const singleRate = runSingle ? calcRate(singleSuccess, singleTotal) : null;
@@ -1819,21 +1829,25 @@ class="element icon-tri"
         const finalMultiRate = runMulti ? calcRate(multiSuccess, multiTotal) : null;
 
         if (runSingle) {
-          appendLog(singleLog, '[AP] 单模态固定WiFi接入成功：' + singleSuccess + '/' + singleRounds);
-          appendLog(singleLog, '[AP] 单模态固定WiFi接入成功率：' + finalSingleRate.toFixed(1) + '%');
+          appendLog(singleLog, '[AP] 集中式接入认证成功：' + singleSuccess + '/' + singleRounds);
+          appendLog(singleLog, '[AP] 集中式接入认证成功率：' + finalSingleRate.toFixed(1) + '%');
         }
 
         if (runMulti) {
-          appendLog(multiLog, '[AP] 多模态WiFi/LoRa接入成功：' + multiSuccess + '/' + multiRounds);
-          appendLog(multiLog, '[AP] 多模态WiFi/LoRa接入成功率：' + finalMultiRate.toFixed(1) + '%');
-          if (finalSingleRate !== null) {
-            const improvement = (((finalMultiRate - finalSingleRate) / finalSingleRate) * 100).toFixed(1);
-            appendLog(multiLog, '[AP] 多模态较单模态提升：' + improvement + '%');
+          appendLog(multiLog, '[区块链] 分布式接入认证成功：' + multiSuccess + '/' + multiRounds);
+          appendLog(multiLog, '[区块链] 分布式接入认证成功率：' + finalMultiRate.toFixed(1) + '%');
+          if (finalSingleRate !== null && finalSingleRate > 0) {
+            const improvement = ((finalMultiRate - finalSingleRate) / finalSingleRate) * 100;
+            appendLog(multiLog, '[区块链] 分布式较集中式接入认证提升率：' + improvement.toFixed(1) + '%（以集中式接入认证成功率为基准）');
           }
         }
 
         if (finalSingleRate !== null && finalMultiRate !== null) {
-          setGauge(gauges.boost, Math.max(0, finalMultiRate - finalSingleRate));
+          // 提升率以集中式接入认证成功率为分母
+          const boostRate = finalSingleRate > 0
+            ? Math.max(0, ((finalMultiRate - finalSingleRate) / finalSingleRate) * 100)
+            : 0;
+          setGauge(gauges.boost, boostRate);
           setCurrentStatus('当前状态：测试完成，\n提升结果已生成');
         } else {
           setGauge(gauges.boost, null);
@@ -1849,11 +1863,11 @@ class="element icon-tri"
       });
 
       resetView();
-      appendLog(singleLog, '[AP] 网络层接入测试平台初始化完成');
-      appendLog(singleLog, '[AP] 单模态模式：固定WiFi信道接入');
+      appendLog(singleLog, '[AP] 接入认证测试平台初始化完成');
+      appendLog(singleLog, '[AP] 集中式接入认证模式：固定WiFi信道，统一认证平台');
       appendLog(singleLog, '[UAV] UAV节点已上线，等待测试指令');
-      appendLog(multiLog, '[AP] 网络层接入测试平台初始化完成');
-      appendLog(multiLog, '[AP] 多模态模式：WiFi + LoRa双模信道接入');
+      appendLog(multiLog, '[AP] 接入认证测试平台初始化完成');
+      appendLog(multiLog, '[区块链] 分布式接入认证模式：区块链共识节点分布式认证');
       appendLog(multiLog, '[UAV] UAV节点已上线，等待测试指令');
 
       startBtn.addEventListener('click', runTest);
