@@ -23,7 +23,7 @@
       height: 100%;
       display: grid;
       grid-template-columns: minmax(320px, 0.34fr) minmax(0, 0.66fr);
-      grid-template-rows: minmax(0, 0.56fr) minmax(0, 0.44fr);
+      grid-template-rows: minmax(0, 0.5fr) minmax(0, 0.5fr);
       grid-template-areas:
         "flow image"
         "controls logs";
@@ -269,41 +269,30 @@
       grid-area: controls;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-rows: auto 44px 38px minmax(150px, 1fr);
+      gap: 6px 12px;
       min-height: 0;
-      align-content: start;
+      align-content: stretch;
       border: 1px solid #e5e7eb;
       border-radius: 14px;
       background: #f9fafb;
-      padding: 12px;
+      padding: 8px 12px;
       overflow: hidden;
     }
 
-    .mode-buttons::before {
-      content: "测试参数与开始按钮";
-      order: 0;
-      grid-column: 1 / -1;
-      min-height: 34px;
-      padding: 0 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(34, 211, 238, 0.34);
-      display: flex;
-      align-items: center;
-      color: #0f172a;
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      background: linear-gradient(90deg, rgba(34, 211, 238, 0.12), rgba(251, 191, 36, 0.1));
-    }
 .mode-btn {
       order: 2;
+      grid-row: 2;
+      position: relative;
+      z-index: 2;
       border: 1px solid #0f5f82;
       border-radius: 8px;
       background: #186487;
       color: #ffffff;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
-      padding: 12px 10px;
+      padding: 7px 10px;
+      min-height: 44px;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
@@ -318,28 +307,177 @@
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
     }
 
+    .mode-btn[data-mode="centralized"] {
+      grid-column: 1;
+    }
+
+    .mode-btn[data-mode="distributed"] {
+      grid-column: 2;
+    }
+
+    .option-row {
+      order: 1;
+      grid-column: 1 / -1;
+      grid-row: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      min-height: 0;
+      align-items: start;
+    }
+
+    .option-line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto 88px;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 8px;
+      min-height: 46px;
+      max-height: 46px;
+      align-self: start;
+      overflow: hidden;
+      border: 1px solid rgba(125, 211, 252, 0.25);
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(8, 47, 73, 0.72), rgba(2, 6, 23, 0.78)),
+        radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.12), transparent 38%);
+      box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.06);
+    }
+
+    .option-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #dbeafe;
+      font-weight: 850;
+      min-width: 0;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: none;
+    }
+
+    .option-item::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fbbf24;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
+      flex: 0 0 auto;
+    }
+
+    .count-label {
+      font-size: 13px;
+      color: #93c5fd;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .count-input-wrap {
+      position: relative;
+      width: 88px;
+      max-width: 100%;
+    }
+
+    .count-input {
+      width: 100%;
+      height: 34px;
+      border: 1px solid rgba(125, 211, 252, 0.45);
+      border-radius: 10px;
+      background: rgba(2, 6, 23, 0.86);
+      color: #e0f2fe;
+      font-size: 14px;
+      font-weight: 900;
+      padding: 0 34px 0 10px;
+      outline: none;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .count-input::-webkit-outer-spin-button,
+    .count-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .count-input:focus {
+      border-color: #0f766e;
+      box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.14);
+    }
+
+    .count-stepper {
+      position: absolute;
+      right: 4px;
+      top: 3px;
+      bottom: 3px;
+      width: 24px;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      padding: 1px;
+      border-radius: 7px;
+      background: rgba(2, 6, 23, 0.58);
+      box-shadow: inset 0 0 8px rgba(34, 211, 238, 0.06);
+    }
+
+    .count-step-btn {
+      border: 1px solid rgba(125, 211, 252, 0.34);
+      border-radius: 5px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.92));
+      color: #bfdbfe;
+      font-size: 10px;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 8px rgba(34, 211, 238, 0.06);
+    }
+
+    .count-step-btn:hover:not(:disabled) {
+      background: linear-gradient(180deg, rgba(8, 47, 73, 0.96), rgba(14, 116, 144, 0.72));
+      border-color: rgba(34, 211, 238, 0.56);
+      color: #67e8f9;
+    }
+
+    .count-step-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .count-input:disabled,
+    .mode-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
     .flow-wrap {
-      grid-area: flow;
+      order: 4;
+      grid-column: 1 / -1;
+      grid-row: 4;
       border: 1px solid #d1d5db;
       border-radius: 8px;
       background: #ffffff;
-      padding: 10px;
+      padding: 8px;
       min-height: 0;
       overflow: hidden;
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
-      gap: 8px;
+      gap: 4px;
     }
 
     .flow-title {
-      min-height: 34px;
+      min-height: 24px;
       padding: 0 14px;
       border-radius: 10px;
       border: 1px solid rgba(34, 211, 238, 0.34);
       display: flex;
       align-items: center;
       color: #0f172a;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 900;
       letter-spacing: 0.08em;
       background: linear-gradient(90deg, rgba(34, 211, 238, 0.14), rgba(14, 165, 233, 0.08));
@@ -394,18 +532,19 @@
 
     .flow-text-label {
       fill: #111827;
-      font-size: 26px;
+      font-size: 40px;
       font-weight: 600;
       user-select: none;
     }
 
     .flow-status {
-      order: 2;
+      order: 3;
       grid-column: 1 / -1;
+      grid-row: 3;
       margin: 0;
-      min-height: 34px;
-      padding: 11px 16px;
-      font-size: 19px;
+      min-height: 38px;
+      padding: 6px 14px;
+      font-size: 16px;
       color: #cffafe;
       font-weight: 800;
       letter-spacing: 0.03em;
@@ -503,6 +642,133 @@
       text-shadow: none;
     }
 
+    .gauge-row {
+      grid-area: flow;
+      border: 1px solid #d1d5db;
+      border-radius: 16px;
+      background: #ffffff;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .gauge-card {
+      flex: 1 1 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #f8fafc;
+      padding: 9px 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 162px;
+      grid-template-rows: auto auto;
+      align-items: center;
+      justify-items: stretch;
+      gap: 2px 12px;
+      margin: 0 4px;
+      min-height: 0;
+    }
+
+    .gauge-row .gauge-svg {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      max-width: 162px;
+      min-height: 96px;
+      align-self: center;
+    }
+
+    .gauge-title {
+      margin: 0;
+      width: 100%;
+      font-size: 17px;
+      color: #0f172a;
+      font-weight: 900;
+      text-align: left;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      position: relative;
+      overflow: visible;
+    }
+
+    .gauge-title::before {
+      content: "";
+      width: 5px;
+      height: 24px;
+      border-radius: 999px;
+      margin-right: 10px;
+      background: linear-gradient(180deg, #22d3ee, #fbbf24);
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.56);
+      flex: 0 0 auto;
+    }
+
+    .gauge-svg {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      display: block;
+    }
+
+    .gauge-track {
+      fill: none;
+      stroke: #d5dee9;
+      stroke-width: 22;
+      stroke-linecap: round;
+    }
+
+    .gauge-progress {
+      fill: none;
+      stroke: #0ea5e9;
+      stroke-width: 22;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.35s ease, opacity 0.22s ease;
+    }
+
+    .gauge-needle {
+      stroke: #fbbf24;
+      stroke-width: 8;
+      stroke-linecap: round;
+      transform-origin: 110px 102px;
+      transform-box: view-box;
+      transition: transform 0.35s ease, opacity 0.22s ease;
+      filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.9));
+    }
+
+    .gauge-center {
+      fill: #fef3c7;
+      stroke: #f59e0b;
+      stroke-width: 3;
+      filter: drop-shadow(0 0 7px rgba(251, 191, 36, 0.75));
+      transition: opacity 0.22s ease;
+    }
+
+    .gauge-mark {
+      fill: #64748b;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .gauge-value {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+      padding-left: 15px;
+      letter-spacing: 0.02em;
+    }
+
+    .gauge-card.is-hidden {
+      display: grid;
+    }
+
     .log-action {
       color: #67e8f9;
       font-weight: 700;
@@ -583,6 +849,15 @@
         grid-template-columns: 1fr;
       }
 
+      .option-row {
+        grid-template-columns: 1fr;
+      }
+
+      .mode-btn[data-mode="centralized"],
+      .mode-btn[data-mode="distributed"] {
+        grid-column: 1;
+      }
+
       .flow-label-small {
         font-size: 15px;
       }
@@ -624,6 +899,7 @@
 
     .hero-scene,
     .diagram-panel,
+    .gauge-row,
     .flow-wrap,
     .mode-buttons,
     .log-box {
@@ -631,6 +907,41 @@
       border: 1px solid rgba(34, 211, 238, 0.36) !important;
       box-shadow: inset 0 0 24px rgba(34, 211, 238, 0.08), 0 0 22px rgba(14, 165, 233, 0.16) !important;
       backdrop-filter: blur(10px);
+    }
+
+    .gauge-row .panel-header {
+      margin: 4px;
+    }
+
+    .gauge-card {
+      background:
+        linear-gradient(135deg, rgba(8, 47, 73, 0.76), rgba(2, 6, 23, 0.82)),
+        radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.12), transparent 38%) !important;
+      border-color: rgba(125, 211, 252, 0.25) !important;
+      box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.06);
+    }
+
+    .gauge-title {
+      color: #dbeafe !important;
+      text-shadow: none;
+    }
+
+    .gauge-value {
+      color: #67e8f9 !important;
+      text-shadow: none;
+    }
+
+    .gauge-track {
+      stroke: rgba(125, 211, 252, 0.28) !important;
+    }
+
+    .gauge-progress {
+      stroke: #0ea5e9 !important;
+      filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.54));
+    }
+
+    .gauge-mark {
+      fill: #93c5fd !important;
     }
 
     .panel-header,
@@ -728,14 +1039,6 @@
       border-bottom-color: rgba(125, 211, 252, 0.24) !important;
     }
 
-    .mode-buttons::before {
-      border-color: rgba(251, 191, 36, 0.4) !important;
-      background:
-        linear-gradient(90deg, rgba(251, 191, 36, 0.2), rgba(34, 211, 238, 0.12)),
-        rgba(2, 6, 23, 0.62) !important;
-      color: #fef3c7 !important;
-      text-shadow: none;
-    }
 .flow-status {
       background: rgba(8, 47, 73, 0.28) !important;
       border-color: rgba(56, 189, 248, 0.22) !important;
@@ -909,23 +1212,15 @@
                 <!-- 右侧接入点文字标签 -->
                 <text x="1198" y="72" fill="#111827" font-size="19" font-weight="700" text-anchor="middle">接入点</text>
 
-                <!-- 右侧站点1 WiFi 图标 -->
+                <!-- 右侧 WiFi 图标 -->
                 <image href="../assets/wi-fi.png" x="962" y="84" width="46" height="46" />
-                <!-- 右侧站点1 名称 -->
-                <text x="964" y="76" fill="#111827" font-size="17">站点1</text>
-                <!-- 右侧站点2 WiFi 图标 -->
+                <!-- 右侧 WiFi 图标 -->
                 <image href="../assets/wi-fi.png" x="1362" y="128" width="46" height="46" />
-                <!-- 右侧站点2 名称 -->
-                <text x="1364" y="120" fill="#111827" font-size="17">站点2</text>
-                <!-- 右侧站点3 WiFi 图标 -->
+                <!-- 右侧 WiFi 图标 -->
                 <image href="../assets/wi-fi.png" x="1288" y="162" width="46" height="46" />
-                <!-- 右侧站点3 名称 -->
-                <text x="1288" y="154" fill="#111827" font-size="17">站点3</text>
 
-                <!-- 右侧模式切换提示第一行文字 -->
-                <text x="1000" y="202" fill="#dd6b20" font-size="20" font-weight="700">切换接入方式</text>
-                <!-- 右侧模式切换提示第二行文字 -->
-                <text x="1000" y="226" fill="#dd6b20" font-size="20" font-weight="700">启动动态接入</text>
+                <!-- 右侧模式切换提示文字 -->
+                <text x="1000" y="214" fill="#dd6b20" font-size="20" font-weight="700">发起接入请求</text>
                 <!-- 右侧橙色闪电效果图 -->
                 <image
                   class="keep-transform svg-center-transform"
@@ -955,12 +1250,11 @@
                 <!-- 右侧 UAV-1 标题文字 -->
                 <text x="1028" y="284" fill="#111827" font-size="18" font-weight="700" text-anchor="middle">UAV-1</text>
 
-                <!-- 右侧 UAV-1 向下同步失败记录的黑色虚线箭头 -->
-                <line x1="1030" y1="376" x2="1030" y2="462" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
-                <!-- 右侧同步说明第一行文字 -->
-                <text x="874" y="432" fill="#111827" font-size="19">同步 WiFi 站点1</text>
-                <!-- 右侧同步说明第二行文字 -->
-                <text x="874" y="455" fill="#111827" font-size="19">接入失败记录</text>
+                <!-- 右侧 UAV-1 向上获取可用通信模式列表的橙色虚线箭头 -->
+                <line x1="1030" y1="462" x2="1030" y2="376" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
+                <!-- 右侧获取可用通信模式列表说明文字 -->
+                <text x="1050" y="422" fill="#111827" font-size="19">获取可用通</text>
+                <text x="1050" y="455" fill="#111827" font-size="19">信模式列表</text>
 
                 <!-- 右侧无人机群组外框 -->
                 <rect x="1278" y="204" width="245" height="135" rx="26" fill="rgba(8, 47, 73, 0.56)" stroke="#22d3ee" stroke-width="2.5" />
@@ -984,8 +1278,8 @@
                 <text x="1488" y="282" fill="#111827" font-size="20" text-anchor="middle">UAV-3</text>
 
                 <!-- 右侧底部区块链条带 -->
-                <rect x="804" y="478" width="730" height="145" rx="12" fill="url(#layer1-bg)" />
-                <image href="../assets/blockchain.png" x="804" y="478" width="730" height="145" preserveAspectRatio="none" />
+                <rect x="858" y="488" width="600" height="118" rx="12" fill="url(#layer1-bg)" />
+                <image href="../assets/blockchain.png" x="858" y="488" width="600" height="118" preserveAspectRatio="none" />
 
                 <!-- 右侧第一道绿色闪电效果 -->
                 <image
@@ -1043,37 +1337,103 @@
     <section class="section">
       <div class="bottom-layout">
         <div class="left-panel">
+          <div class="gauge-row">
+            <h3 class="panel-header">接入测试结果</h3>
+            <section class="gauge-card">
+              <h3 class="gauge-title">单模态接入成功率</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="单模态接入成功率仪表盘">
+                <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
+                <path class="gauge-progress" id="single-progress" d="M30 102 A80 80 0 0 1 190 102" />
+                <line class="gauge-needle" id="single-needle" x1="110" y1="102" x2="110" y2="34" />
+                <circle class="gauge-center" cx="110" cy="102" r="5" />
+                <text class="gauge-mark" x="23" y="125">0%</text>
+                <text class="gauge-mark" x="180" y="125">100%</text>
+              </svg>
+              <p class="gauge-value" id="single-value">--</p>
+            </section>
+
+            <section class="gauge-card">
+              <h3 class="gauge-title">多模态接入成功率</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="多模态接入成功率仪表盘">
+                <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
+                <path class="gauge-progress" id="multi-progress" d="M30 102 A80 80 0 0 1 190 102" />
+                <line class="gauge-needle" id="multi-needle" x1="110" y1="102" x2="110" y2="34" />
+                <circle class="gauge-center" cx="110" cy="102" r="5" />
+                <text class="gauge-mark" x="23" y="125">0%</text>
+                <text class="gauge-mark" x="180" y="125">100%</text>
+              </svg>
+              <p class="gauge-value" id="multi-value">--</p>
+            </section>
+
+            <section class="gauge-card" id="boost-gauge-card">
+              <h3 class="gauge-title">多模态相较单模态提升</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 118" aria-label="多模态提升仪表盘">
+                <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
+                <path class="gauge-progress" id="boost-progress" d="M30 102 A80 80 0 0 1 190 102" />
+                <line class="gauge-needle" id="boost-needle" x1="110" y1="102" x2="110" y2="34" />
+                <circle class="gauge-center" cx="110" cy="102" r="5" />
+                <text class="gauge-mark" x="23" y="125">0%</text>
+                <text class="gauge-mark" x="173" y="125">100%</text>
+              </svg>
+              <p class="gauge-value" id="boost-value">--</p>
+            </section>
+          </div>
+
           <div class="mode-buttons">
+            <div class="option-row">
+              <div class="option-line">
+                <span class="option-item">单模态接入演示</span>
+                <label class="count-label" for="single-count">次数</label>
+                <div class="count-input-wrap">
+                  <input id="single-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
+                  <div class="count-stepper" aria-hidden="true">
+                    <button class="count-step-btn" id="single-count-up" type="button" tabindex="-1">&#9650;</button>
+                    <button class="count-step-btn" id="single-count-down" type="button" tabindex="-1">&#9660;</button>
+                  </div>
+                </div>
+              </div>
+              <div class="option-line">
+                <span class="option-item">区块链增强多模态接入演示</span>
+                <label class="count-label" for="multi-count">次数</label>
+                <div class="count-input-wrap">
+                  <input id="multi-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
+                  <div class="count-stepper" aria-hidden="true">
+                    <button class="count-step-btn" id="multi-count-up" type="button" tabindex="-1">&#9650;</button>
+                    <button class="count-step-btn" id="multi-count-down" type="button" tabindex="-1">&#9660;</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <button class="mode-btn" type="button" data-mode="centralized">单模态接入演示</button>
             <button class="mode-btn" type="button" data-mode="distributed">区块链增强多模态接入演示</button>
             <p class="flow-status" id="flow-status">正在执行：等待开始。</p>
-          </div>
 
-          <div class="flow-wrap">
-            <div class="flow-title">流程演示</div>
-            <svg class="flow-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" aria-label="物理层接入演示流程">
-              <path class="flow-base" d="M50 180 L240 180" />
-              <path class="flow-base" d="M240 180 C320 180 320 80 440 80" />
-              <path class="flow-base" d="M440 80 L680 80" />
-              <path class="flow-base" d="M240 180 C320 180 320 280 440 280" />
-              <path class="flow-base" d="M440 280 L680 280" />
+            <div class="flow-wrap">
+              <div class="flow-title">流程演示</div>
+              <svg class="flow-svg" viewBox="0 0 1120 360" xmlns="http://www.w3.org/2000/svg" aria-label="物理层接入演示流程">
+                <path class="flow-base" d="M50 180 L280 180" />
+                <path class="flow-base" d="M280 180 C390 180 390 80 540 80" />
+                <path class="flow-base" d="M540 80 L930 80" />
+                <path class="flow-base" d="M280 180 C390 180 390 280 540 280" />
+                <path class="flow-base" d="M540 280 L930 280" />
 
-              <path id="active-seg-1" class="flow-active" d="M50 180 L240 180" />
-              <path id="active-seg-top" class="flow-active" d="M240 180 C320 180 320 80 440 80 L680 80" />
-              <path id="active-seg-bottom" class="flow-active" d="M240 180 C320 180 320 280 440 280 L680 280" />
+                <path id="active-seg-1" class="flow-active" d="M50 180 L280 180" />
+                <path id="active-seg-top" class="flow-active" d="M280 180 C390 180 390 80 540 80 L930 80" />
+                <path id="active-seg-bottom" class="flow-active" d="M280 180 C390 180 390 280 540 280 L930 280" />
 
-              <circle id="node-start" class="flow-node" cx="240" cy="180" r="10" />
-              <circle id="node-multi" class="flow-node" cx="440" cy="80" r="10" />
-              <circle id="node-switch" class="flow-node" cx="680" cy="80" r="10" />
-              <circle id="node-single" class="flow-node" cx="440" cy="280" r="10" />
-              <circle id="node-backoff" class="flow-node" cx="680" cy="280" r="10" />
+                <circle id="node-start" class="flow-node" cx="280" cy="180" r="10" />
+                <circle id="node-multi" class="flow-node" cx="540" cy="80" r="10" />
+                <circle id="node-switch" class="flow-node" cx="930" cy="80" r="10" />
+                <circle id="node-single" class="flow-node" cx="540" cy="280" r="10" />
+                <circle id="node-backoff" class="flow-node" cx="930" cy="280" r="10" />
 
-              <text class="flow-text-label" x="96" y="220">接入请求</text>
-              <text class="flow-text-label" x="360" y="52">多模态接入</text>
-              <text class="flow-text-label" x="566" y="52">接入方式切换</text>
-              <text class="flow-text-label" x="360" y="320">单模态接入</text>
-              <text class="flow-text-label" x="618" y="320">退避接入</text>
-            </svg>
+                <text class="flow-text-label" x="92" y="224">接入请求</text>
+                <text class="flow-text-label" x="420" y="50">多模态接入</text>
+                <text class="flow-text-label" x="760" y="50">接入方式切换</text>
+                <text class="flow-text-label" x="420" y="326">单模态接入</text>
+                <text class="flow-text-label" x="848" y="326">退避接入</text>
+              </svg>
+            </div>
           </div>
         </div>
 
@@ -1094,11 +1454,53 @@
 
   <script>
     (function () {
+      const DEFAULT_ROUNDS = 5;
+      const MIN_ROUNDS = 1;
+      const MAX_ROUNDS = 100;
+      const SINGLE_SUCCESS_PROBABILITY = 0.62;
+      const MULTI_SUCCESS_PROBABILITY = 0.9;
       const statusEl = document.getElementById('flow-status');
       const buttons = document.querySelectorAll('.mode-btn');
+      const singleCountInput = document.getElementById('single-count');
+      const multiCountInput = document.getElementById('multi-count');
+      const singleCountUpBtn = document.getElementById('single-count-up');
+      const singleCountDownBtn = document.getElementById('single-count-down');
+      const multiCountUpBtn = document.getElementById('multi-count-up');
+      const multiCountDownBtn = document.getElementById('multi-count-down');
+      const boostGaugeCard = document.getElementById('boost-gauge-card');
       const logEls = {
         centralized: document.querySelector('.log-box:nth-child(1) .log-content'),
         distributed: document.querySelector('.log-box:nth-child(2) .log-content')
+      };
+      const gauges = {
+        centralized: {
+          progress: document.getElementById('single-progress'),
+          needle: document.getElementById('single-needle'),
+          value: document.getElementById('single-value'),
+          min: 0,
+          max: 100,
+          success: 0,
+          total: 0,
+          format: function (v) { return v.toFixed(1) + '%'; }
+        },
+        distributed: {
+          progress: document.getElementById('multi-progress'),
+          needle: document.getElementById('multi-needle'),
+          value: document.getElementById('multi-value'),
+          min: 0,
+          max: 100,
+          success: 0,
+          total: 0,
+          format: function (v) { return v.toFixed(1) + '%'; }
+        },
+        boost: {
+          progress: document.getElementById('boost-progress'),
+          needle: document.getElementById('boost-needle'),
+          value: document.getElementById('boost-value'),
+          min: 0,
+          max: 100,
+          format: function (v) { return v.toFixed(1) + '%'; }
+        }
       };
       const paths = {
         seg1: document.getElementById('active-seg-1'),
@@ -1113,17 +1515,22 @@
         backoff: document.getElementById('node-backoff')
       };
 
-      const PAUSE_MS = 900;
+      const PAUSE_MS = 450;
       const NODE_BASE_R = 10;
       const NODE_ACTIVE_R = 17;
       const DURATION_MS = {
-        seg1: 1200,
-        branchPart1: 1000,
-        branchPart2: 1000
+        seg1: 650,
+        branchPart1: 520,
+        branchPart2: 520
       };
 
       let animationToken = 0;
       let runCounter = 0;
+      let running = false;
+      const completedModes = {
+        centralized: false,
+        distributed: false
+      };
 
       function sleep(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
@@ -1133,6 +1540,19 @@
         buttons.forEach((button) => {
           button.classList.toggle('is-active', button.dataset.mode === mode);
         });
+      }
+
+      function setControlState(disabled) {
+        running = disabled;
+        buttons.forEach((button) => {
+          button.disabled = disabled;
+        });
+        singleCountInput.disabled = disabled;
+        multiCountInput.disabled = disabled;
+        singleCountUpBtn.disabled = disabled;
+        singleCountDownBtn.disabled = disabled;
+        multiCountUpBtn.disabled = disabled;
+        multiCountDownBtn.disabled = disabled;
       }
 
       function nowStamp() {
@@ -1200,6 +1620,126 @@
         item.appendChild(line);
         target.appendChild(item);
         target.scrollTop = target.scrollHeight;
+      }
+
+      function initGauge(gauge) {
+        const length = gauge.progress.getTotalLength();
+        gauge.length = length;
+        gauge.progress.style.strokeDasharray = String(length);
+        gauge.progress.style.strokeDashoffset = String(length);
+      }
+
+      function setGauge(gauge, value) {
+        if (value === null || Number.isNaN(value)) {
+          gauge.value.textContent = '--';
+          gauge.progress.style.strokeDashoffset = String(gauge.length);
+          gauge.progress.style.opacity = '0';
+          gauge.needle.style.transform = 'rotate(-90deg)';
+          gauge.needle.style.opacity = '0';
+          if (gauge.needle.nextElementSibling) {
+            gauge.needle.nextElementSibling.style.opacity = '0';
+          }
+          return;
+        }
+
+        const clamped = Math.min(gauge.max, Math.max(gauge.min, value));
+        const ratio = (clamped - gauge.min) / (gauge.max - gauge.min);
+        const dashOffset = gauge.length * (1 - ratio);
+        const angle = -90 + ratio * 180;
+
+        gauge.progress.style.strokeDashoffset = String(dashOffset);
+        gauge.progress.style.opacity = '1';
+        gauge.needle.style.transform = 'rotate(' + angle + 'deg)';
+        gauge.needle.style.opacity = '1';
+        if (gauge.needle.nextElementSibling) {
+          gauge.needle.nextElementSibling.style.opacity = '1';
+        }
+        gauge.value.textContent = gauge.format(clamped);
+      }
+
+      function calcRate(success, total) {
+        if (total <= 0) return null;
+        return (success / total) * 100;
+      }
+
+      function currentFinalRate(mode) {
+        return calcRate(gauges[mode].success, gauges[mode].total);
+      }
+
+      function setBoostVisibility(visible) {
+        boostGaugeCard.classList.toggle('is-hidden', !visible);
+        if (!visible) {
+          setGauge(gauges.boost, null);
+        }
+      }
+
+      function updateBoostGauge() {
+        if (completedModes.centralized && completedModes.distributed) {
+          const singleRate = currentFinalRate('centralized');
+          const multiRate = currentFinalRate('distributed');
+          const boostRate = singleRate > 0
+            ? ((multiRate - singleRate) / singleRate) * 100
+            : (multiRate > 0 ? 100 : 0);
+          setBoostVisibility(true);
+          setGauge(gauges.boost, boostRate);
+        } else {
+          setBoostVisibility(false);
+        }
+      }
+
+      function resetGauges() {
+        gauges.centralized.success = 0;
+        gauges.centralized.total = 0;
+        gauges.distributed.success = 0;
+        gauges.distributed.total = 0;
+        completedModes.centralized = false;
+        completedModes.distributed = false;
+        setGauge(gauges.centralized, null);
+        setGauge(gauges.distributed, null);
+        updateBoostGauge();
+      }
+
+      function recordGaugeResult(mode, success) {
+        const gauge = gauges[mode];
+        gauge.total += 1;
+        gauge.success += success ? 1 : 0;
+        const currentRate = calcRate(gauge.success, gauge.total);
+        setGauge(gauge, currentRate);
+        updateBoostGauge();
+        return currentRate;
+      }
+
+      function clampRoundCount(value) {
+        return Math.min(MAX_ROUNDS, Math.max(MIN_ROUNDS, value));
+      }
+
+      function getStepperBaseCount(inputEl) {
+        const raw = inputEl.value.trim();
+        if (raw === '') return DEFAULT_ROUNDS;
+        const parsed = Number(raw);
+        if (!Number.isFinite(parsed)) return DEFAULT_ROUNDS;
+        return clampRoundCount(Math.round(parsed));
+      }
+
+      function adjustRoundCount(inputEl, delta) {
+        if (inputEl.disabled) return;
+        inputEl.value = String(clampRoundCount(getStepperBaseCount(inputEl) + delta));
+      }
+
+      function readRoundCount(inputEl) {
+        const raw = inputEl.value.trim();
+        if (raw === '') return DEFAULT_ROUNDS;
+        if (!/^\d+$/.test(raw)) return null;
+        const value = Number(raw);
+        if (value < MIN_ROUNDS || value > MAX_ROUNDS) return null;
+        return value;
+      }
+
+      function shouldSucceed(mode) {
+        const probability = mode === 'distributed'
+          ? MULTI_SUCCESS_PROBABILITY
+          : SINGLE_SUCCESS_PROBABILITY;
+        return Math.random() < probability;
       }
 
       function enhanceStaticLogs() {
@@ -1273,7 +1813,7 @@
         node.setAttribute('r', String(NODE_BASE_R));
       }
 
-      async function runFlow(mode) {
+      async function runFlow(mode, runIndex, runTotal) {
         animationToken += 1;
         const token = animationToken;
         runCounter += 1;
@@ -1286,12 +1826,13 @@
           mode === 'distributed'
             ? '区块链增强多模态接入'
             : '单模态接入';
-        statusEl.textContent = '\u6b63\u5728\u6267\u884c\uff1a' + flowName;
+        const success = shouldSucceed(mode);
+        statusEl.textContent = '\u6b63\u5728\u6267\u884c\uff1a' + flowName + ' ' + runIndex + '/' + runTotal;
         appendHeader(
           mode,
-          (mode === 'distributed' ? '多模态 WiFi/LoRa 接入请求' : '单模态 WiFi 接入请求') + ' #' + runCounter
+          (mode === 'distributed' ? '多模态 WiFi/LoRa 接入请求' : '单模态 WiFi 接入请求') + ' #' + runCounter + '（' + runIndex + '/' + runTotal + '）'
         );
-        await sleep(300);
+        await sleep(120);
 
         await revealPathSegment(paths.seg1, paths.seg1.dataset.total, 0, DURATION_MS.seg1);
         appendLog(mode, 'UAV-1', 'send_access_request', 'physical-access-' + runCounter, '已发送至 access_point', [
@@ -1318,9 +1859,9 @@
           appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', '切换为 LoRa', [
             '选择模式=LoRa'
           ]);
-          appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', '通过', [
+          appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', success ? '通过' : '失败', [
             '选择模式=LoRa/WiFi',
-            '接入成功=true'
+            '接入成功=' + (success ? 'true' : 'false')
           ]);
           await pauseAtNode(nodes.switchNode, '接入方式切换', token);
         } else {
@@ -1330,9 +1871,9 @@
           appendLog(mode, 'access_point', 'record_access_result', 'WiFi', '信号检测', [
             '检测到WiFi信号低于阈值'
           ]);
-          appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', '失败', [
+          appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', success ? '通过' : '失败', [
             '选择模式=WiFi',
-            '原因=wifi_signal_below_threshold'
+            success ? 'WiFi信号达到接入阈值' : '原因=wifi_signal_below_threshold'
           ]);
           await pauseAtNode(nodes.single, '单模态认证', token);
           if (token !== animationToken) return;
@@ -1342,28 +1883,82 @@
         }
 
         if (token === animationToken) {
-          statusEl.textContent = '\u6d41\u7a0b\u5b8c\u6210\uff1a' + flowName;
+          const currentRate = recordGaugeResult(mode, success);
+          statusEl.textContent = '\u6d41\u7a0b\u5b8c\u6210\uff1a' + flowName + ' ' + runIndex + '/' + runTotal;
           
           if (mode === 'distributed') {
-            appendLog(mode, 'access_point', 'calculate_access_advance', 'success_rate', '通过', [
-              'LoRa/WiFi动态切换生效',
-              '频谱接入成功率提升至少20%'
+            appendLog(mode, 'access_point', 'calculate_access_advance', 'success_rate', success ? '通过' : '失败', [
+              success ? 'LoRa/WiFi动态切换生效' : '本轮接入请求未通过',
+              '当前成功/已运行=' + gauges[mode].success + '/' + gauges[mode].total,
+              '当前接入成功率=' + currentRate.toFixed(1) + '%'
             ]);
           } else {
-            appendLog(mode, 'access_point', 'calculate_access_advance', 'single-mode', '低于多模态方案', [
-              '固定WiFi单模态在信号低于阈值时接入失败'
+            appendLog(mode, 'access_point', 'calculate_access_advance', 'single-mode', success ? '通过' : '低于多模态方案', [
+              success ? '本轮WiFi信号达到接入阈值' : '固定WiFi单模态在信号低于阈值时接入失败',
+              '当前成功/已运行=' + gauges[mode].success + '/' + gauges[mode].total,
+              '当前接入成功率=' + currentRate.toFixed(1) + '%'
             ]);
           }
         }
       }
 
+      async function runModeWithCount(mode) {
+        if (running) return;
+
+        const inputEl = mode === 'distributed' ? multiCountInput : singleCountInput;
+        const rounds = readRoundCount(inputEl);
+        if (rounds === null) {
+          appendLog(mode, 'access_point', 'validate_round_count', 'input', '参数错误', [
+            '演示次数需为 ' + MIN_ROUNDS + '-' + MAX_ROUNDS + ' 的整数'
+          ]);
+          statusEl.textContent = '\u6b63\u5728\u6267\u884c\uff1a次数输入错误';
+          return;
+        }
+
+        gauges[mode].success = 0;
+        gauges[mode].total = 0;
+        completedModes[mode] = false;
+        setGauge(gauges[mode], null);
+        updateBoostGauge();
+
+        setControlState(true);
+        try {
+          for (let i = 1; i <= rounds; i += 1) {
+            await runFlow(mode, i, rounds);
+            if (i < rounds) {
+              await sleep(100);
+            }
+          }
+          const flowName = mode === 'distributed' ? '区块链增强多模态接入' : '单模态接入';
+          const rate = currentFinalRate(mode);
+          completedModes[mode] = true;
+          setGauge(gauges[mode], rate);
+          updateBoostGauge();
+          appendLog(mode, 'access_point', 'calculate_final_success_rate', flowName, rate.toFixed(1) + '%', [
+            '最终成功/总次数=' + gauges[mode].success + '/' + gauges[mode].total,
+            '最终接入成功率=' + rate.toFixed(1) + '%'
+          ]);
+          statusEl.textContent = '\u6d41\u7a0b\u5b8c\u6210\uff1a' + flowName + '，成功率 ' + rate.toFixed(1) + '%';
+        } finally {
+          setControlState(false);
+        }
+      }
+
       buttons.forEach((button) => {
         button.addEventListener('click', () => {
-          runFlow(button.dataset.mode);
+          runModeWithCount(button.dataset.mode);
         });
+      });
+      singleCountUpBtn.addEventListener('click', function () { adjustRoundCount(singleCountInput, 1); });
+      singleCountDownBtn.addEventListener('click', function () { adjustRoundCount(singleCountInput, -1); });
+      multiCountUpBtn.addEventListener('click', function () { adjustRoundCount(multiCountInput, 1); });
+      multiCountDownBtn.addEventListener('click', function () { adjustRoundCount(multiCountInput, -1); });
+      Object.keys(gauges).forEach(function (key) {
+        initGauge(gauges[key]);
       });
       resetPaths();
       resetNodes();
+      resetGauges();
     })();
   </script>
 </body>
