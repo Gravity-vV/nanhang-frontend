@@ -50,8 +50,8 @@
       grid-template-columns: minmax(280px, 0.32fr) minmax(0, 0.68fr);
       grid-template-rows: minmax(0, 0.56fr) minmax(0, 0.44fr);
       grid-template-areas:
-        "flow image"
-        "controls logs";
+        "left image"
+        "left logs";
       gap: 14px;
       padding: 12px 16px;
       background:
@@ -208,9 +208,20 @@
       display: contents;
     }
 
+    /* 左侧列容器：流程演示 + 测试控制，用 flex 内部分配高度 */
+    .left-col {
+      grid-area: left;
+      grid-row: 1 / 3;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
     /* 左下测试控制框：按钮、测试次数、重接入间隔、黑名单 */
     .controls {
-      grid-area: controls;
+      flex: 1 1 0;
       width: 100%;
       max-width: 100%;
       border: 1px solid rgba(34, 211, 238, 0.36);
@@ -572,7 +583,7 @@
 
     /* 左上流程图外部框 */
     .flow-area {
-      grid-area: flow;
+      flex: 0 0 45%;
       position: relative;
       z-index: 1;
       background:
@@ -814,15 +825,19 @@
     @media (max-width: 1180px) {
       .page {
         grid-template-columns: 1fr;
-        grid-template-rows: minmax(360px, auto) minmax(360px, auto) minmax(160px, auto) minmax(320px, auto);
+        grid-template-rows: minmax(200px, auto) minmax(360px, auto) minmax(160px, auto) minmax(320px, auto);
         grid-template-areas:
-          "flow"
+          "left"
           "image"
-          "controls"
+          "left"
           "logs";
         height: auto;
         min-height: 100%;
         overflow: auto;
+      }
+
+      .left-col {
+        flex-direction: column;
       }
 
       .bottom-layout {
@@ -832,10 +847,6 @@
       .right-panel {
         grid-template-columns: 1fr;
         grid-auto-rows: minmax(180px, 1fr);
-      }
-
-      .flow-area {
-        width: 100%;
       }
     }
 
@@ -897,15 +908,15 @@
     <div class="canvas">
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:3%; left:25%; width:160px;" alt="UAV"/>
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:44%; left:5%; width:110px;" alt="接入点">
-        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:18%; right:5%; width:100px;" alt="pass">
-        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:32%; right:5%; width:100px;" alt="reject">
+        <img src="../assets/sec-pass.png" class="element" style="position: absolute; top:20%; right:6%; width:75px;" alt="pass">
+        <img src="../assets/sec-reject.png" class="element" style="position: absolute; bottom:37%; right:6%; width:75px;" alt="reject">
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; bottom: 39%; left:38%; width:30px;" alt="cert">
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; top: 31%; left:39%; width:30px;" alt="cert">
         <div style="position: absolute; top: 41%; left: 11.5%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">接入点</div>
         <div style="position: absolute; top: 32%; left: 46%; color: #4ade80 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">信息匹配</div>
         <div style="position: absolute; top: 56%; left: 45%; color: #f87171 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">信息不匹配</div>
-        <div style="position: absolute; top: 14%; right: 9.5%; color: #4ade80 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">允许接入</div>
-        <div style="position: absolute; top: 43%; right: 9.5%; color: #f87171 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">拒绝接入</div>
+        <div style="position: absolute; top: 14%; right: 8%; color: #4ade80 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">允许接入</div>
+        <div style="position: absolute; top: 43%; right: 8%; color: #f87171 !important; font-size: 18px; font-weight: bold; white-space: nowrap;">拒绝接入</div>
         <div style="position: absolute; top: 26%; left: 7%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">发送包含设备ID和<br>公钥的请求数据</div>
         <div style="position: absolute; top: 78%; left: 11%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">查询区块链获取<br>ID白名单与ID和<br>公钥匹配信息</div>
         <div style="position: absolute; top: 68%; right: 18%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">设备ID/公钥<br>加入黑名单</div>
@@ -932,11 +943,11 @@
           <!-- 接入点到拒绝接入 -->
           <line class="m-line-attack" x1="27" y1="54" x2="80" y2="54" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-l)"/>
           <!-- 查询区块链上行 -->
-          <line class="m-line-connect" x1="25" y1="64" x2="38" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect-l)"/>
+          <line class="m-line-connect" x1="25" y1="64" x2="36" y2="80" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect-l)"/>
           <!-- 区块链反馈下行 -->
-          <line class="m-line-connect" x1="36" y1="86" x2="23" y2="68" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect-l)"/>
+          <line class="m-line-connect" x1="34" y1="84" x2="23" y2="68" stroke-dasharray="4 1" marker-end="url(#arrowhead-connect-l)"/>
           <!-- 加入黑名单 -->
-          <line class="m-line-attack" x1="90" y1="69" x2="90" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-l)"/>
+          <line class="m-line-attack" x1="90.5" y1="65" x2="90.5" y2="80" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-l)"/>
         </svg>
     </div>
   </div>
@@ -947,13 +958,13 @@
     <div class="canvas">
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:3%; right:43%; width:160px;" alt="UAV"/>
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:35%; right:5%; width:140px;" alt="接入点">
-        <img src="../assets/database.png" class="element" style="position: absolute; top:38%; left:6%; width:85px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="database">
+        <img src="../assets/database.png" class="element" style="position: absolute; top:42%; left:8%; width:60px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="database">
         <div style="position: absolute; top: 32%; right: 15%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">接入点</div>
-        <div style="position: absolute; top: 31%; left: 5%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">接入点本地储存</div>
+        <div style="position: absolute; top: 34%; left: 5%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">接入点本地储存</div>
         <div style="position: absolute; top: 22%; left: 57%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">高频重接入<br>反复连接断开</div>
         <div style="position: absolute; top: 52%; left: 40%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">记录接入无人机的<br>ID、接入时间</div>
         <div style="position: absolute; top: 69%; left: 19%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">重接入频率到达阈值，<br>记录一次违规行为</div>
-        <div style="position: absolute; top: 85%; right:3%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">累计到达n次违规后，将该<br>无人机设备ID加入黑名单</div>
+        <div style="position: absolute; top: 82%; right:2%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap; text-align: center;">累计到达n次违规后，<br>将该无人机设备ID<br>加入黑名单</div>
         <div style="position: absolute; top: 33%; right:43%; color: #2e54a1; font-size: 25px !important; font-weight: bold; white-space: nowrap; z-index: 100;">❌</div>
         <!-- 右图连线层 -->
         <svg class="connection-svg" viewBox="0 0 100 100">
@@ -970,15 +981,17 @@
           <!-- 接入点反馈 -->
           <line class="m-line-success" x1="73" y1="50" x2="22" y2="50" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-r)"/>
           <!-- 接入点到本地存储 -->
-          <line class="m-line-attack" x1="10" y1="60" x2="10" y2="82" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-r)"/>
+          <line class="m-line-attack" x1="11" y1="58" x2="11" y2="80" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-r)"/>
           <!-- 累计违规U型箭头 -->
-          <path d="M 55 86.5 L 62 86.5 A 3 3 0 0 1 62 92.5 L 55 92.5"
+        <path d="M 62 86.5 L 70 86.5 A 3 3 0 0 1 70 92.5 L 62 92.5"
               stroke="#a91f23" stroke-width="1" stroke-dasharray="4 1"
               fill="none" marker-end="url(#arrowhead-attack-r)"/>
         </svg>
     </div>
   </div>
 
+  <!-- 区块链背景色块：调整 top/left/width/height 可移动位置和大小 -->
+  <div class="element" style="position: absolute; bottom:3%; left:49%; transform:translateX(-50%); width:62%; height:13%; background:#e8dcc0; border-radius:8px; box-shadow:inset 0 0 28px rgba(120,90,40,0.45); z-index: 5;"></div>
   <!-- 区块链背景图：横跨两个栏目，直接放在 image-wrap 上 -->
   <img src="../assets/sec-blockchain.png" class="element" style="position: absolute; bottom:0%; left:50%;transform: translateX(-50%) scaleX(0.78) scaleY(0.95); z-index: 10;" alt="区块链">
 </div>
@@ -987,49 +1000,7 @@
     <section class="bottom-layout">
       <!-- 左侧逻辑容器：包含测试控制框和流程 SVG 框 -->
       <article class="left-panel">
-        <!-- 左下控制框：测试按钮、输入参数、黑名单 -->
-        <div class="controls">
-          <!-- 攻击测试按钮行 -->
-          <div class="btn-row">
-            <button class="action-btn" id="selfish-btn" type="button">自私接入攻击测试</button>
-            <button class="action-btn" id="highfreq-btn" type="button">高频重接入攻击测试</button>
-          </div>
-          <!-- 测试参数行：次数、重接入间隔、黑名单 -->
-          <div class="input-row">
-            <!-- 左侧输入参数组 -->
-            <div class="parameter-group">
-              <!-- 接入攻击测试次数输入项 -->
-              <div style="display:flex; align-items:center; gap:8px;">
-                <label for="test-count">接入攻击测试次数</label>
-                <!-- 带上下箭头的测试次数输入框 -->
-                <div class="count-input-wrap">
-                  <input id="test-count" class="count-input" type="number" min="5" max="10" value="5">
-                  <div class="count-stepper">
-                    <button class="count-step-btn" id="test-count-up">&#9650;</button>
-                    <button class="count-step-btn" id="test-count-down">&#9660;</button>
-                  </div>
-                </div>
-              </div>
-              <!-- 高频重接入间隔输入项 -->
-              <div style="display:flex; align-items:center; gap:8px;">
-                <label for="highfreq-interval">重接入间隔(ms)</label>
-                <div class="time-input-wrap">
-                  <input id="highfreq-interval" class="count-input time-input" type="number" min="1" max="60000" value="800">
-                </div>
-                <label for="highfreq-interval">高频阈值 : ≤1000</label>
-              </div>
-              <p class="status" id="status-text">等待开始测试...</p>
-            </div>
-            <!-- 黑名单显示区域 -->
-            <div class="blacklist-area">
-              <span class="blacklist-label">🚫</span>
-              <span class="blacklist-label">无人机设备ID黑名单</span>
-              <span class="blacklist-count" id="blacklist-count">0</span>
-              <div id="blacklist-select" class="blacklist-select" role="list"></div>
-            </div>
-          </div>
-        </div>
-
+        <div class="left-col">
         <!-- 左上流程图外框 -->
         <div class="flow-area">
           <h3 class="flow-demo-title">流程演示</h3>
@@ -1122,22 +1093,67 @@
             </svg>
           </div>
         </div>
+
+        <!-- 左下控制框：测试按钮、输入参数、黑名单 -->
+        <div class="controls">
+          <!-- 攻击测试按钮行 -->
+          <div class="btn-row">
+            <button class="action-btn" id="selfish-btn" type="button">自私接入攻击测试</button>
+            <button class="action-btn" id="highfreq-btn" type="button">高频重接入攻击测试</button>
+          </div>
+          <!-- 测试参数行：次数、重接入间隔、黑名单 -->
+          <div class="input-row">
+            <!-- 左侧输入参数组 -->
+            <div class="parameter-group">
+              <!-- 接入攻击测试次数输入项 -->
+              <div style="display:flex; align-items:center; gap:8px;">
+                <label for="test-count">接入攻击测试次数</label>
+                <!-- 带上下箭头的测试次数输入框 -->
+                <div class="count-input-wrap">
+                  <input id="test-count" class="count-input" type="number" min="5" max="10" value="5">
+                  <div class="count-stepper">
+                    <button class="count-step-btn" id="test-count-up">&#9650;</button>
+                    <button class="count-step-btn" id="test-count-down">&#9660;</button>
+                  </div>
+                </div>
+              </div>
+              <!-- 高频重接入间隔输入项 -->
+              <div style="display:flex; align-items:center; gap:8px;">
+                <label for="highfreq-interval">重接入间隔(ms)</label>
+                <div class="time-input-wrap">
+                  <input id="highfreq-interval" class="count-input time-input" type="number" min="1" max="60000" value="800">
+                </div>
+                <label for="highfreq-interval">高频阈值 : ≤1000</label>
+              </div>
+              <p class="status" id="status-text">等待开始测试...</p>
+            </div>
+            <!-- 黑名单显示区域 -->
+            <div class="blacklist-area">
+              <span class="blacklist-label">🚫</span>
+              <span class="blacklist-label">无人机设备ID黑名单</span>
+              <span class="blacklist-count" id="blacklist-count">0</span>
+              <div id="blacklist-select" class="blacklist-select" role="list"></div>
+            </div>
+          </div>
+        </div>
+
+        </div>
       </article>
 
       <!-- 右下命令行日志区域 -->
       <article class="right-panel">
-        <!-- 攻击分析终端日志 -->
+        <!-- 自私接入攻击终端日志 -->
         <section class="log-box">
-          <h3 class="log-title">攻击分析终端日志</h3>
-          <ul class="log-content" id="analysis-log"></ul>
-          <p class="log-metric" id="analysis-metric">攻击分析测试识别率：--</p>
+          <h3 class="log-title">自私接入攻击终端日志</h3>
+          <ul class="log-content" id="selfish-log"></ul>
+          <p class="log-metric" id="selfish-metric">自私接入攻击检测成功率：--</p>
         </section>
 
-        <!-- 处置记录终端日志 -->
+        <!-- 高频重接入攻击终端日志 -->
         <section class="log-box">
-          <h3 class="log-title">处置记录终端日志</h3>
-          <ul class="log-content" id="dispose-log"></ul>
-          <p class="log-metric" id="dispose-metric">记录已处置ID：--</p>
+          <h3 class="log-title">高频重接入攻击终端日志</h3>
+          <ul class="log-content" id="highfreq-log"></ul>
+          <p class="log-metric" id="highfreq-metric">高频重接入攻击检测成功率：--</p>
         </section>
       </article>
     </section>
@@ -1161,10 +1177,10 @@
       const testCountUpBtn = document.getElementById('test-count-up');
       const testCountDownBtn = document.getElementById('test-count-down');
       const statusText = document.getElementById('status-text');
-      const analysisLog = document.getElementById('analysis-log');
-      const disposeLog = document.getElementById('dispose-log');
-      const analysisMetric = document.getElementById('analysis-metric');
-      const disposeMetric = document.getElementById('dispose-metric');
+      const selfishLog = document.getElementById('selfish-log');
+      const highfreqLog = document.getElementById('highfreq-log');
+      const selfishMetric = document.getElementById('selfish-metric');
+      const highfreqMetric = document.getElementById('highfreq-metric');
 
       let running = false;
       let selfishBlacklist = new Set();  // 自私接入攻击黑名单
@@ -1288,20 +1304,27 @@
       }
 
       function resetMetrics() {
-        analysisMetric.textContent = '攻击分析测试通过率：--';
-        disposeMetric.textContent = '记录已处置ID：--';
+        selfishMetric.textContent = '自私接入攻击检测成功率：--';
+        highfreqMetric.textContent = '高频重接入攻击检测成功率：--';
       }
 
-      function setRunningMetrics() {
-        analysisMetric.textContent = '攻击分析测试通过率：本轮测试进行中...';
-        disposeMetric.textContent = '记录已处置ID：本轮测试进行中...';
+      function setRunningMetrics(type) {
+        const text = '本轮检测中...';
+        if (type === 'selfish') {
+          selfishMetric.textContent = '自私接入攻击检测成功率：' + text;
+        } else if (type === 'highfreq') {
+          highfreqMetric.textContent = '高频重接入攻击检测成功率：' + text;
+        }
       }
 
-      function setPassMetrics(passed, total) {
+      function setPassMetrics(type, passed, total) {
         const rate = total > 0 ? (passed / total) * 100 : 0;
         const text = rate.toFixed(1) + '%（' + passed + '/' + total + '）';
-        analysisMetric.textContent = '本轮攻击分析测试通过率：' + text;
-        disposeMetric.textContent = '记录本轮已处置ID：' + passed + ' 个';
+        if (type === 'selfish') {
+          selfishMetric.textContent = '自私接入攻击检测成功率：' + text;
+        } else if (type === 'highfreq') {
+          highfreqMetric.textContent = '高频重接入攻击检测成功率：' + text;
+        }
       }
 
       function initPath(path) {
@@ -1443,27 +1466,27 @@
 
           // 步骤1：无人机随机构造设备ID，发起接入请求
           await playStep('selfish', 0);
-          appendLog(analysisLog, 'UAV', '设备ID=' + id + '，发起接入请求');
+          appendLog(selfishLog, 'UAV', '设备ID=' + id + '，发起接入请求');
           await sleep(180);
 
           // 步骤2：接入点收到请求，到区块链确认
           await playStep('selfish', 1);
-          appendLog(analysisLog, 'AP', '收到接入请求，向区块链确认设备ID是否合法');
+          appendLog(selfishLog, 'AP', '收到接入请求，向区块链确认设备ID是否合法');
 
-          appendLog(analysisLog, '区块链服务组件', '设备ID=' + id + '非法，将结果返回给接入点');
+          appendLog(selfishLog, '区块链服务组件', '设备ID=' + id + '非法，将结果返回给接入点');
           await sleep(180);
 
           // 步骤2续：接入点拒绝请求
           await playStep('selfish', 2);
-          appendLog(analysisLog, 'AP', '拒绝此接入请求（原因：自私接入，设备ID=' + id + '未记录在区块链白名单上）');
+          appendLog(selfishLog, 'AP', '拒绝此接入请求（原因：自私接入，设备ID=' + id + '未记录在区块链白名单上）');
           await sleep(180);
 
           // 步骤3：记录到区块链，区块链服务组件可查询
           await playStep('selfish', 3);
           selfishBlacklist.add(id);
-          appendLog(disposeLog, '区块链', '检测到自私接入事件，记录到链上');
-          appendLog(disposeLog, '区块链', '自私接入设备ID=' + id);
-          appendLog(analysisLog, '区块链服务组件', '查询到本次自私接入事件，设备ID=' + id);
+          appendLog(selfishLog, '区块链', '检测到自私接入事件，记录到链上');
+          appendLog(selfishLog, '区块链', '自私接入设备ID=' + id);
+          appendLog(selfishLog, '区块链服务组件', '查询到本次自私接入事件，设备ID=' + id);
           updateBlacklistDisplay();
           await sleep(260);
           passed += 1;
@@ -1478,14 +1501,14 @@
         if (intervalMs === null) {
           statusText.textContent = '输入错误：接入时间间隔需为 ' + MIN_HIGHFREQ_INTERVAL_MS + '-' + MAX_HIGHFREQ_INTERVAL_MS + ' 的整数（ms）';
           appendLog(
-            analysisLog,
+            highfreqLog,
             'AP',
             '参数校验失败：接入时间间隔需为 ' + MIN_HIGHFREQ_INTERVAL_MS + '-' + MAX_HIGHFREQ_INTERVAL_MS + ' 的整数（ms）'
           );
           return null;
         }
         appendLog(
-          analysisLog,
+          highfreqLog,
           'AP',
           '接入时间间隔=' + intervalMs + 'ms，高频重接入判定阈值≤' + HIGHFREQ_INTERVAL_THRESHOLD_MS + 'ms'
         );
@@ -1498,27 +1521,27 @@
           await playStep('highfreq', 0);
 
           // 步骤1：无人机发起高频接入请求，共4次
-          appendLog(analysisLog, 'UAV', '发起接入请求，接入成功后主动断开连接');
+          appendLog(highfreqLog, 'UAV', '发起接入请求，接入成功后主动断开连接');
           for(let j = 1; j <= 3; j += 1){
-            appendLog(analysisLog, 'UAV', '立即发送接入请求（第' + j + '次），并断开连接');
+            appendLog(highfreqLog, 'UAV', '立即发送接入请求（第' + j + '次），并断开连接');
             await sleep(intervalMs);
           }
-          appendLog(analysisLog, 'UAV', '立即发送接入请求（第4次）');
+          appendLog(highfreqLog, 'UAV', '立即发送接入请求（第4次）');
           await sleep(intervalMs);
 
           // 步骤2：接入服务点到区块链查询重接入次数阈值
           await playStep('highfreq', 1);
-          appendLog(analysisLog, 'AP', '接收到接入请求，到区块链上查询重接入次数阈值');
-          appendLog(analysisLog, '区块链服务组件', '对比该设备ID=' + id + '的重接入请求次数，发现超出阈值');
+          appendLog(highfreqLog, 'AP', '接收到接入请求，到区块链上查询重接入次数阈值');
+          appendLog(highfreqLog, '区块链服务组件', '对比该设备ID=' + id + '的重接入请求次数，发现超出阈值');
           await sleep(180);
 
           // 步骤2续：拒绝接入并加入黑名单
           await playStep('highfreq', 2);
-          appendLog(analysisLog, 'AP', '拒绝该设备接入（原因：高频重接入攻击，设备ID=' + id + '）');
+          appendLog(highfreqLog, 'AP', '拒绝该设备接入（原因：高频重接入攻击，设备ID=' + id + '）');
           highfreqBlacklist.add(id);
-          appendLog(disposeLog, '区块链', '检测到高频重接入事件，记录到链上');
-          appendLog(disposeLog, '区块链', '高频重接入设备ID=' + id);
-          appendLog(analysisLog, '区块链服务组件', '查询确认：设备ID=' + id + '已加入链上黑名单');
+          appendLog(highfreqLog, '区块链', '检测到高频重接入事件，记录到链上');
+          appendLog(highfreqLog, '区块链', '高频重接入设备ID=' + id);
+          appendLog(highfreqLog, '区块链服务组件', '查询确认：设备ID=' + id + '已加入链上黑名单');
           updateBlacklistDisplay();
           await sleep(intervalMs + 3000);
           passed += 1;
@@ -1536,7 +1559,7 @@
         if (count === null) {
           statusText.textContent = '输入错误：测试次数需为 ' + MIN_TEST_COUNT + '-' + MAX_TEST_COUNT + ' 的整数';
           appendLog(
-            analysisLog,
+            type === 'selfish' ? selfishLog : highfreqLog,
             'AP',
             '参数校验失败：测试次数需为 ' + MIN_TEST_COUNT + '-' + MAX_TEST_COUNT + ' 的整数'
           );
@@ -1544,7 +1567,7 @@
         }
 
         setRunningState(true);
-        setRunningMetrics();
+        setRunningMetrics(type);
         resetFlow('selfish');
         resetFlow('highfreq');
         let passed = 0;
@@ -1555,14 +1578,13 @@
         } else {
           passed = await runHighfreq(count);
           if (passed === null) {
-            resetMetrics();
             setRunningState(false);
             return;
           }
           statusText.textContent = '高频重接入攻击测试完成，共执行 ' + count + ' 次';
         }
 
-        setPassMetrics(passed, count);
+        setPassMetrics(type, passed, count);
         setRunningState(false);
       }
 
