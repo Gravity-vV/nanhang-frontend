@@ -1459,6 +1459,10 @@
       const MAX_ROUNDS = 100;
       const SINGLE_SUCCESS_PROBABILITY = 0.62;
       const MULTI_SUCCESS_PROBABILITY = 0.9;
+      const WIFI_DL_THRESHOLD = -70;
+      const WIFI_UL_THRESHOLD = -65;
+      const LORA_DL_THRESHOLD = -118;
+      const LORA_UL_THRESHOLD = -110;
       const statusEl = document.getElementById('flow-status');
       const buttons = document.querySelectorAll('.mode-btn');
       const singleCountInput = document.getElementById('single-count');
@@ -1742,6 +1746,32 @@
         return Math.random() < probability;
       }
 
+      function randomInt(min, max) {
+        return Math.floor(min + Math.random() * (max - min + 1));
+      }
+
+      function buildWifiSignal(success) {
+        return success
+          ? { downlink: randomInt(-63, -42), uplink: randomInt(-61, -41) }
+          : { downlink: randomInt(-89, -73), uplink: randomInt(-84, -67) };
+      }
+
+      function buildLoraSignal(success) {
+        return success
+          ? { downlink: randomInt(-112, -90), uplink: randomInt(-109, -86) }
+          : { downlink: randomInt(-136, -120), uplink: randomInt(-132, -118) };
+      }
+
+      function formatSignalLine(signal, downThreshold, upThreshold) {
+        return '下行信号=' + signal.downlink + ' dBm（门限=' + downThreshold + ' dBm），上行信号=' + signal.uplink + ' dBm（门限=' + upThreshold + ' dBm）';
+      }
+
+      function modeName(mode) {
+        return mode === 'distributed'
+          ? '区块链增强多模态接入演示'
+          : '单模态接入演示';
+      }
+
       function enhanceStaticLogs() {
         document.querySelectorAll('.log-content li').forEach((item) => {
           if (item.querySelector('.log-line')) return;
@@ -1822,83 +1852,102 @@
         resetPaths();
         resetNodes();
 
-        const flowName =
-          mode === 'distributed'
-            ? '区块链增强多模态接入'
-            : '单模态接入';
+        const flowName = modeName(mode);
+        const requestName = mode === 'distributed'
+          ? '多模态 WiFi/LoRa 接入请求'
+          : '单模态 WiFi 接入请求';
         const success = shouldSucceed(mode);
-        statusEl.textContent = '\u6b63\u5728\u6267\u884c\uff1a' + flowName + ' ' + runIndex + '/' + runTotal;
+        const wifiAccepted = mode === 'distributed'
+          ? (success ? Math.random() < 0.55 : false)
+          : success;
+        const wifiSignal = buildWifiSignal(wifiAccepted);
+        const loraAccepted = mode === 'distributed' && !wifiAccepted ? success : false;
+        const loraSignal = buildLoraSignal(loraAccepted);
+
+        statusEl.textContent = '正在执行：' + flowName + ' ' + runIndex + '/' + runTotal;
         appendHeader(
           mode,
-          (mode === 'distributed' ? '多模态 WiFi/LoRa 接入请求' : '单模态 WiFi 接入请求') + ' #' + runCounter + '（' + runIndex + '/' + runTotal + '）'
+          requestName + ' #' + runCounter + '（' + runIndex + '/' + runTotal + '）'
         );
         await sleep(120);
 
-        await revealPathSegment(paths.seg1, paths.seg1.dataset.total, 0, DURATION_MS.seg1);
-        appendLog(mode, 'UAV-1', 'send_access_request', 'physical-access-' + runCounter, '已发送至 access_point', [
-          '设备ID=UAV-1',
-          '接入点开始检测WiFi/LoRa链路状态'
+        appendLog(mode, 'UAV1', '发起接入请求', requestName, '已发送', [
+          '测试轮次=' + runIndex + '/' + runTotal,
+          mode === 'distributed' ? '可用通信模式=WiFi/LoRa' : '可用通信模式=WiFi'
         ]);
-        await pauseAtNode(nodes.start, '接入请求', token);
+        await revealPathSegment(paths.seg1, paths.seg1.dataset.total, 0, DURATION_MS.seg1);
+        await pauseAtNode(nodes.start, '发起接入请求', token);
         if (token !== animationToken) return;
 
         if (mode === 'distributed') {
-          const totalTop = Number(paths.top.dataset.total);
-          const offset1 = totalTop * 0.5;
-          await revealPathSegment(paths.top, totalTop, offset1, DURATION_MS.branchPart1);
-          appendLog(mode, 'access_point', 'record_access_result', 'WiFi', '切换至 LoRa', [
-            'WiFi信号不足'
+          appendLog(mode, 'UAV1', '检测WiFi信号', 'WiFi', wifiAccepted ? '信号满足门限' : '信号低于门限', [
+            formatSignalLine(wifiSignal, WIFI_DL_THRESHOLD, WIFI_UL_THRESHOLD),
+            wifiAccepted ? 'UAV1 通过 WiFi 接入成功' : 'UAV1 的 WiFi 信号不足，准备执行模态切换'
           ]);
-          appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', '已记录部分失败', [
-            '上报UAV-1上行信道状态'
-          ]);
-          await pauseAtNode(nodes.multi, '多模态认证', token);
-          if (token !== animationToken) return;
 
-          await revealPathSegment(paths.top, offset1, 0, DURATION_MS.branchPart2);
-          appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', '切换为 LoRa', [
-            '选择模式=LoRa'
-          ]);
-          appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', success ? '通过' : '失败', [
-            '选择模式=LoRa/WiFi',
-            '接入成功=' + (success ? 'true' : 'false')
-          ]);
-          await pauseAtNode(nodes.switchNode, '接入方式切换', token);
+          if (!wifiAccepted) {
+            appendLog(mode, 'UAV1', '模态切换', 'WiFi -> LoRa', '切换执行', [
+              'WiFi 信号低于接入门限，切换至 LoRa',
+              'UAV1 重新发起 LoRa 接入检测'
+            ]);
+
+            const totalTop = Number(paths.top.dataset.total);
+            const offset1 = totalTop * 0.5;
+            await revealPathSegment(paths.top, totalTop, offset1, DURATION_MS.branchPart1);
+            await pauseAtNode(nodes.multi, '检测多模态链路', token);
+            if (token !== animationToken) return;
+
+            appendLog(mode, 'UAV1', '检测LoRa信号', 'LoRa', loraAccepted ? '信号满足门限' : '信号低于门限', [
+              formatSignalLine(loraSignal, LORA_DL_THRESHOLD, LORA_UL_THRESHOLD),
+              loraAccepted ? 'UAV1 通过 LoRa 接入成功' : 'UAV1 的 LoRa 信号不足，接入失败'
+            ]);
+
+            appendLog(mode, 'UAV1', '接入结果', 'LoRa', loraAccepted ? '接入成功' : '接入失败', [
+              loraAccepted ? '成功链路=LoRa' : '失败链路=LoRa',
+              '当前接入模式=LoRa'
+            ]);
+
+            await revealPathSegment(paths.top, offset1, 0, DURATION_MS.branchPart2);
+            await pauseAtNode(nodes.switchNode, '完成动态接入', token);
+          } else {
+            appendLog(mode, 'UAV1', '接入结果', 'WiFi', '接入成功', [
+              '成功链路=WiFi',
+              '当前接入模式=WiFi'
+            ]);
+
+            const totalTop = Number(paths.top.dataset.total);
+            await revealPathSegment(paths.top, totalTop, 0, DURATION_MS.branchPart1 + DURATION_MS.branchPart2);
+            await pauseAtNode(nodes.switchNode, '完成动态接入', token);
+          }
         } else {
+          appendLog(mode, 'UAV1', '检测WiFi信号', 'WiFi', success ? '信号满足门限' : '信号低于门限', [
+            formatSignalLine(wifiSignal, WIFI_DL_THRESHOLD, WIFI_UL_THRESHOLD),
+            success ? 'UAV1 通过 WiFi 接入成功' : 'UAV1 的 WiFi 信号不足，接入失败'
+          ]);
+
           const totalBottom = Number(paths.bottom.dataset.total);
           const offset2 = totalBottom * 0.5;
           await revealPathSegment(paths.bottom, totalBottom, offset2, DURATION_MS.branchPart1);
-          appendLog(mode, 'access_point', 'record_access_result', 'WiFi', '信号检测', [
-            '检测到WiFi信号低于阈值'
-          ]);
-          appendLog(mode, 'access_point', 'record_access_result', 'UAV-1', success ? '通过' : '失败', [
-            '选择模式=WiFi',
-            success ? 'WiFi信号达到接入阈值' : '原因=wifi_signal_below_threshold'
-          ]);
-          await pauseAtNode(nodes.single, '单模态认证', token);
+          await pauseAtNode(nodes.single, '检测单模态链路', token);
           if (token !== animationToken) return;
 
+          appendLog(mode, 'UAV1', '接入结果', 'WiFi', success ? '接入成功' : '接入失败', [
+            success ? '成功链路=WiFi' : '失败链路=WiFi',
+            '当前接入模式=WiFi'
+          ]);
+
           await revealPathSegment(paths.bottom, offset2, 0, DURATION_MS.branchPart2);
-          await pauseAtNode(nodes.backoff, '退避接入', token);
+          await pauseAtNode(nodes.backoff, '完成接入确认', token);
         }
 
         if (token === animationToken) {
           const currentRate = recordGaugeResult(mode, success);
-          statusEl.textContent = '\u6d41\u7a0b\u5b8c\u6210\uff1a' + flowName + ' ' + runIndex + '/' + runTotal;
-          
-          if (mode === 'distributed') {
-            appendLog(mode, 'access_point', 'calculate_access_advance', 'success_rate', success ? '通过' : '失败', [
-              success ? 'LoRa/WiFi动态切换生效' : '本轮接入请求未通过',
-              '当前成功/已运行=' + gauges[mode].success + '/' + gauges[mode].total,
-              '当前接入成功率=' + currentRate.toFixed(1) + '%'
-            ]);
-          } else {
-            appendLog(mode, 'access_point', 'calculate_access_advance', 'single-mode', success ? '通过' : '低于多模态方案', [
-              success ? '本轮WiFi信号达到接入阈值' : '固定WiFi单模态在信号低于阈值时接入失败',
-              '当前成功/已运行=' + gauges[mode].success + '/' + gauges[mode].total,
-              '当前接入成功率=' + currentRate.toFixed(1) + '%'
-            ]);
-          }
+          statusEl.textContent = '正在执行：' + flowName + ' ' + runIndex + '/' + runTotal;
+
+          appendLog(mode, 'AP', '统计更新', flowName, currentRate.toFixed(1) + '%', [
+            '成功次数/已运行次数=' + gauges[mode].success + '/' + gauges[mode].total,
+            '实时接入成功率=' + currentRate.toFixed(1) + '%'
+          ]);
         }
       }
 
@@ -1908,10 +1957,10 @@
         const inputEl = mode === 'distributed' ? multiCountInput : singleCountInput;
         const rounds = readRoundCount(inputEl);
         if (rounds === null) {
-          appendLog(mode, 'access_point', 'validate_round_count', 'input', '参数错误', [
-            '演示次数需为 ' + MIN_ROUNDS + '-' + MAX_ROUNDS + ' 的整数'
+          appendLog(mode, 'UAV1', '参数校验', '测试次数', '输入无效', [
+            '请输入 ' + MIN_ROUNDS + '-' + MAX_ROUNDS + ' 之间的整数'
           ]);
-          statusEl.textContent = '\u6b63\u5728\u6267\u884c\uff1a次数输入错误';
+          statusEl.textContent = '正在执行：等待有效测试次数';
           return;
         }
 
@@ -1929,16 +1978,16 @@
               await sleep(100);
             }
           }
-          const flowName = mode === 'distributed' ? '区块链增强多模态接入' : '单模态接入';
+          const flowName = modeName(mode);
           const rate = currentFinalRate(mode);
           completedModes[mode] = true;
           setGauge(gauges[mode], rate);
           updateBoostGauge();
-          appendLog(mode, 'access_point', 'calculate_final_success_rate', flowName, rate.toFixed(1) + '%', [
-            '最终成功/总次数=' + gauges[mode].success + '/' + gauges[mode].total,
+          appendLog(mode, 'AP', '测试结束', flowName, rate.toFixed(1) + '%', [
+            '成功次数/已运行次数=' + gauges[mode].success + '/' + gauges[mode].total,
             '最终接入成功率=' + rate.toFixed(1) + '%'
           ]);
-          statusEl.textContent = '\u6d41\u7a0b\u5b8c\u6210\uff1a' + flowName + '，成功率 ' + rate.toFixed(1) + '%';
+          statusEl.textContent = '正在执行：' + flowName + '完成，成功率 ' + rate.toFixed(1) + '%';
         } finally {
           setControlState(false);
         }
