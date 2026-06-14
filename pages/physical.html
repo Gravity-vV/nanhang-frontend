@@ -1457,7 +1457,7 @@
       const DEFAULT_ROUNDS = 5;
       const MIN_ROUNDS = 1;
       const MAX_ROUNDS = 100;
-      const SINGLE_SUCCESS_PROBABILITY = 0.62;
+      const SINGLE_SUCCESS_PROBABILITY = 0.7;
       const MULTI_SUCCESS_PROBABILITY = 0.9;
       const WIFI_DL_THRESHOLD = -70;
       const WIFI_UL_THRESHOLD = -65;
@@ -1739,11 +1739,30 @@
         return value;
       }
 
-      function shouldSucceed(mode) {
+      function targetSuccessCount(mode, rounds) {
         const probability = mode === 'distributed'
           ? MULTI_SUCCESS_PROBABILITY
           : SINGLE_SUCCESS_PROBABILITY;
-        return Math.random() < probability;
+        const rawCount = mode === 'distributed'
+          ? Math.ceil(rounds * probability)
+          : Math.floor(rounds * probability);
+        return Math.min(rounds, Math.max(0, rawCount));
+      }
+
+      function buildSuccessPlan(mode, rounds) {
+        const successCount = targetSuccessCount(mode, rounds);
+        const plan = Array.from({ length: rounds }, function (_, index) {
+          return index < successCount;
+        });
+
+        for (let i = plan.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = plan[i];
+          plan[i] = plan[j];
+          plan[j] = temp;
+        }
+
+        return plan;
       }
 
       function randomInt(min, max) {
@@ -1843,7 +1862,7 @@
         node.setAttribute('r', String(NODE_BASE_R));
       }
 
-      async function runFlow(mode, runIndex, runTotal) {
+      async function runFlow(mode, runIndex, runTotal, success) {
         animationToken += 1;
         const token = animationToken;
         runCounter += 1;
@@ -1856,7 +1875,6 @@
         const requestName = mode === 'distributed'
           ? '多模态 WiFi/LoRa 接入请求'
           : '单模态 WiFi 接入请求';
-        const success = shouldSucceed(mode);
         const wifiAccepted = mode === 'distributed'
           ? (success ? Math.random() < 0.55 : false)
           : success;
@@ -1941,12 +1959,11 @@
         }
 
         if (token === animationToken) {
-          const currentRate = recordGaugeResult(mode, success);
+          recordGaugeResult(mode, success);
           statusEl.textContent = '正在执行：' + flowName + ' ' + runIndex + '/' + runTotal;
 
-          appendLog(mode, 'AP', '统计更新', flowName, currentRate.toFixed(1) + '%', [
-            '成功次数/已运行次数=' + gauges[mode].success + '/' + gauges[mode].total,
-            '实时接入成功率=' + currentRate.toFixed(1) + '%'
+          appendLog(mode, 'AP', '统计更新', flowName, '已记录', [
+            '成功次数/已运行次数=' + gauges[mode].success + '/' + gauges[mode].total
           ]);
         }
       }
@@ -1972,8 +1989,9 @@
 
         setControlState(true);
         try {
+          const successPlan = buildSuccessPlan(mode, rounds);
           for (let i = 1; i <= rounds; i += 1) {
-            await runFlow(mode, i, rounds);
+            await runFlow(mode, i, rounds, successPlan[i - 1]);
             if (i < rounds) {
               await sleep(100);
             }
