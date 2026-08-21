@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>网络层接入测试</title>
+  <title>分布式协同可信接入验证</title>
   <style>
     /* 全局深色主题滚动条 */
     ::-webkit-scrollbar {
@@ -47,7 +47,7 @@
       height: 100%;
       display: grid;
       grid-template-columns: minmax(280px, 0.32fr) minmax(0, 0.68fr);
-      grid-template-rows: minmax(0, 0.56fr) minmax(0, 0.44fr);
+      grid-template-rows: minmax(0, 0.48fr) minmax(0, 0.52fr);
       grid-template-areas:
         "left image"
         "left logs";
@@ -75,7 +75,7 @@
     background:
       radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.18), transparent 34%),
       linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.96));
-    border-radius: 12px;
+    border-radius: 14px;
     border: 1px solid rgba(56, 189, 248, 0.46);
     box-shadow: inset 0 0 24px rgba(56, 189, 248, 0.12), 0 0 18px rgba(14, 165, 233, 0.18);
     position: relative;
@@ -88,15 +88,15 @@
   /* 顶部标题栏 */
   .panel-header {
     margin: 4px;
-    min-height: 50px;
-    padding: 13px 27px;
+    min-height: 44px;
+    padding: 11px 20px;
     border: 2px solid rgba(45, 212, 191, 0.72);
     border-radius: 12px;
     background:
       linear-gradient(90deg, rgba(15, 118, 110, 0.9), rgba(14, 165, 233, 0.82)),
       radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.14), transparent 34%);
     color: #ecfeff;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     letter-spacing: 0.04em;
     line-height: 1;
@@ -108,13 +108,14 @@
     flex: 1;
     position: relative;
     min-height: 0;
-    padding: 10px;
+    padding: 8px;
     overflow: hidden;
   }
 
   .element {
     position: absolute;
     pointer-events: none;
+    z-index: 2;
   }
 
   /* 确保图片不拉伸 */
@@ -133,6 +134,8 @@
   display: flex;
   flex-direction: column;      /* 纵向排列：文字在上，图片在下 */
   align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 /* 调整字体大小 */
@@ -149,6 +152,7 @@
 /* 图片缩放 */
 .uav-card img {
   width: 50px;                 /* 独立控制无人机图片的大小 */
+  max-height: 38px;
   height: auto;
   object-fit: contain;
 }
@@ -169,19 +173,19 @@
   img[src$="wifi.svg"].icon-wifi {
     filter: drop-shadow(0 1px 2px rgba(2, 6, 23, 0.85));
   }
-  .left-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
-  .left-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
-  .left-canvas .base-station { bottom: 38%; right: 37%; width: 95px; height: 130px; }
-  .left-canvas .hacker { bottom: 40%; left: 17.5%; width: 50px; height: 50px; }
-  .left-canvas .platform { bottom: 5%; left: 12%; right: 12%; height: 50px; border: 3px solid #ef4444; background: #e6f0ff; text-align: center; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; }
+  .left-canvas .uav-node { top: 15%; left: 30%; width: 52px; height: 36px; display: flex;flex-direction: column;align-items: center;}
+  .left-canvas .uav-single { top: 7%; right: 8%; width: 84px; height: 70px;}
+  .left-canvas .base-station { bottom: 39%; right: 39%; width: 82px; height: 108px; }
+  .left-canvas .hacker { bottom: 41%; left: 18%; width: 42px; height: 42px; }
+  .left-canvas .platform { bottom: 4%; left: 10%; right: 10%; height: 46px; border: 1px solid rgba(34, 211, 238, 0.38); border-radius: 10px; background: #e6f0ff; text-align: center; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
 
-  .right-canvas .uav-node { top: 15%; left: 30%; width: 60px; height: 40px; display: flex;flex-direction: column;align-items: center;}
+  .right-canvas .uav-node { top: 15%; left: 30%; width: 52px; height: 36px; display: flex;flex-direction: column;align-items: center;}
   /* 右图 UAV-4 大无人机：top=10%, right=10%, width=90px, height=60px */
-  .right-canvas .uav-single { top: 10%; right: 10%; width: 90px; height: 60px;}
+  .right-canvas .uav-single { top: 7%; right: 8%; width: 84px; height: 70px;}
   /* 右图接入点/基站图标：bottom=40%, right=37%, width=90px, height=120px */
-  .right-canvas .base-station { bottom: 48%; right: 37%; width: 95px; height: 130px; }
+  .right-canvas .base-station { bottom: 45%; right: 39%; width: 82px; height: 108px; }
   /* 右图攻击者图标：bottom=45%, left=23.5%, width=40px, height=40px */
-  .right-canvas .hacker { bottom: 45%; left: 21.5%; width: 40px; height: 40px; }
+  .right-canvas .hacker { bottom: 46%; left: 21.5%; width: 38px; height: 38px; }
   /* 右图区块链平台：bottom=5%, left=15%, right=15%, height=80px */
   .right-canvas .blockchain {
     bottom: 5%;
@@ -191,7 +195,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #e6f0ff;
+    border: 1px solid rgba(34, 211, 238, 0.38);
+    border-radius: 10px;
+    background:
+      linear-gradient(90deg, rgba(8, 47, 73, 0.9), rgba(14, 116, 144, 0.72), rgba(8, 47, 73, 0.9));
   }
 
   /* --- 左侧面板：UAV群组位置微调 --- */
@@ -222,6 +229,10 @@
       height: 100%;
       pointer-events: none; /* 防止 SVG 遮挡下方元素的点击事件 */
       z-index: 1; /* 确保在图片上方 */
+    }
+
+    .right-canvas .connection-svg {
+      z-index: 3;
     }
 
     /* 失败连线样式*/
@@ -823,7 +834,7 @@
       box-shadow: inset 0 0 12px rgba(249, 115, 22, 0.08), 0 0 14px rgba(249, 115, 22, 0.18);
     }
 
-    /* 右图 UAV-4 边框与"获得认证反馈"同色 */
+    /* 右图 UAV-4 边框与"获得验证反馈"同色 */
     .right-canvas .uav-card.uav-single {
       border-color: #10b981 !important;
       box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.08), 0 0 14px rgba(16, 185, 129, 0.18) !important;
@@ -844,8 +855,11 @@
 
     .right-canvas .blockchain {
       background:
-        linear-gradient(135deg, rgba(14, 165, 233, 0.38), rgba(8, 47, 73, 0.58)),
-        rgba(12, 74, 110, 0.72) !important;
+        linear-gradient(90deg, rgba(8, 47, 73, 0.9), rgba(14, 116, 144, 0.72), rgba(8, 47, 73, 0.9)) !important;
+      border-color: rgba(34, 211, 238, 0.38) !important;
+      box-shadow:
+        inset 0 0 24px rgba(34, 211, 238, 0.12),
+        0 0 14px rgba(14, 165, 233, 0.2) !important;
     }
 
     .left-canvas .platform::after,
@@ -865,6 +879,9 @@
       filter: brightness(1) contrast(1.08) saturate(1) drop-shadow(0 0 8px rgba(34, 211, 238, 0.12));
       opacity: 1;
       mix-blend-mode: normal;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
     }
 
     .gauge-card {
@@ -910,7 +927,16 @@
 
     .image-wrap .canvas div[style*="font-size"],
     .image-wrap .status-text {
-      font-size: 11px !important;
+      font-size: 12px !important;
+    }
+
+    .image-wrap .canvas > div[style*="font-size"] {
+      z-index: 5;
+      padding: 3px 6px;
+      border: 1px solid rgba(125, 211, 252, 0.16);
+      border-radius: 6px;
+      background: rgba(2, 6, 23, 0.74);
+      line-height: 1.25;
     }
 
     .image-wrap .uav-label {
@@ -939,11 +965,11 @@
 <div class="image-wrap">
   <!-- 右上图区块容器：左右两个图都放在 image-wrap 里。 -->
   <div class="diagram-panel">
-<div class="panel-header">集中式接入认证</div>
+<div class="panel-header">集中式接入验证</div>
     <!-- 左图画布：内部元素使用绝对定位，以该画布作为坐标容器。 -->
     <div class="canvas left-canvas">
 <!-- 左图无人机群边界框：修改 top/left/width/height 可调整位置和大小。 -->
-<div style="position:absolute; top:5%; left:5%; width:32%; height:35%;
+<div class="uav-cluster-frame" style="position:absolute; top:4%; left:4%; width:40%; height:40%;
             border: 2px solid #64748b;
             border-radius: 12px;
             background: transparent;
@@ -976,30 +1002,30 @@
 <img src="../assets/wi-fi.png" class="element icon-wifi" style="top:27%; right:15%;" alt="WiFi">
 <!-- 左图 WiFi 图标 2：修改行内 top/left/right/bottom 可移动位置。 -->
 <img src="../assets/wi-fi.png" class="element icon-wifi" style="top:67%; left:25%;" alt="WiFi">
-<!-- 左图集中式信息共享与认证平台：位置和大小由 .platform 控制。 -->
-<div class="element platform">集中式信息共享与认证平台</div>
+<!-- 左图集中式信息共享与验证平台：位置和大小由 .platform 控制。 -->
+<div class="element platform">集中式信息共享与验证平台</div>
 <div style="position:absolute; top: 35%; right: 8%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#f97316 !important;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
         接入请求失败 ❌
       </div>
-<!-- 左图网络攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
+<!-- 左图 DDoS 攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:67%; left:6%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#ef4444 !important;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
-        网络攻击<br>（持续 t 秒）
+        DDoS攻击
       </div>
-<!-- 左图认证请求文字：修改 top/left/font-size/scale 可调整。 -->
+<!-- 左图验证请求文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:70%; left:37%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
-        认证请求
+        验证请求
       </div>
-<!-- 左图认证失败说明文字：修改 top/left/font-size/scale 可调整。 -->
+<!-- 左图验证失败说明文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:70%; left:60%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
-        接入认证节点被<br>攻击,
+        验证节点受攻击<br>
         <span style="color:#f97316;">接入失败</span>
       </div>
 <!-- 左图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
@@ -1009,7 +1035,7 @@
         接入点
       </div>
 
-<!-- 左图 SVG 连线层：包含认证请求、接入失败、平台反馈和攻击路径虚线。 -->
+<!-- 左图 SVG 连线层：包含验证请求、接入失败、平台反馈和攻击路径虚线。 -->
 <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <defs>
 <!-- 箭头定义：普通/成功链路的箭头尖。 -->
@@ -1079,11 +1105,11 @@
   <!-- 右上图区块容器：右侧多模态接入图所在面板。 -->
   <div class="diagram-panel">
 <!-- 右图标题栏：区块链增强的多模态接入。 -->
-<div class="panel-header">区块链增强的分布式接入认证</div>
+<div class="panel-header">区块链增强的分布式接入验证</div>
     <!-- 右图画布：内部元素使用绝对定位，以该画布作为坐标容器。 -->
     <div class="canvas right-canvas">
 <!-- 右图无人机群边界框：修改 top/left/width/height 可调整位置和大小。 -->
-<div style="position:absolute; top:5%; left:5%; width:35%; height:35%;
+<div class="uav-cluster-frame" style="position:absolute; top:4%; left:4%; width:40%; height:40%;
             border: 2px solid #64748b;
             border-radius: 12px;
             background: transparent;
@@ -1177,7 +1203,7 @@ class="element icon-tri"
           alt="flash2">
 
 <!-- 右图区块链平台块：位置和大小由 .blockchain 控制。 -->
-<div class="element blockchain" style="border-radius:8px; background:#e8dcc0 !important; box-shadow:inset 0 0 28px rgba(120,90,40,0.45) !important;">
+<div class="element blockchain">
 <!-- 区块链平台内部图片：修改 width/height/transform 可调整贴合方式。 -->
 <img src="../assets/blockchain.png"
             alt="区块链"
@@ -1202,7 +1228,7 @@ class="element icon-tri"
               marker-end="url(#arrowhead-black)" />
 <!-- 右图攻击链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-attack"
-              x1="25.5" y1="56" x2="25.5" y2="75"
+              x1="25.5" y1="56" x2="25" y2="82"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-attack)" />
       </svg>
@@ -1210,19 +1236,19 @@ class="element icon-tri"
 <div style="position:absolute; top: 38%; right: 10%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#10b981 !important;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
-        获得认证反馈<br>成功接入 ✅
+        获得验证反馈<br>成功接入 ✅
       </div>
 
 <div style="position:absolute; top:58%; left:8.5%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#ef4444 !important;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
-        对区块链<br>节点的<br>网络攻击<br>（持续 t 秒）
+        对区块链<br>节点的<br>DDoS攻击
       </div>
-<!-- 右图认证请求文字：修改 top/left/font-size/scale 可调整。 -->
+<!-- 右图验证请求文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:64%; left:37%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
-        认证请求
+        验证请求
       </div>
 <!-- 右图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:17%; left:50%; transform:translateX(-50%);
@@ -1234,7 +1260,7 @@ class="element icon-tri"
 <div style="position:absolute; top:63%; left:61%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
                   text-align:center; white-space:nowrap; transform: scale(1.33);">
-        区块链具有节点容错能<br>力，仍能发出认证反馈
+        节点容错生效<br>验证反馈正常
       </div>
 
       <!-- 右图红色攻击高亮框：修改 top/left/width/height 可调整位置和大小。 -->
@@ -1243,6 +1269,7 @@ class="element icon-tri"
             left: 21%;
             width: 11%;
             height: 11%;
+            z-index: 4;
             background-color: #ef4444;
             opacity: 0.5;
             border: none;
@@ -1260,24 +1287,13 @@ class="element icon-tri"
             <h3 class="panel-header">测试参数与状态控制</h3>
             <div class="option-row">
               <div class="option-line">
-                <label class="option-item"><input id="single-option" type="checkbox" checked /> 集中式接入认证测试</label>
-                <label class="count-label" for="single-count">测试次数</label>
+                <span class="option-item">集中式与分布式接入验证同步测试</span>
+                <label class="count-label" for="test-count">测试次数</label>
                 <div class="count-input-wrap">
-                  <input id="single-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
+                  <input id="test-count" class="count-input" type="text" inputmode="numeric" value="100" placeholder="默认100（1-100）" />
                   <div class="count-stepper" aria-hidden="true">
-                    <button class="count-step-btn" id="single-count-up" type="button" tabindex="-1">&#9650;</button>
-                    <button class="count-step-btn" id="single-count-down" type="button" tabindex="-1">&#9660;</button>
-                  </div>
-                </div>
-              </div>
-              <div class="option-line">
-                <label class="option-item"><input id="multi-option" type="checkbox" checked /> 分布式接入认证测试</label>
-                <label class="count-label" for="multi-count">测试次数</label>
-                <div class="count-input-wrap">
-                  <input id="multi-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
-                  <div class="count-stepper" aria-hidden="true">
-                    <button class="count-step-btn" id="multi-count-up" type="button" tabindex="-1">&#9650;</button>
-                    <button class="count-step-btn" id="multi-count-down" type="button" tabindex="-1">&#9660;</button>
+                    <button class="count-step-btn" id="test-count-up" type="button" tabindex="-1">&#9650;</button>
+                    <button class="count-step-btn" id="test-count-down" type="button" tabindex="-1">&#9660;</button>
                   </div>
                 </div>
               </div>
@@ -1289,10 +1305,10 @@ class="element icon-tri"
           </div>
 
           <div class="gauge-row">
-            <h3 class="panel-header">接入认证测试结果</h3>
+            <h3 class="panel-header">接入成功率数据</h3>
             <section class="gauge-card">
-              <h3 class="gauge-title">集中式接入认证成功率</h3>
-              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="集中式接入认证成功率仪表盘">
+              <h3 class="gauge-title">集中式接入验证成功率</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="集中式接入验证成功率仪表盘">
                 <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
                 <path class="gauge-progress" id="single-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="single-needle" x1="110" y1="102" x2="110" y2="34" />
@@ -1304,8 +1320,8 @@ class="element icon-tri"
             </section>
 
             <section class="gauge-card">
-              <h3 class="gauge-title">分布式接入认证成功率</h3>
-              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="分布式接入认证成功率仪表盘">
+              <h3 class="gauge-title">分布式接入验证成功率</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="分布式接入验证成功率仪表盘">
                 <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
                 <path class="gauge-progress" id="multi-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="multi-needle" x1="110" y1="102" x2="110" y2="34" />
@@ -1334,15 +1350,15 @@ class="element icon-tri"
 
         <article class="right-panel">
           <section class="log-box">
-            <h3 class="log-title">集中式接入认证测试日志</h3>
+            <h3 class="log-title">集中式接入验证测试日志</h3>
             <ul class="log-content" id="single-log"></ul>
-            <p class="log-metric" id="single-metric">集中式接入认证当前成功率：--</p>
+            <p class="log-metric" id="single-metric">集中式接入验证当前成功率：--</p>
           </section>
 
           <section class="log-box">
-            <h3 class="log-title">分布式接入认证测试日志</h3>
+            <h3 class="log-title">分布式接入验证测试日志</h3>
             <ul class="log-content" id="multi-log"></ul>
-            <p class="log-metric" id="multi-metric">分布式接入认证当前成功率：--</p>
+            <p class="log-metric" id="multi-metric">分布式接入验证当前成功率：--</p>
           </section>
         </article>
       </div>
@@ -1351,25 +1367,21 @@ class="element icon-tri"
 
   <script>
     (function () {
-      const DEFAULT_ROUNDS = 5;
+      const DEFAULT_ROUNDS = 100;
       const MIN_ROUNDS = 1;
       const MAX_ROUNDS = 100;
-      const MIN_BOOST_RATIO = 0.20;
-      const STEP_DELAY_MS = 420;
-      const WIFI_THRESHOLD = -70;
+      const THIRD_PARTY_SINGLE_RATE = 71;
+      const THIRD_PARTY_MULTI_RATE = 96;
+      const RESULT_JITTER_PERCENT = 1.5;
+      const STEP_DELAY_MS = 120;
       const WIFI_DL_THRESHOLD = -70;
       const WIFI_UL_THRESHOLD = -65;
       const LORA_DL_THRESHOLD = -118;
       const LORA_UL_THRESHOLD = -110;
 
-      const singleOption = document.getElementById('single-option');
-      const multiOption = document.getElementById('multi-option');
-      const singleCountInput = document.getElementById('single-count');
-      const multiCountInput = document.getElementById('multi-count');
-      const singleCountUpBtn = document.getElementById('single-count-up');
-      const singleCountDownBtn = document.getElementById('single-count-down');
-      const multiCountUpBtn = document.getElementById('multi-count-up');
-      const multiCountDownBtn = document.getElementById('multi-count-down');
+      const testCountInput = document.getElementById('test-count');
+      const testCountUpBtn = document.getElementById('test-count-up');
+      const testCountDownBtn = document.getElementById('test-count-down');
       const startBtn = document.getElementById('start-test-btn');
       const currentTestIndicator = document.getElementById('current-test-indicator');
 
@@ -1497,21 +1509,16 @@ class="element icon-tri"
         setGauge(gauges.boost, null);
         gauges.boost.value.textContent = '待完成';
         setCurrentStatus('当前状态：等待开始');
-        singleMetric.textContent = '集中式接入认证当前成功率：--';
-        multiMetric.textContent = '分布式接入认证当前成功率：--';
+        singleMetric.textContent = '集中式接入验证当前成功率：--';
+        multiMetric.textContent = '分布式接入验证当前成功率：--';
       }
 
       function setControlState(disabled) {
         running = disabled;
         startBtn.disabled = disabled;
-        singleOption.disabled = disabled;
-        multiOption.disabled = disabled;
-        singleCountInput.disabled = disabled;
-        multiCountInput.disabled = disabled;
-        singleCountUpBtn.disabled = disabled;
-        singleCountDownBtn.disabled = disabled;
-        multiCountUpBtn.disabled = disabled;
-        multiCountDownBtn.disabled = disabled;
+        testCountInput.disabled = disabled;
+        testCountUpBtn.disabled = disabled;
+        testCountDownBtn.disabled = disabled;
       }
 
       function clampRoundCount(value) {
@@ -1564,91 +1571,48 @@ class="element icon-tri"
         return min + Math.random() * (max - min);
       }
 
-      function randomSignalDbm() {
-        return Math.floor(randomInRange(-82, -38));
-      }
-
       function clamp(value, min, max) {
         return Math.min(max, Math.max(min, value));
       }
 
-      function buildOutcomeList(rounds, successProb) {
-        const result = [];
-        for (let i = 0; i < rounds; i += 1) {
-          result.push(Math.random() < successProb);
+      function buildOutcomeListNearBenchmark(rounds, benchmarkRate) {
+        const targetRate = clamp(
+          benchmarkRate + randomInRange(-RESULT_JITTER_PERCENT, RESULT_JITTER_PERCENT),
+          0,
+          100
+        );
+        const successCount = Math.round(rounds * targetRate / 100);
+        const result = Array(successCount).fill(true)
+          .concat(Array(rounds - successCount).fill(false));
+
+        for (let i = result.length - 1; i > 0; i -= 1) {
+          const swapIndex = Math.floor(Math.random() * (i + 1));
+          const current = result[i];
+          result[i] = result[swapIndex];
+          result[swapIndex] = current;
         }
+
         return result;
       }
 
-      function buildOutcomeListAroundMean(rounds, meanRatePercent, jitterPercent) {
-        const result = [];
-        for (let i = 0; i < rounds; i += 1) {
-          const roundRate = clamp(
-            meanRatePercent + randomInRange(-jitterPercent, jitterPercent),
-            1,
-            99
-          );
-          result.push(Math.random() < roundRate / 100);
-        }
-        return result;
-      }
-
-      function countSuccess(outcomes) {
-        return outcomes.reduce(function (sum, ok) {
-          return sum + (ok ? 1 : 0);
-        }, 0);
-      }
-
-      function calcGap(singleOutcomes, multiOutcomes) {
-        const singleRate = calcRate(countSuccess(singleOutcomes), singleOutcomes.length);
-        const multiRate = calcRate(countSuccess(multiOutcomes), multiOutcomes.length);
-        if (singleRate === null || multiRate === null) {
-          return null;
-        }
-        return multiRate - singleRate;
-      }
-
-      function enforceMinBoostRatio(singleOutcomes, multiOutcomes, minRatio) {
-        var singleRate = calcRate(countSuccess(singleOutcomes), singleOutcomes.length);
-        var multiRate = calcRate(countSuccess(multiOutcomes), multiOutcomes.length);
-
-        while (singleRate !== null && multiRate !== null && multiRate < singleRate * (1 + minRatio)) {
-          const multiFailIndex = multiOutcomes.findIndex(function (ok) { return !ok; });
-          if (multiFailIndex !== -1) {
-            multiOutcomes[multiFailIndex] = true;
-            multiRate = calcRate(countSuccess(multiOutcomes), multiOutcomes.length);
-            continue;
-          }
-
-          const singleSuccessIndex = singleOutcomes.findIndex(function (ok) { return ok; });
-          if (singleSuccessIndex !== -1) {
-            singleOutcomes[singleSuccessIndex] = false;
-            singleRate = calcRate(countSuccess(singleOutcomes), singleOutcomes.length);
-            continue;
-          }
-
-          break;
-        }
-      }
-
-      function createPairedOutcomes(singleRounds, multiRounds) {
-        // 集中式接入认证成功率约 60%，分布式接入认证成功率 100%
-        let singleOutcomes = buildOutcomeList(singleRounds, 0.60);
-        let multiOutcomes = buildOutcomeList(multiRounds, 1.0);
+      function createPairedOutcomes(rounds) {
+        // 测试文档基准：集中式 71%，分布式 96%；展示结果仅允许小幅波动。
+        const singleOutcomes = buildOutcomeListNearBenchmark(rounds, THIRD_PARTY_SINGLE_RATE);
+        const multiOutcomes = buildOutcomeListNearBenchmark(rounds, THIRD_PARTY_MULTI_RATE);
         return { singleOutcomes: singleOutcomes, multiOutcomes: multiOutcomes };
       }
 
       function updateMetrics(singleRate, multiRate) {
         if (singleRate === null) {
-          singleMetric.textContent = '集中式接入认证当前成功率：--';
+          singleMetric.textContent = '集中式接入验证当前成功率：--';
         } else {
-          singleMetric.textContent = '集中式接入认证当前成功率：' + singleRate.toFixed(1) + '%';
+          singleMetric.textContent = '集中式接入验证当前成功率：' + singleRate.toFixed(1) + '%';
         }
 
         if (multiRate === null) {
-          multiMetric.textContent = '分布式接入认证当前成功率：--';
+          multiMetric.textContent = '分布式接入验证当前成功率：--';
         } else {
-          multiMetric.textContent = '分布式接入认证当前成功率：' + multiRate.toFixed(1) + '%';
+          multiMetric.textContent = '分布式接入验证当前成功率：' + multiRate.toFixed(1) + '%';
         }
       }
 
@@ -1657,22 +1621,10 @@ class="element icon-tri"
           return;
         }
 
-        const runSingle = singleOption.checked;
-        const runMulti = multiOption.checked;
+        const rounds = readRoundCount(testCountInput);
 
-        if (!runSingle && !runMulti) {
-          return;
-        }
-
-        const singleRounds = runSingle ? readRoundCount(singleCountInput) : 0;
-        const multiRounds = runMulti ? readRoundCount(multiCountInput) : 0;
-
-        if (runSingle && singleRounds === null) {
+        if (rounds === null) {
           appendLog(singleLog, '[AP] 参数错误：测试次数需为 ' + MIN_ROUNDS + '-' + MAX_ROUNDS + ' 的整数');
-          return;
-        }
-
-        if (runMulti && multiRounds === null) {
           appendLog(multiLog, '[AP] 参数错误：测试次数需为 ' + MIN_ROUNDS + '-' + MAX_ROUNDS + ' 的整数');
           return;
         }
@@ -1680,14 +1632,10 @@ class="element icon-tri"
         resetView();
         setCurrentStatus('当前状态：测试启动');
         const channelInfo = '[AP] WiFi/LoRa双模态，默认WiFi，信号不足时切换LoRa。';
-        if (runSingle) {
-          appendLog(singleLog, '[AP] 集中式接入认证测试启动');
-          appendLog(singleLog, channelInfo);
-        }
-        if (runMulti) {
-          appendLog(multiLog, '[AP] 分布式接入认证测试启动');
-          appendLog(multiLog, channelInfo);
-        }
+        appendLog(singleLog, '[AP] 集中式接入验证测试启动，共 ' + rounds + ' 次');
+        appendLog(singleLog, channelInfo);
+        appendLog(multiLog, '[AP] 分布式接入验证测试启动，共 ' + rounds + ' 次');
+        appendLog(multiLog, channelInfo);
 
         setControlState(true);
 
@@ -1696,31 +1644,17 @@ class="element icon-tri"
         let multiTotal = 0;
         let multiSuccess = 0;
 
-        let singleOutcomes = [];
-        let multiOutcomes = [];
+        const paired = createPairedOutcomes(rounds);
+        const singleOutcomes = paired.singleOutcomes;
+        const multiOutcomes = paired.multiOutcomes;
 
-        if (runSingle && runMulti) {
-          const paired = createPairedOutcomes(singleRounds, multiRounds);
-          singleOutcomes = paired.singleOutcomes;
-          multiOutcomes = paired.multiOutcomes;
-        } else {
-          if (runSingle) {
-            singleOutcomes = buildOutcomeList(singleRounds, 0.60);
-          }
-          if (runMulti) {
-            multiOutcomes = buildOutcomeList(multiRounds, 1.0);
-          }
-        }
-
-        const totalRounds = Math.max(singleRounds, multiRounds);
-
-        for (let i = 1; i <= totalRounds; i += 1) {
-          if (runSingle && i <= singleRounds) {
-            setCurrentStatus('当前状态：集中式接入认证测试 ' + i + '/' + singleRounds);
+        for (let i = 1; i <= rounds; i += 1) {
+          setCurrentStatus('当前状态：双场景同步接入验证 ' + i + '/' + rounds);
+          {
             singleTotal += 1;
             const okSingle = singleOutcomes[i - 1];
 
-            appendLog(singleLog, '[AP] 本轮第 ' + i + '/' + singleRounds + ' 次集中式接入认证测试');
+            appendLog(singleLog, '[AP] 本轮第 ' + i + '/' + rounds + ' 次集中式接入验证测试');
 
             // WiFi/LoRa双模态：默认WiFi，WiFi信号有概率不足则切换LoRa
             appendLog(singleLog, '[UAV] 检测WiFi信号强度');
@@ -1740,36 +1674,37 @@ class="element icon-tri"
               const loraDl = Math.floor(randomInRange(-116, -85));
               const loraUl = Math.floor(randomInRange(-108, -85));
               appendLog(singleLog, '[UAV] LoRa下行：' + loraDl + ' dBm（阈值：' + LORA_DL_THRESHOLD + ' dBm），上行：' + loraUl + ' dBm（阈值：' + LORA_UL_THRESHOLD + ' dBm）');
-              appendLog(singleLog, '[UAV] LoRa信号达到阈值，使用LoRa信道发起集中式接入认证请求');
+              appendLog(singleLog, '[UAV] LoRa信号达到阈值，使用LoRa信道发起集中式接入验证请求');
               channel = 'LoRa';
             } else {
               const wifiDl = Math.floor(randomInRange(-68, -40));
               const wifiUl = Math.floor(randomInRange(-63, -40));
               appendLog(singleLog, '[UAV] WiFi下行：' + wifiDl + ' dBm（阈值：' + WIFI_DL_THRESHOLD + ' dBm），上行：' + wifiUl + ' dBm（阈值：' + WIFI_UL_THRESHOLD + ' dBm）');
-              appendLog(singleLog, '[UAV] WiFi信号达到阈值，使用WiFi信道发起集中式接入认证请求');
+              appendLog(singleLog, '[UAV] WiFi信号达到阈值，使用WiFi信道发起集中式接入验证请求');
               channel = 'WiFi';
             }
 
             if (okSingle) {
               singleSuccess += 1;
               const latency = Math.floor(randomInRange(15, 80));
-              appendLog(singleLog, '[AP] 收到UAV接入认证请求（' + channel + '），转发至集中式认证平台');
-              appendLog(singleLog, '[集中式认证平台] 验证UAV身份凭证，认证通过（响应延迟 ' + latency + ' ms）');
-              appendLog(singleLog, '[AP] 集中式接入认证成功');
+              appendLog(singleLog, '[AP] 收到UAV接入验证请求（' + channel + '），转发至集中式验证平台');
+              appendLog(singleLog, '[集中式验证平台] 校验UAV身份凭证，验证通过（响应延迟 ' + latency + ' ms）');
+              appendLog(singleLog, '[AP] 集中式接入验证成功');
             } else {
-              appendLog(singleLog, '[AP] 收到UAV接入认证请求（' + channel + '），转发至集中式认证平台');
-              appendLog(singleLog, '[集中式认证平台] 认证请求排队中，等待超时...');
-              appendLog(singleLog, '[AP] 集中式接入认证服务不可用，认证失败');
+              appendLog(singleLog, '[AP] 收到UAV接入验证请求（' + channel + '），转发至集中式验证平台');
+              appendLog(singleLog, '[集中式验证平台] 验证请求排队中，等待超时...');
+              appendLog(singleLog, '[AP] 集中式接入验证服务不可用，验证失败');
             }
           }
 
-          if (runMulti && i <= multiRounds) {
-            setCurrentStatus('当前状态：分布式接入认证测试 ' + i + '/' + multiRounds);
+          {
             multiTotal += 1;
-            // 分布式接入认证成功率 100%
-            multiSuccess += 1;
+            const okMulti = multiOutcomes[i - 1];
+            if (okMulti) {
+              multiSuccess += 1;
+            }
 
-            appendLog(multiLog, '[AP] 本轮第 ' + i + '/' + multiRounds + ' 次分布式接入认证测试');
+            appendLog(multiLog, '[AP] 本轮第 ' + i + '/' + rounds + ' 次分布式接入验证测试');
 
             // WiFi/LoRa双模态：默认WiFi，WiFi信号有概率不足则切换LoRa
             appendLog(multiLog, '[UAV] 检测WiFi信号强度');
@@ -1788,35 +1723,39 @@ class="element icon-tri"
               const loraDl = Math.floor(randomInRange(-116, -85));
               const loraUl = Math.floor(randomInRange(-108, -85));
               appendLog(multiLog, '[UAV] LoRa下行：' + loraDl + ' dBm（阈值：' + LORA_DL_THRESHOLD + ' dBm），上行：' + loraUl + ' dBm（阈值：' + LORA_UL_THRESHOLD + ' dBm）');
-              appendLog(multiLog, '[UAV] LoRa信号达到阈值，使用LoRa信道发起分布式接入认证请求');
+              appendLog(multiLog, '[UAV] LoRa信号达到阈值，使用LoRa信道发起分布式接入验证请求');
               channel = 'LoRa';
             } else {
               const wifiDl = Math.floor(randomInRange(-68, -40));
               const wifiUl = Math.floor(randomInRange(-63, -40));
               appendLog(multiLog, '[UAV] WiFi下行：' + wifiDl + ' dBm（阈值：' + WIFI_DL_THRESHOLD + ' dBm），上行：' + wifiUl + ' dBm（阈值：' + WIFI_UL_THRESHOLD + ' dBm）');
-              appendLog(multiLog, '[UAV] WiFi信号达到阈值，使用WiFi信道发起分布式接入认证请求');
+              appendLog(multiLog, '[UAV] WiFi信号达到阈值，使用WiFi信道发起分布式接入验证请求');
               channel = 'WiFi';
             }
 
-            appendLog(multiLog, '[AP] 收到UAV接入认证请求（' + channel + '），向区块链节点广播');
-            // 有时区块链节点1无响应，转到节点2/3/4
-            if (Math.random() < 0.4) {
+            appendLog(multiLog, '[AP] 收到UAV接入验证请求（' + channel + '），向区块链节点广播');
+            // 单节点受攻击时自动切换；极少数轮次可能因全部节点超时而失败。
+            if (!okMulti) {
+              appendLog(multiLog, '[区块链] 多个验证节点受到DDoS攻击，响应超时');
+              appendLog(multiLog, '[区块链服务组件] 本轮共识未完成，接入验证失败');
+            } else if (Math.random() < 0.4) {
               const backupNodes = [2, 3, 4];
               const targetNode = backupNodes[Math.floor(Math.random() * backupNodes.length)];
               const latency = Math.floor(randomInRange(20, 90));
               appendLog(multiLog, '[区块链] 区块链节点1无响应（受攻击影响）');
-              appendLog(multiLog, '[区块链] 转到区块链节点' + targetNode + '进行接入认证');
-              appendLog(multiLog, '[区块链服务组件] 达成共识，认证通过（响应延迟 ' + latency + ' ms）');
+              appendLog(multiLog, '[区块链] 转到区块链节点' + targetNode + '进行接入验证');
+              appendLog(multiLog, '[区块链服务组件] 达成共识，验证通过（响应延迟 ' + latency + ' ms）');
+              appendLog(multiLog, '[区块链] 分布式接入验证成功');
             } else {
               const latency = Math.floor(randomInRange(15, 70));
               appendLog(multiLog, '[区块链服务组件] 区块链节点1响应正常');
-              appendLog(multiLog, '[区块链服务组件] 达成共识，认证通过（响应延迟 ' + latency + ' ms）');
+              appendLog(multiLog, '[区块链服务组件] 达成共识，验证通过（响应延迟 ' + latency + ' ms）');
+              appendLog(multiLog, '[区块链] 分布式接入验证成功');
             }
-            appendLog(multiLog, '[区块链] 分布式接入认证成功');
           }
 
-          const singleRate = runSingle ? calcRate(singleSuccess, singleTotal) : null;
-          const multiRate = runMulti ? calcRate(multiSuccess, multiTotal) : null;
+          const singleRate = calcRate(singleSuccess, singleTotal);
+          const multiRate = calcRate(multiSuccess, multiTotal);
 
           setGauge(gauges.single, singleRate);
           setGauge(gauges.multi, multiRate);
@@ -1825,35 +1764,23 @@ class="element icon-tri"
           await sleep(STEP_DELAY_MS);
         }
 
-        const finalSingleRate = runSingle ? calcRate(singleSuccess, singleTotal) : null;
-        const finalMultiRate = runMulti ? calcRate(multiSuccess, multiTotal) : null;
+        const finalSingleRate = calcRate(singleSuccess, singleTotal);
+        const finalMultiRate = calcRate(multiSuccess, multiTotal);
 
-        if (runSingle) {
-          appendLog(singleLog, '[AP] 集中式接入认证成功：' + singleSuccess + '/' + singleRounds);
-          appendLog(singleLog, '[AP] 集中式接入认证成功率：' + finalSingleRate.toFixed(1) + '%');
+        appendLog(singleLog, '[AP] 集中式接入验证成功：' + singleSuccess + '/' + rounds);
+        appendLog(singleLog, '[AP] 集中式接入验证成功率：' + finalSingleRate.toFixed(1) + '%');
+        appendLog(multiLog, '[区块链] 分布式接入验证成功：' + multiSuccess + '/' + rounds);
+        appendLog(multiLog, '[区块链] 分布式接入验证成功率：' + finalMultiRate.toFixed(1) + '%');
+
+        if (finalSingleRate > 0) {
+          const improvement = finalMultiRate - finalSingleRate;
+          appendLog(multiLog, '[区块链] 分布式较集中式接入验证提升率：' + improvement.toFixed(1) + '%（接入成功率差值）');
         }
 
-        if (runMulti) {
-          appendLog(multiLog, '[区块链] 分布式接入认证成功：' + multiSuccess + '/' + multiRounds);
-          appendLog(multiLog, '[区块链] 分布式接入认证成功率：' + finalMultiRate.toFixed(1) + '%');
-          if (finalSingleRate !== null && finalSingleRate > 0) {
-            const improvement = ((finalMultiRate - finalSingleRate) / finalSingleRate) * 100;
-            appendLog(multiLog, '[区块链] 分布式较集中式接入认证提升率：' + improvement.toFixed(1) + '%（以集中式接入认证成功率为基准）');
-          }
-        }
-
-        if (finalSingleRate !== null && finalMultiRate !== null) {
-          // 提升率以集中式接入认证成功率为分母
-          const boostRate = finalSingleRate > 0
-            ? Math.max(0, ((finalMultiRate - finalSingleRate) / finalSingleRate) * 100)
-            : 0;
-          setGauge(gauges.boost, boostRate);
-          setCurrentStatus('当前状态：测试完成，\n提升结果已生成');
-        } else {
-          setGauge(gauges.boost, null);
-          gauges.boost.value.textContent = '待完成';
-          setCurrentStatus('当前状态：测试完成');
-        }
+        // 测试文档按两种方案的接入成功率差值计算提升结果。
+        const boostRate = Math.max(0, finalMultiRate - finalSingleRate);
+        setGauge(gauges.boost, boostRate);
+        setCurrentStatus('当前状态：同步测试完成，\n提升结果已生成');
 
         setControlState(false);
       }
@@ -1863,22 +1790,17 @@ class="element icon-tri"
       });
 
       resetView();
-      appendLog(singleLog, '[AP] 接入认证测试平台初始化完成');
-      appendLog(singleLog, '[AP] 集中式接入认证模式：固定WiFi信道，统一认证平台');
+      appendLog(singleLog, '[AP] 接入验证测试平台初始化完成');
+      appendLog(singleLog, '[AP] 集中式接入验证模式：固定WiFi信道，统一验证平台');
       appendLog(singleLog, '[UAV] UAV节点已上线，等待测试指令');
-      appendLog(multiLog, '[AP] 接入认证测试平台初始化完成');
-      appendLog(multiLog, '[区块链] 分布式接入认证模式：区块链共识节点分布式认证');
+      appendLog(multiLog, '[AP] 接入验证测试平台初始化完成');
+      appendLog(multiLog, '[区块链] 分布式接入验证模式：区块链共识节点协同验证');
       appendLog(multiLog, '[UAV] UAV节点已上线，等待测试指令');
 
       startBtn.addEventListener('click', runTest);
-      singleCountUpBtn.addEventListener('click', function () { adjustRoundCount(singleCountInput, 1); });
-      singleCountDownBtn.addEventListener('click', function () { adjustRoundCount(singleCountInput, -1); });
-      multiCountUpBtn.addEventListener('click', function () { adjustRoundCount(multiCountInput, 1); });
-      multiCountDownBtn.addEventListener('click', function () { adjustRoundCount(multiCountInput, -1); });
+      testCountUpBtn.addEventListener('click', function () { adjustRoundCount(testCountInput, 1); });
+      testCountDownBtn.addEventListener('click', function () { adjustRoundCount(testCountInput, -1); });
     })();
   </script>
 </body>
 </html>
-
-
-
