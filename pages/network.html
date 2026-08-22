@@ -1567,6 +1567,13 @@ class="element icon-tri"
         return (success / total) * 100;
       }
 
+      function calcRelativeImprovement(distributedRate, centralizedRate) {
+        if (distributedRate === null || centralizedRate === null || centralizedRate <= 0) {
+          return null;
+        }
+        return ((distributedRate - centralizedRate) / centralizedRate) * 100;
+      }
+
       function randomInRange(min, max) {
         return min + Math.random() * (max - min);
       }
@@ -1772,13 +1779,13 @@ class="element icon-tri"
         appendLog(multiLog, '[区块链] 分布式接入验证成功：' + multiSuccess + '/' + rounds);
         appendLog(multiLog, '[区块链] 分布式接入验证成功率：' + finalMultiRate.toFixed(1) + '%');
 
-        if (finalSingleRate > 0) {
-          const improvement = finalMultiRate - finalSingleRate;
-          appendLog(multiLog, '[区块链] 分布式较集中式接入验证提升率：' + improvement.toFixed(1) + '%（接入成功率差值）');
+        // 相对提升率 =（分布式成功率 - 集中式成功率）÷ 集中式成功率 × 100%。
+        const boostRate = calcRelativeImprovement(finalMultiRate, finalSingleRate);
+        if (boostRate === null) {
+          appendLog(multiLog, '[区块链] 集中式成功率为0，无法计算相对提升率');
+        } else {
+          appendLog(multiLog, '[区块链] 分布式较集中式接入验证提升率：' + boostRate.toFixed(1) + '%（成功率差值 ÷ 集中式成功率）');
         }
-
-        // 测试文档按两种方案的接入成功率差值计算提升结果。
-        const boostRate = Math.max(0, finalMultiRate - finalSingleRate);
         setGauge(gauges.boost, boostRate);
         setCurrentStatus('当前状态：同步测试完成，\n提升结果已生成');
 
