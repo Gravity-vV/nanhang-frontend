@@ -1281,11 +1281,11 @@
       <div class="cert-top-layout">
         <aside class="latency-panel" aria-label="跨域认证效率数据">
           <section class="latency-card">
-            <p class="latency-label">集中式平均时延</p>
+            <p class="latency-label">集中式认证平均时延</p>
             <p class="latency-value" id="summary-centralized-value">--</p>
           </section>
           <section class="latency-card">
-            <p class="latency-label">分布式平均认证时延</p>
+            <p class="latency-label">分布式认证平均时延</p>
             <p class="latency-value" id="summary-distributed-value">--</p>
           </section>
           <section class="latency-card">
@@ -1538,7 +1538,7 @@
             <p class="latency-value" id="summary-centralized-value-old">--</p>
           </section>
           <section class="latency-card">
-            <p class="latency-label">分布式平均认证时延</p>
+            <p class="latency-label">分布式认证平均时延</p>
             <p class="latency-value" id="summary-distributed-value-old">--</p>
           </section>
           <section class="latency-card">
@@ -1782,9 +1782,9 @@
         if (state.runningMode === 'init') {
           text = '当前测试：环境初始化';
         } else if (state.runningMode === 'centralized') {
-          text = '当前测试：集中式认证';
+          text = '当前测试：集中式认证 ' + state.centralized.completedCount + '/' + state.centralized.targetCount;
         } else if (state.runningMode === 'distributed') {
-          text = '当前测试：分布式认证';
+          text = '当前测试：分布式认证 ' + state.distributed.completedCount + '/' + state.distributed.targetCount;
         } else if (state.sequenceRunning) {
           text = '当前测试：批量认证准备中';
         } else if (state.centralized.done && state.distributed.done) {
@@ -1822,6 +1822,7 @@
         summaryCentralizedEl.textContent = getAvgLatencyText(state.centralized);
         summaryDistributedEl.textContent = getAvgLatencyText(state.distributed);
         summaryImprovementEl.textContent = getImprovementText();
+        updateCurrentModeIndicator();
       }
 
       function appendTargetCountError(mode, message) {
@@ -1963,8 +1964,8 @@
             object: 'auth_latency',
             result: '通过',
             details: [
-              '区块链增强平均时延=' + formatLatency(dAvg),
-              '集中式平均时延=' + formatLatency(cAvg),
+              '分布式认证平均时延=' + formatLatency(dAvg),
+              '集中式认证平均时延=' + formatLatency(cAvg),
               '效率提升=' + improvement + '%'
             ]
           });

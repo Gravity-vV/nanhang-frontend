@@ -1104,18 +1104,18 @@
           <!-- 固定执行规则与黑名单 -->
           <div class="input-row">
             <div class="parameter-group">
-              <div class="fixed-test-summary" aria-label="固定测试规则">
+              <div class="fixed-test-summary" aria-label="累计完成次数">
                 <div class="fixed-rule">
                   <strong>自私接入</strong>
-                  <span>固定执行 1 次</span>
+                  <span id="selfish-total">累计完成 0 次</span>
                 </div>
                 <div class="fixed-rule">
                   <strong>高频重接入</strong>
-                  <span>短时间内多次接入</span>
+                  <span id="highfreq-total">累计完成 0 次</span>
                 </div>
                 <div class="fixed-rule">
                   <strong>重放攻击</strong>
-                  <span>固定执行 1 次</span>
+                  <span id="replay-total">累计完成 0 次</span>
                 </div>
               </div>
               <p class="status" id="status-text">等待开始测试……</p>
@@ -1174,8 +1174,18 @@
       const selfishMetric = document.getElementById('selfish-metric');
       const highfreqMetric = document.getElementById('highfreq-metric');
       const replayMetric = document.getElementById('replay-metric');
+      const totalEls = {
+        selfish: document.getElementById('selfish-total'),
+        highfreq: document.getElementById('highfreq-total'),
+        replay: document.getElementById('replay-total')
+      };
 
       let running = false;
+      const completedTotals = {
+        selfish: 0,
+        highfreq: 0,
+        replay: 0
+      };
       let selfishBlacklist = new Set();
       let highfreqBlacklist = new Set();
 
@@ -1258,6 +1268,15 @@
         selfishMetric.textContent = '处置结果：--';
         highfreqMetric.textContent = '处置结果：--';
         replayMetric.textContent = '处置结果：--';
+        Object.keys(completedTotals).forEach(function (type) {
+          completedTotals[type] = 0;
+          totalEls[type].textContent = '累计完成 0 次';
+        });
+      }
+
+      function incrementCompletedTotal(type) {
+        completedTotals[type] += 1;
+        totalEls[type].textContent = '累计完成 ' + completedTotals[type] + ' 次';
       }
 
       function setRunningMetrics(type) {
@@ -1401,7 +1420,7 @@
       }
 
       async function runSelfish(count) {
-        statusText.textContent = '正在执行：自私接入行为检测（固定1次）';
+        statusText.textContent = '正在执行：自私接入行为检测';
         let passed = 0;
 
         for (let i = 1; i <= count; i += 1) {
@@ -1493,7 +1512,7 @@
       }
 
       async function runReplay() {
-        statusText.textContent = '正在执行：重放攻击检测（固定1次）';
+        statusText.textContent = '正在执行：重放攻击检测';
         const id = generateId();
         const nonce = generateNonce();
 
@@ -1545,6 +1564,7 @@
         }
 
         setPassMetrics(type);
+        incrementCompletedTotal(type);
         setRunningState(false);
       }
 

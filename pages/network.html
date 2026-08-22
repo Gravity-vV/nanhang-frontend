@@ -1333,8 +1333,8 @@ class="element icon-tri"
             </section>
 
             <section class="gauge-card">
-              <h3 class="gauge-title">分布式相较集中式提升</h3>
-              <svg class="gauge-svg" viewBox="0 0 220 118" aria-label="分布式提升仪表盘">
+              <h3 class="gauge-title">接入成功率提升</h3>
+              <svg class="gauge-svg" viewBox="0 0 220 118" aria-label="接入成功率提升仪表盘">
                 <path class="gauge-track" d="M30 102 A80 80 0 0 1 190 102" />
                 <path class="gauge-progress" id="boost-progress" d="M30 102 A80 80 0 0 1 190 102" />
                 <line class="gauge-needle" id="boost-needle" x1="110" y1="102" x2="110" y2="34" />
@@ -1370,10 +1370,10 @@ class="element icon-tri"
       const DEFAULT_ROUNDS = 100;
       const MIN_ROUNDS = 1;
       const MAX_ROUNDS = 100;
-      const THIRD_PARTY_SINGLE_RATE = 71;
-      const THIRD_PARTY_MULTI_RATE = 96;
-      const RESULT_JITTER_PERCENT = 1.5;
-      const STEP_DELAY_MS = 120;
+      const THIRD_PARTY_SINGLE_RATE = 68;
+      const THIRD_PARTY_MULTI_RATE = 97;
+      const RESULT_JITTER_PERCENT = 0;
+      const STEP_DELAY_MS = 30;
       const WIFI_DL_THRESHOLD = -70;
       const WIFI_UL_THRESHOLD = -65;
       const LORA_DL_THRESHOLD = -118;
@@ -1461,6 +1461,9 @@ class="element icon-tri"
         li.appendChild(dot);
         li.appendChild(line);
         target.appendChild(li);
+      }
+
+      function scrollLogToEnd(target) {
         target.scrollTop = target.scrollHeight;
       }
 
@@ -1603,7 +1606,7 @@ class="element icon-tri"
       }
 
       function createPairedOutcomes(rounds) {
-        // 测试文档基准：集中式 71%，分布式 96%；展示结果仅允许小幅波动。
+        // CLI 回放基准：集中式 68%，分布式 97%。
         const singleOutcomes = buildOutcomeListNearBenchmark(rounds, THIRD_PARTY_SINGLE_RATE);
         const multiOutcomes = buildOutcomeListNearBenchmark(rounds, THIRD_PARTY_MULTI_RATE);
         return { singleOutcomes: singleOutcomes, multiOutcomes: multiOutcomes };
@@ -1768,6 +1771,8 @@ class="element icon-tri"
           setGauge(gauges.multi, multiRate);
 
           updateMetrics(singleRate, multiRate);
+          scrollLogToEnd(singleLog);
+          scrollLogToEnd(multiLog);
           await sleep(STEP_DELAY_MS);
         }
 
@@ -1784,9 +1789,11 @@ class="element icon-tri"
         if (boostRate === null) {
           appendLog(multiLog, '[区块链] 集中式成功率为0，无法计算相对提升率');
         } else {
-          appendLog(multiLog, '[区块链] 分布式较集中式接入验证提升率：' + boostRate.toFixed(1) + '%（成功率差值 ÷ 集中式成功率）');
+          appendLog(multiLog, '[区块链] 分布式较集中式接入验证提升率：' + boostRate.toFixed(1) + '%（相对提升）');
         }
         setGauge(gauges.boost, boostRate);
+        scrollLogToEnd(singleLog);
+        scrollLogToEnd(multiLog);
         setCurrentStatus('当前状态：同步测试完成，\n提升结果已生成');
 
         setControlState(false);
