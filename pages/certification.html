@@ -530,7 +530,7 @@
     }
 
     .cert-top-layout > .latency-panel::before {
-      content: "\8ba4\8bc1\65f6\5ef6\7edf\8ba1";
+      content: "\8de8\57df\8ba4\8bc1\6548\7387\6570\636e";
       display: block;
       padding: 8px 12px;
       border-radius: 12px;
@@ -1243,11 +1243,11 @@
     }
 
     .cert-top-layout > .latency-panel .latency-card:nth-child(2) .latency-label::before {
-      content: "\5206\5e03\5f0f\5e73\5747\65f6\5ef6";
+      content: "\5206\5e03\5f0f\5e73\5747\8ba4\8bc1\65f6\5ef6";
     }
 
     .cert-top-layout > .latency-panel .latency-card:nth-child(3) .latency-label::before {
-      content: "\65f6\5ef6\964d\4f4e\7387";
+      content: "\8ba4\8bc1\6548\7387\63d0\5347";
     }
 
     .cert-top-layout > .latency-panel .latency-value {
@@ -1279,17 +1279,17 @@
     <!-- 页面顶部区域：三列布局（左流程�?+ 中间效率箭头 + 右流程图�?-->
     <section class="section hero-section">
       <div class="cert-top-layout">
-        <aside class="latency-panel" aria-label="æ—¶å»¶æ±‡æ€»">
+        <aside class="latency-panel" aria-label="跨域认证效率数据">
           <section class="latency-card">
-            <p class="latency-label">é›†ä¸­å¼å¹³å‡æ—¶å»¶</p>
+            <p class="latency-label">集中式平均时延</p>
             <p class="latency-value" id="summary-centralized-value">--</p>
           </section>
           <section class="latency-card">
-            <p class="latency-label">åˆ†å¸ƒå¼å¹³å‡æ—¶å»¶</p>
+            <p class="latency-label">分布式平均认证时延</p>
             <p class="latency-value" id="summary-distributed-value">--</p>
           </section>
           <section class="latency-card">
-            <p class="latency-label">æ—¶å»¶é™ä½ŽçŽ‡</p>
+            <p class="latency-label">认证效率提升</p>
             <p class="latency-value improvement" id="summary-improvement-value">--</p>
           </section>
         </aside>
@@ -1484,7 +1484,7 @@
           </div>
 
           <div class="test-config">
-            <label class="test-config-label" for="sample-count-input">认证次数（可选）</label>
+            <label class="test-config-label" for="sample-count-input">认证次数</label>
             <div class="test-count-input-wrap">
               <input
                 class="test-count-input"
@@ -1494,8 +1494,8 @@
                 min="5"
                 max="100"
                 step="1"
-                value="10"
-                placeholder="留空=10，范围5-100"
+                value="100"
+                placeholder="默认100，范围5-100"
                 aria-label="认证次数"
               />
               <div class="count-stepper" aria-hidden="true">
@@ -1532,17 +1532,17 @@
           <p class="flow-status" id="flow-status" style="display:none;">点击“环境初始化”完成准备后，再开始认证测试</p>
         </div>
 
-        <aside class="latency-panel" aria-label="时延汇总">
+        <aside class="latency-panel" aria-label="跨域认证效率数据">
           <section class="latency-card">
             <p class="latency-label">集中式认证平均时延</p>
             <p class="latency-value" id="summary-centralized-value-old">--</p>
           </section>
           <section class="latency-card">
-            <p class="latency-label">分布式认证平均时延</p>
+            <p class="latency-label">分布式平均认证时延</p>
             <p class="latency-value" id="summary-distributed-value-old">--</p>
           </section>
           <section class="latency-card">
-            <p class="latency-label">时延降低率</p>
+            <p class="latency-label">认证效率提升</p>
             <p class="latency-value improvement" id="summary-improvement-value-old">--</p>
           </section>
         </aside>
@@ -1553,7 +1553,7 @@
           <article class="log-box">
             <h3 class="log-title">集中式认证日志</h3>
             <ul class="log-content" id="centralized-log"></ul>
-            <p class="log-metric" id="centralized-metrics">集中式：已完成 0/5，当前平均时延 --</p>
+            <p class="log-metric" id="centralized-metrics">集中式：已完成 0/100，当前平均时延 --</p>
           </article>
 
           <!-- 右栏中间浮层：最终效率提升箭头与文案（绝对定位覆盖） -->
@@ -1569,7 +1569,7 @@
           <article class="log-box">
             <h3 class="log-title">分布式认证日志</h3>
             <ul class="log-content" id="distributed-log"></ul>
-            <p class="log-metric" id="distributed-metrics">分布式：已完成 0/5，当前平均时延 --</p>
+            <p class="log-metric" id="distributed-metrics">分布式：已完成 0/100，当前平均时延 --</p>
           </article>
         </div>
       </div>
@@ -1578,15 +1578,23 @@
 
   <script>
     (function () {
-      const DEFAULT_SAMPLE_COUNT = 10;
+      const DEFAULT_SAMPLE_COUNT = 100;
       const MIN_SAMPLE_COUNT = 5;
       const MAX_SAMPLE_COUNT = 100;
+      const PLAYBACK_SCALE = 0.07;
+      const BATCH_ROUND_DELAY_MS = 70;
+      const FLOW_ANIMATION_INTERVAL = 25;
+      const REPLAY_BASE_TIME = Date.parse('2026-08-18T10:20:00+08:00');
       const NODE_BASE_R = 10;
       const NODE_ACTIVE_R = 17;
       const NON_KEY_STAGE_MS = [400, 1000];
-      const LATENCY_TARGET_MS = {
-        distributed: [520, 700],
-        centralized: [920, 1100]
+      const LATENCY_REFERENCE_MS = {
+        distributed: 60.37,
+        centralized: 149.93
+      };
+      const LATENCY_VARIATION_MS = {
+        distributed: 0.48,
+        centralized: 0.92
       };
 
       const startBtn = document.getElementById('start-test-btn');
@@ -1639,7 +1647,8 @@
         session: {
           started: false,
           roundId: 0,
-          baseTime: 0
+          baseTime: REPLAY_BASE_TIME,
+          logSequence: 0
         },
         distributed: createModeState(),
         centralized: createModeState(),
@@ -1648,6 +1657,7 @@
           improvementPercent: null
         },
         runningMode: null,
+        sequenceRunning: false,
         animationToken: 0
       };
 
@@ -1663,8 +1673,12 @@
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
 
-      function nowStamp() {
-        const d = new Date();
+      function shouldLogSample(sampleNo, targetCount) {
+        return sampleNo >= 1 && sampleNo <= targetCount;
+      }
+
+      function formatReplayStamp(timestamp) {
+        const d = new Date(timestamp);
         const ms = String(d.getMilliseconds()).padStart(3, '0');
         const date = d.toLocaleDateString('zh-CN', {
           year: 'numeric',
@@ -1674,8 +1688,14 @@
         return date + ' ' + d.toLocaleTimeString('zh-CN', { hour12: false }) + '.' + ms;
       }
 
-      function formatSeconds(sec) {
-        return sec.toFixed(3);
+      function nextReplayStamp() {
+        const timestamp = state.session.baseTime + state.session.logSequence * 1000;
+        state.session.logSequence += 1;
+        return formatReplayStamp(timestamp);
+      }
+
+      function formatLatency(sec) {
+        return (sec * 1000).toFixed(2) + 'ms';
       }
 
       function normalizeLogEntry(entry) {
@@ -1720,12 +1740,12 @@
         } else {
           const timeSpan = document.createElement('span');
           timeSpan.className = 'log-time';
-          timeSpan.textContent = '[' + (data.time || nowStamp()) + ']';
+          timeSpan.textContent = data.time || nextReplayStamp();
           roleSpan.textContent = '[' + (data.role || 'system') + ']';
           actionSpan.textContent = data.action || 'event';
           objectSpan.textContent = data.object || '-';
           messageSpan.textContent = '-> ' + (data.result || '');
-          lineSpan.append(timeSpan, roleSpan, actionSpan, objectSpan, messageSpan);
+          lineSpan.append(roleSpan, timeSpan, actionSpan, objectSpan, messageSpan);
 
           (data.details || []).forEach((detail) => {
             const detailSpan = document.createElement('span');
@@ -1765,6 +1785,8 @@
           text = '当前测试：集中式认证';
         } else if (state.runningMode === 'distributed') {
           text = '当前测试：分布式认证';
+        } else if (state.sequenceRunning) {
+          text = '当前测试：批量认证准备中';
         } else if (state.centralized.done && state.distributed.done) {
           text = '当前测试：测试完成';
         }
@@ -1773,12 +1795,12 @@
       }
 
       function getMetricText(modeLabel, modeState) {
-        const avgText = modeState.avgLatency === null ? '--' : formatSeconds(modeState.avgLatency) + 's';
+        const avgText = modeState.avgLatency === null ? '--' : formatLatency(modeState.avgLatency);
         return modeLabel + '：已完成 ' + modeState.completedCount + '/' + modeState.targetCount + '，当前平均时延 ' + avgText;
       }
 
       function getAvgLatencyText(modeState) {
-        return modeState.avgLatency === null ? '--' : formatSeconds(modeState.avgLatency) + 's';
+        return modeState.avgLatency === null ? '--' : formatLatency(modeState.avgLatency);
       }
 
       function getImprovementText() {
@@ -1863,15 +1885,17 @@
         sampleCountInput.value = String(nextValue);
       }
 
-      function createLatencyPlan(mode) {
-        const targetMs = randomMs(LATENCY_TARGET_MS[mode]);
-        const requestPathMs = Math.round(targetMs * 0.16);
-        const requestPulseMs = Math.round(targetMs * 0.12);
-        const authPathMs = Math.round(targetMs * 0.22);
-        const authPulseMs = Math.round(targetMs * 0.12);
+      function createLatencyPlan(mode, sampleNo) {
+        const direction = sampleNo % 2 === 0 ? 1 : -1;
+        const targetMs = LATENCY_REFERENCE_MS[mode] + direction * LATENCY_VARIATION_MS[mode];
+        const playbackMs = Math.max(45, Math.round(targetMs * PLAYBACK_SCALE));
+        const requestPathMs = Math.round(playbackMs * 0.16);
+        const requestPulseMs = Math.round(playbackMs * 0.12);
+        const authPathMs = Math.round(playbackMs * 0.22);
+        const authPulseMs = Math.round(playbackMs * 0.12);
         const processingMs = Math.max(
           0,
-          targetMs - requestPathMs - requestPulseMs - authPathMs - authPulseMs
+          playbackMs - requestPathMs - requestPulseMs - authPathMs - authPulseMs
         );
 
         return {
@@ -1901,7 +1925,7 @@
         state.comparison.ready = true;
         state.comparison.improvementPercent = improvement;
         comparisonText.textContent =
-          '效率提升 ' + improvement.toFixed(2) + '% | 分布式 ' + formatSeconds(dist) + 's vs 集中式 ' + formatSeconds(cent) + 's';
+          '效率提升 ' + improvement.toFixed(2) + '% | 分布式 ' + formatLatency(dist) + ' vs 集中式 ' + formatLatency(cent);
         comparisonOverlay.classList.add('is-visible');
       }
 
@@ -1939,8 +1963,8 @@
             object: 'auth_latency',
             result: '通过',
             details: [
-              '区块链增强平均时延=' + formatSeconds(dAvg) + 's',
-              '集中式平均时延=' + formatSeconds(cAvg) + 's',
+              '区块链增强平均时延=' + formatLatency(dAvg),
+              '集中式平均时延=' + formatLatency(cAvg),
               '效率提升=' + improvement + '%'
             ]
           });
@@ -1948,7 +1972,7 @@
       }
 
       function setButtonsState() {
-        const busy = state.runningMode !== null;
+        const busy = state.runningMode !== null || state.sequenceRunning;
         startBtn.disabled = busy;
         sampleCountInput.disabled = busy;
         if (sampleCountUpBtn) {
@@ -2085,17 +2109,27 @@
         setButtonsState();
       }
 
-      async function doRequestStage(mode, sampleNo, token, latencyPlan) {
+      async function doRequestStage(mode, sampleNo, token, latencyPlan, animateFlow) {
         const targetCount = state[mode].targetCount;
         const modeLabel = mode === 'distributed' ? '区块链增强' : '集中式';
-        appendLog(mode, {
-          role: 'UAV-1',
-          action: 'send_auth_request',
-          object: 'auth-' + sampleNo,
-          result: '已发送',
-          details: ['设备ID=UAV-1', '源域=domain-1，目标域=domain-2', '发送目标=access_point', '时间戳=' + nowStamp()]
-        });
+        if (shouldLogSample(sampleNo, targetCount)) {
+          appendLog(mode, {
+            role: 'UAV-1',
+            action: 'send_auth_request',
+            object: 'auth-' + sampleNo,
+            result: '已发送',
+            details: [
+              '设备ID=UAV-1，源域=domain-1，目标域=domain-2',
+              '发送目标=access_point-2，scheme=' + (mode === 'distributed' ? 'blockchain' : 'centralized'),
+              '认证通过，latency=' + latencyPlan.targetMs.toFixed(2) + 'ms'
+            ]
+          });
+        }
         setStatus('步骤2/3：' + modeLabel + ' 第' + sampleNo + '/' + targetCount + '次 - 无人机认证请求');
+
+        if (!animateFlow) {
+          return true;
+        }
 
         resetSampleFlowVisual();
         const okPath = await animatePath(paths.seg2, latencyPlan.requestPathMs, token);
@@ -2103,27 +2137,14 @@
         return pulseNode('request', true, token, latencyPlan.requestPulseMs);
       }
 
-      async function doAuthStage(mode, sampleNo, token, latencyPlan) {
+      async function doAuthStage(mode, sampleNo, token, latencyPlan, animateFlow) {
         const targetCount = state[mode].targetCount;
         const modeLabel = mode === 'distributed' ? '区块链增强' : '集中式';
-        if (mode === 'distributed') {
-          appendLog(mode, {
-            role: 'AP-2|Blockchain',
-            action: 'verify_auth',
-            object: 'UAV-1',
-            result: '通过',
-            details: ['方案=blockchain', '比对=request_cert 与 Layer1_cert', '目标时延=' + latencyPlan.targetMs + 'ms']
-          });
-        } else {
-          appendLog(mode, {
-            role: 'AP-2|Centralized',
-            action: 'verify_auth',
-            object: 'UAV-1',
-            result: '通过',
-            details: ['方案=centralized', '证书链=UAV-1 -> SubCA2 -> RootCA2', '目标时延=' + latencyPlan.targetMs + 'ms']
-          });
-        }
         setStatus('步骤2/3：' + modeLabel + ' 第' + sampleNo + '/' + targetCount + '次 - 接入点验证中');
+
+        if (!animateFlow) {
+          return true;
+        }
 
         const path = mode === 'distributed' ? paths.top : paths.bottom;
         const nodeKey = mode === 'distributed' ? 'distributed' : 'centralized';
@@ -2164,17 +2185,28 @@
         setButtonsState();
 
         const modeLabel = mode === 'distributed' ? '区块链增强跨域认证' : '传统集中式跨域认证';
-        appendHeader(mode, mode === 'distributed' ? '区块链增强认证时延统计' : '集中式认证时延统计');
+        appendHeader(
+          mode,
+          mode === 'distributed'
+            ? 'Blockchain Service: Blockchain-Enhanced Auth Latency Statistics'
+            : 'Blockchain Service: Centralized Auth Latency Statistics'
+        );
+        appendLog(mode, {
+          role: 'UAV-1',
+          action: 'auth_request_group',
+          object: 'UUID-' + state.session.roundId + '-' + mode,
+          result: '批次开始',
+          details: ['scheme=' + (mode === 'distributed' ? 'blockchain' : 'centralized'), 'batch size=' + targetCount]
+        });
 
         for (let i = 1; i <= targetCount; i += 1) {
           if (token !== state.animationToken) {
             return;
           }
 
-          const latencyPlan = createLatencyPlan(mode);
-          const roundStart = performance.now();
-
-          const okRequest = await doRequestStage(mode, i, token, latencyPlan);
+          const latencyPlan = createLatencyPlan(mode, i);
+          const animateFlow = i === 1 || i === targetCount || i % FLOW_ANIMATION_INTERVAL === 0;
+          const okRequest = await doRequestStage(mode, i, token, latencyPlan, animateFlow);
           if (!okRequest || token !== state.animationToken) {
             return;
           }
@@ -2184,24 +2216,20 @@
             return;
           }
 
-          const okAuth = await doAuthStage(mode, i, token, latencyPlan);
+          const okAuth = await doAuthStage(mode, i, token, latencyPlan, animateFlow);
           if (!okAuth || token !== state.animationToken) {
             return;
           }
 
-          const latency = (performance.now() - roundStart) / 1000;
+          const latency = latencyPlan.targetMs / 1000;
           state[mode].samples.push(latency);
           state[mode].completedCount = i;
           state[mode].avgLatency = getModeAvg(mode);
           updateMetricsPanel();
 
-          appendLog(mode, {
-            role: 'blockchain_service',
-            action: 'calc_latency',
-            object: 'auth-' + i,
-            result: formatSeconds(latency) + 's',
-            details: ['样本数=' + i + '/' + targetCount]
-          });
+          if (i < targetCount) {
+            await sleep(BATCH_ROUND_DELAY_MS);
+          }
         }
 
         if (token !== state.animationToken) {
@@ -2219,8 +2247,15 @@
           role: 'blockchain_service',
           action: mode === 'distributed' ? 'query_blockchain_verification' : 'query_centralized_verification',
           object: 'auth_records',
-          result: '平均时延：' + formatSeconds(avg) + 's',
+          result: '平均时延：' + formatLatency(avg),
           details: ['方案=' + (mode === 'distributed' ? 'blockchain' : 'centralized'), '样本数=' + targetCount]
+        });
+        appendLog(mode, {
+          role: 'UAV-1',
+          action: 'auth_request_group',
+          object: 'UUID-' + state.session.roundId + '-' + mode,
+          result: '批次完成',
+          details: [targetCount + ' requests sent', 'Average latency=' + formatLatency(avg)]
         });
         setStatus(modeLabel + '完成，等待另一方案完成后自动计算效率提升。');
 
@@ -2230,24 +2265,31 @@
       }
 
       async function runAuthSequence() {
-        if (!state.session.started || state.runningMode !== null) {
+        if (!state.session.started || state.runningMode !== null || state.sequenceRunning) {
           return;
         }
 
-        const targetCount = readTargetCount();
-        if (targetCount === null) {
-          updateMetricsPanel();
-          return;
-        }
-        setStatus('步骤2/4：准备执行区块链增强跨域认证批量测试。');
+        state.sequenceRunning = true;
+        setButtonsState();
+        try {
+          const targetCount = readTargetCount();
+          if (targetCount === null) {
+            updateMetricsPanel();
+            return;
+          }
+          setStatus('步骤2/4：准备执行区块链增强跨域认证批量测试。');
 
-        await runModeBatch('distributed', targetCount);
-        if (!state.distributed.done) {
-          return;
-        }
+          await runModeBatch('distributed', targetCount);
+          if (!state.distributed.done) {
+            return;
+          }
 
-        setStatus('步骤3/4：区块链增强跨域认证完成，开始执行传统集中式跨域认证批量测试。');
-        await runModeBatch('centralized', targetCount);
+          setStatus('步骤3/4：区块链增强跨域认证完成，开始执行传统集中式跨域认证批量测试。');
+          await runModeBatch('centralized', targetCount);
+        } finally {
+          state.sequenceRunning = false;
+          setButtonsState();
+        }
       }
 
       function resetSessionData() {
@@ -2259,17 +2301,21 @@
         };
         state.distributed.targetCount = DEFAULT_SAMPLE_COUNT;
         state.centralized.targetCount = DEFAULT_SAMPLE_COUNT;
+        Object.values(logEls).forEach((logEl) => {
+          logEl.textContent = '';
+        });
         updateMetricsPanel();
       }
 
       startBtn.addEventListener('click', async () => {
-        if (state.runningMode !== null) {
+        if (state.runningMode !== null || state.sequenceRunning) {
           return;
         }
 
         state.session.started = true;
         state.session.roundId += 1;
-        state.session.baseTime = Date.now();
+        state.session.baseTime = REPLAY_BASE_TIME;
+        state.session.logSequence = 0;
 
         resetSessionData();
         setButtonsState();

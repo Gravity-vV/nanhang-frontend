@@ -144,11 +144,25 @@
       height: 100%;
       border: 0;
       background: #020617;
-      display: none;
+      display: block;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.12s ease-out;
     }
 
     .content-frame.is-active {
-      display: block;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .content-frame {
+        transition: none;
+      }
     }
 
     @media (max-width: 900px) {
@@ -216,13 +230,13 @@
           class="content-frame"
           data-page="certification"
           title="可信安全认证页面"
-          src="pages/certification.html?v=20260514-cert-text-summary"
+          src="pages/certification.html?v=20260821-cli-replay-logs"
         ></iframe>
         <iframe
           class="content-frame"
           data-page="physical"
           title="物理层方案"
-          src="pages/physical.html?v=20260511-tech-theme-readable"
+          src="pages/physical.html?v=20260821-page2-left-layout-v2"
         ></iframe>
         <iframe
           class="content-frame"
@@ -253,21 +267,35 @@
       function setActivePage(pageKey) {
         activePage = pageKey;
         contentFrames.forEach((frame) => {
-          frame.classList.toggle('is-active', frame.dataset.page === pageKey);
+          const isActive = frame.dataset.page === pageKey;
+          frame.classList.toggle('is-active', isActive);
+          frame.setAttribute('aria-hidden', String(!isActive));
         });
 
-        mainTabs.forEach((tab) => tab.classList.remove('is-active'));
-        subTabs.forEach((tab) => tab.classList.remove('is-active'));
+        mainTabs.forEach((tab) => {
+          tab.classList.remove('is-active');
+          tab.setAttribute('aria-selected', 'false');
+        });
+        subTabs.forEach((tab) => {
+          tab.classList.remove('is-active');
+          tab.setAttribute('aria-selected', 'false');
+        });
 
         if (pageKey === 'certification') {
-          document.querySelector('[data-role="main-tab"][data-tab="certification"]').classList.add('is-active');
+          const certificationTab = document.querySelector('[data-role="main-tab"][data-tab="certification"]');
+          certificationTab.classList.add('is-active');
+          certificationTab.setAttribute('aria-selected', 'true');
           return;
         }
 
-        document.querySelector('[data-role="main-tab"][data-tab="access"]').classList.add('is-active');
+        accessSubnav.classList.add('is-open');
+        const accessTab = document.querySelector('[data-role="main-tab"][data-tab="access"]');
+        accessTab.classList.add('is-active');
+        accessTab.setAttribute('aria-selected', 'true');
         const activeSubTab = document.querySelector('[data-role="sub-tab"][data-tab="' + pageKey + '"]');
         if (activeSubTab) {
           activeSubTab.classList.add('is-active');
+          activeSubTab.setAttribute('aria-selected', 'true');
         }
       }
 
@@ -278,12 +306,16 @@
             setActivePage('certification');
             return;
           }
-          // 点击"可信安全接入"：toggle 子栏目。展开时跳转到上次子页。
+          if (activePage === 'certification') {
+            accessSubnav.classList.add('is-open');
+            setActivePage(lastAccessSubTab || 'physical');
+            return;
+          }
+          // 已在接入栏目时只展开或收起子栏目，不重复加载当前页。
           if (accessSubnav.classList.contains('is-open')) {
             accessSubnav.classList.remove('is-open');
           } else {
             accessSubnav.classList.add('is-open');
-            setActivePage(lastAccessSubTab || 'physical');
           }
         });
       });

@@ -22,11 +22,11 @@
     .page {
       height: 100%;
       display: grid;
-      grid-template-columns: minmax(320px, 0.34fr) minmax(0, 0.66fr);
-      grid-template-rows: minmax(0, 0.5fr) minmax(0, 0.5fr);
+      grid-template-columns: minmax(280px, 0.32fr) minmax(0, 0.68fr);
+      grid-template-rows: minmax(0, 0.48fr) minmax(0, 0.52fr);
       grid-template-areas:
-        "flow image"
-        "controls logs";
+        "left image"
+        "left logs";
       gap: 14px;
       padding: 12px 16px;
       min-height: 0;
@@ -200,6 +200,18 @@
       display: contents;
     }
 
+    .left-col {
+      --gauges-flex: 0.62;
+      --controls-flex: 0.38;
+      grid-area: left;
+      grid-row: 1 / 3;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
     .flow-panel,
     .controls-panel {
       border: 1px solid #e5e7eb;
@@ -269,10 +281,10 @@
       grid-area: controls;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto 44px 38px minmax(150px, 1fr);
+      grid-template-rows: auto 44px 38px;
       gap: 6px 12px;
       min-height: 0;
-      align-content: stretch;
+      align-content: start;
       border: 1px solid #e5e7eb;
       border-radius: 14px;
       background: #f9fafb;
@@ -313,6 +325,10 @@
 
     .mode-btn[data-mode="distributed"] {
       grid-column: 2;
+    }
+
+    .mode-btn#start-test-btn {
+      grid-column: 1 / -1;
     }
 
     .option-row {
@@ -452,6 +468,17 @@
     .mode-btn:disabled {
       opacity: 0.55;
       cursor: not-allowed;
+    }
+
+    .count-input:disabled {
+      background: rgba(30, 41, 59, 0.72);
+      border-color: rgba(148, 163, 184, 0.3);
+      color: #94a3b8;
+      -webkit-text-fill-color: #94a3b8;
+    }
+
+    .flow-wrap[hidden] {
+      display: none !important;
     }
 
     .flow-wrap {
@@ -807,13 +834,16 @@
       .page {
         height: auto;
         grid-template-columns: 1fr;
-        grid-template-rows: minmax(320px, auto) minmax(360px, auto) minmax(220px, auto) minmax(320px, auto);
+        grid-template-rows: minmax(360px, auto) minmax(360px, auto) minmax(320px, auto);
         grid-template-areas:
-          "flow"
+          "left"
           "image"
-          "controls"
           "logs";
         overflow: auto;
+      }
+
+      .left-col {
+        grid-row: auto;
       }
 
       .hero-scene {
@@ -1045,6 +1075,113 @@
       color: #cffafe !important;
       text-shadow: none;
       box-shadow: none;
+    }
+
+    /* Match page 2: controls above gauges in one full-height left column. */
+    .left-col .mode-buttons {
+      order: 1;
+      flex: var(--controls-flex) 1 0;
+      grid-area: auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr auto;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 10px;
+      overflow: visible;
+      align-content: stretch;
+    }
+
+    .left-col .mode-buttons > .panel-header {
+      min-height: 44px;
+      margin: -2px -10px 4px;
+      padding: 11px 20px;
+      border-width: 2px;
+      border-radius: 12px;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .left-col .option-row {
+      order: initial;
+      grid-column: auto;
+      grid-row: auto;
+      align-content: center;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .left-col .option-line {
+      grid-template-columns: minmax(0, 1fr) auto minmax(112px, 0.34fr);
+      gap: 10px;
+      min-height: auto;
+      max-height: none;
+      padding: 12px;
+      overflow: visible;
+    }
+
+    .left-col .option-item,
+    .left-col .count-label {
+      font-size: 15px;
+    }
+
+    .left-col .count-input-wrap {
+      width: 112px;
+    }
+
+    .left-col .count-input {
+      height: 38px;
+    }
+
+    .left-col .count-stepper {
+      top: 4px;
+      bottom: 4px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+      align-items: stretch;
+      gap: 10px;
+      min-height: 46px;
+    }
+
+    .action-row .mode-btn {
+      order: initial;
+      grid-row: auto;
+      grid-column: auto;
+      min-height: 46px;
+      width: 100%;
+      padding: 0 18px;
+      border-radius: 14px;
+      border-color: rgba(45, 212, 191, 0.72);
+      background: linear-gradient(135deg, #0f766e, #0ea5e9);
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
+    }
+
+    .action-row #start-test-btn {
+      grid-column: auto;
+    }
+
+    .action-row .flow-status {
+      order: initial;
+      grid-column: auto;
+      grid-row: auto;
+      min-height: 46px;
+      padding: 0 12px;
+      border-radius: 14px;
+      justify-content: center;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .left-col .gauge-row {
+      order: 2;
+      flex: var(--gauges-flex) 1 0;
+      grid-area: auto;
     }
   </style>
 </head>
@@ -1337,8 +1474,9 @@
     <section class="section">
       <div class="bottom-layout">
         <div class="left-panel">
+          <div class="left-col">
           <div class="gauge-row">
-            <h3 class="panel-header">接入测试结果</h3>
+            <h3 class="panel-header">接入成功率数据</h3>
             <section class="gauge-card">
               <h3 class="gauge-title">单模态接入成功率</h3>
               <svg class="gauge-svg" viewBox="0 0 220 124" aria-label="单模态接入成功率仪表盘">
@@ -1380,35 +1518,26 @@
           </div>
 
           <div class="mode-buttons">
+            <h3 class="panel-header">测试参数与状态控制</h3>
             <div class="option-row">
               <div class="option-line">
-                <span class="option-item">单模态接入演示</span>
-                <label class="count-label" for="single-count">次数</label>
+                <span class="option-item">统一测试参数</span>
+                <label class="count-label" for="test-count">测试次数</label>
                 <div class="count-input-wrap">
-                  <input id="single-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
+                  <input id="test-count" class="count-input" type="text" inputmode="numeric" value="100" placeholder="固定100次" disabled aria-disabled="true" />
                   <div class="count-stepper" aria-hidden="true">
-                    <button class="count-step-btn" id="single-count-up" type="button" tabindex="-1">&#9650;</button>
-                    <button class="count-step-btn" id="single-count-down" type="button" tabindex="-1">&#9660;</button>
-                  </div>
-                </div>
-              </div>
-              <div class="option-line">
-                <span class="option-item">区块链增强多模态接入演示</span>
-                <label class="count-label" for="multi-count">次数</label>
-                <div class="count-input-wrap">
-                  <input id="multi-count" class="count-input" type="text" inputmode="numeric" value="5" placeholder="默认5（1-100）" />
-                  <div class="count-stepper" aria-hidden="true">
-                    <button class="count-step-btn" id="multi-count-up" type="button" tabindex="-1">&#9650;</button>
-                    <button class="count-step-btn" id="multi-count-down" type="button" tabindex="-1">&#9660;</button>
+                    <button class="count-step-btn" id="test-count-up" type="button" tabindex="-1" disabled aria-label="测试次数不可增加">&#9650;</button>
+                    <button class="count-step-btn" id="test-count-down" type="button" tabindex="-1" disabled aria-label="测试次数不可减少">&#9660;</button>
                   </div>
                 </div>
               </div>
             </div>
-            <button class="mode-btn" type="button" data-mode="centralized">单模态接入演示</button>
-            <button class="mode-btn" type="button" data-mode="distributed">区块链增强多模态接入演示</button>
-            <p class="flow-status" id="flow-status">正在执行：等待开始。</p>
+            <div class="action-row">
+              <button class="mode-btn" id="start-test-btn" type="button">开始测试</button>
+              <p class="flow-status" id="flow-status">当前状态：等待开始（固定100次，预计约20秒）</p>
+            </div>
 
-            <div class="flow-wrap">
+            <div class="flow-wrap" hidden aria-hidden="true">
               <div class="flow-title">流程演示</div>
               <svg class="flow-svg" viewBox="0 0 1120 360" xmlns="http://www.w3.org/2000/svg" aria-label="物理层接入演示流程">
                 <path class="flow-base" d="M50 180 L280 180" />
@@ -1435,6 +1564,7 @@
               </svg>
             </div>
           </div>
+          </div>
         </div>
 
         <div class="right-panel">
@@ -1454,23 +1584,26 @@
 
   <script>
     (function () {
-      const DEFAULT_ROUNDS = 5;
-      const MIN_ROUNDS = 1;
-      const MAX_ROUNDS = 100;
-      const SINGLE_SUCCESS_PROBABILITY = 0.7;
-      const MULTI_SUCCESS_PROBABILITY = 0.9;
+      const FIXED_ROUNDS = 100;
+      const DEFAULT_ROUNDS = FIXED_ROUNDS;
+      const MIN_ROUNDS = FIXED_ROUNDS;
+      const MAX_ROUNDS = FIXED_ROUNDS;
+      const SINGLE_REFERENCE_RATE = 69;
+      const MULTI_REFERENCE_RATE = 94;
+      const PAIRED_ROUND_DELAY_MS = 200;
+      const REPLAY_START_TIME = {
+        centralized: Date.parse('2026-08-18T10:14:02+08:00'),
+        distributed: Date.parse('2026-08-18T10:17:11+08:00')
+      };
       const WIFI_DL_THRESHOLD = -70;
       const WIFI_UL_THRESHOLD = -65;
       const LORA_DL_THRESHOLD = -118;
       const LORA_UL_THRESHOLD = -110;
       const statusEl = document.getElementById('flow-status');
-      const buttons = document.querySelectorAll('.mode-btn');
-      const singleCountInput = document.getElementById('single-count');
-      const multiCountInput = document.getElementById('multi-count');
-      const singleCountUpBtn = document.getElementById('single-count-up');
-      const singleCountDownBtn = document.getElementById('single-count-down');
-      const multiCountUpBtn = document.getElementById('multi-count-up');
-      const multiCountDownBtn = document.getElementById('multi-count-down');
+      const startTestBtn = document.getElementById('start-test-btn');
+      const testCountInput = document.getElementById('test-count');
+      const testCountUpBtn = document.getElementById('test-count-up');
+      const testCountDownBtn = document.getElementById('test-count-down');
       const boostGaugeCard = document.getElementById('boost-gauge-card');
       const logEls = {
         centralized: document.querySelector('.log-box:nth-child(1) .log-content'),
@@ -1518,7 +1651,6 @@
         single: document.getElementById('node-single'),
         backoff: document.getElementById('node-backoff')
       };
-
       const PAUSE_MS = 450;
       const NODE_BASE_R = 10;
       const NODE_ACTIVE_R = 17;
@@ -1541,35 +1673,30 @@
       }
 
       function setButtonState(mode) {
-        buttons.forEach((button) => {
-          button.classList.toggle('is-active', button.dataset.mode === mode);
-        });
+        startTestBtn.classList.toggle('is-active', Boolean(mode));
       }
 
       function setControlState(disabled) {
         running = disabled;
-        buttons.forEach((button) => {
-          button.disabled = disabled;
-        });
-        singleCountInput.disabled = disabled;
-        multiCountInput.disabled = disabled;
-        singleCountUpBtn.disabled = disabled;
-        singleCountDownBtn.disabled = disabled;
-        multiCountUpBtn.disabled = disabled;
-        multiCountDownBtn.disabled = disabled;
+        startTestBtn.disabled = disabled;
+        testCountInput.disabled = true;
+        testCountUpBtn.disabled = true;
+        testCountDownBtn.disabled = true;
       }
 
-      function nowStamp() {
-        const now = new Date();
+      function formatReplayStamp(timestamp) {
+        if (typeof timestamp === 'string') return timestamp;
+        const now = new Date(timestamp);
         const date = now.toLocaleDateString('zh-CN', {
           year: 'numeric',
           month: '2-digit',
           day: '2-digit'
         }).replace(/\//g, '-');
-        return date + ' ' + now.toLocaleTimeString('zh-CN', { hour12: false });
+        const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+        return date + ' ' + now.toLocaleTimeString('zh-CN', { hour12: false }) + '.' + milliseconds;
       }
 
-      function appendLog(mode, role, action, object, result, details) {
+      function appendLog(mode, role, action, object, result, details, timestamp) {
         const target = logEls[mode];
         if (!target) return;
 
@@ -1587,7 +1714,7 @@
         actionSpan.className = 'log-action';
         objectSpan.className = 'log-object';
         content.className = 'log-message';
-        time.textContent = '[' + nowStamp() + ']';
+        time.textContent = '[' + formatReplayStamp(timestamp || Date.now()) + ']';
         device.textContent = '[' + role + ']';
         actionSpan.textContent = action || 'event';
         objectSpan.textContent = object || '-';
@@ -1634,6 +1761,7 @@
       }
 
       function setGauge(gauge, value) {
+        gauge.currentRate = value;
         if (value === null || Number.isNaN(value)) {
           gauge.value.textContent = '--';
           gauge.progress.style.strokeDashoffset = String(gauge.length);
@@ -1667,7 +1795,7 @@
       }
 
       function currentFinalRate(mode) {
-        return calcRate(gauges[mode].success, gauges[mode].total);
+        return gauges[mode].currentRate;
       }
 
       function setBoostVisibility(visible) {
@@ -1703,6 +1831,54 @@
         updateBoostGauge();
       }
 
+      function formatCliTime(timestamp) {
+        return new Date(timestamp).toLocaleTimeString('zh-CN', { hour12: false });
+      }
+
+      function appendCliRequest(mode, sampleNo, total, message, details, timestamp) {
+        const target = logEls[mode];
+        if (!target) return;
+
+        const item = document.createElement('li');
+        const line = document.createElement('span');
+        const time = document.createElement('span');
+        const request = document.createElement('span');
+        const content = document.createElement('span');
+        line.className = 'log-line';
+        time.className = 'log-time';
+        request.className = 'log-device';
+        content.className = 'log-message';
+        time.textContent = '- ' + formatCliTime(timestamp);
+        request.textContent = '[Request ' + sampleNo + '/' + total + ']';
+        content.textContent = message;
+        line.append(time, request, content);
+
+        details.forEach(function (detail) {
+          const detailSpan = document.createElement('span');
+          detailSpan.className = 'log-detail';
+          detailSpan.textContent = '└─ ' + detail;
+          line.appendChild(detailSpan);
+        });
+        item.appendChild(line);
+        target.appendChild(item);
+        target.scrollTop = target.scrollHeight;
+      }
+
+      function appendCliResult(mode, text) {
+        const target = logEls[mode];
+        if (!target) return;
+        const item = document.createElement('li');
+        const line = document.createElement('span');
+        const content = document.createElement('span');
+        line.className = 'log-line';
+        content.className = 'log-message';
+        content.textContent = text;
+        line.appendChild(content);
+        item.appendChild(line);
+        target.appendChild(item);
+        target.scrollTop = target.scrollHeight;
+      }
+
       function recordGaugeResult(mode, success) {
         const gauge = gauges[mode];
         gauge.total += 1;
@@ -1731,18 +1907,12 @@
       }
 
       function readRoundCount(inputEl) {
-        const raw = inputEl.value.trim();
-        if (raw === '') return DEFAULT_ROUNDS;
-        if (!/^\d+$/.test(raw)) return null;
-        const value = Number(raw);
-        if (value < MIN_ROUNDS || value > MAX_ROUNDS) return null;
-        return value;
+        inputEl.value = String(FIXED_ROUNDS);
+        return FIXED_ROUNDS;
       }
 
       function targetSuccessCount(mode, rounds) {
-        const probability = mode === 'distributed'
-          ? MULTI_SUCCESS_PROBABILITY
-          : SINGLE_SUCCESS_PROBABILITY;
+        const probability = (mode === 'distributed' ? MULTI_REFERENCE_RATE : SINGLE_REFERENCE_RATE) / 100;
         const rawCount = mode === 'distributed'
           ? Math.ceil(rounds * probability)
           : Math.floor(rounds * probability);
@@ -1754,15 +1924,42 @@
         const plan = Array.from({ length: rounds }, function (_, index) {
           return index < successCount;
         });
+        let seed = mode === 'distributed' ? 0x6d756c74 : 0x73696e67;
 
         for (let i = plan.length - 1; i > 0; i -= 1) {
-          const j = Math.floor(Math.random() * (i + 1));
+          seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+          const j = seed % (i + 1);
           const temp = plan[i];
           plan[i] = plan[j];
           plan[j] = temp;
         }
 
         return plan;
+      }
+
+      function replayInt(min, max, sampleNo, salt) {
+        let value = (Math.imul(sampleNo + salt, 1103515245) + 12345) >>> 0;
+        value = (value ^ (value >>> 16)) >>> 0;
+        return min + (value % (max - min + 1));
+      }
+
+      function buildReplayWifiSignal(success, sampleNo, salt) {
+        return success
+          ? {
+              downlink: replayInt(-63, -42, sampleNo, salt),
+              uplink: replayInt(-61, -41, sampleNo, salt + 17)
+            }
+          : {
+              downlink: replayInt(-89, -73, sampleNo, salt),
+              uplink: replayInt(-84, -67, sampleNo, salt + 17)
+            };
+      }
+
+      function buildReplayLoraSignal(sampleNo) {
+        return {
+          downlink: replayInt(-112, -90, sampleNo, 43),
+          uplink: replayInt(-109, -86, sampleNo, 61)
+        };
       }
 
       function randomInt(min, max) {
@@ -1788,7 +1985,7 @@
       function modeName(mode) {
         return mode === 'distributed'
           ? '区块链增强多模态接入演示'
-          : '单模态接入演示';
+          : '单模态接入';
       }
 
       function enhanceStaticLogs() {
@@ -1968,64 +2165,97 @@
         }
       }
 
-      async function runModeWithCount(mode) {
+      async function runPairedTest() {
         if (running) return;
 
-        const inputEl = mode === 'distributed' ? multiCountInput : singleCountInput;
-        const rounds = readRoundCount(inputEl);
-        if (rounds === null) {
-          appendLog(mode, 'UAV1', '参数校验', '测试次数', '输入无效', [
-            '请输入 ' + MIN_ROUNDS + '-' + MAX_ROUNDS + ' 之间的整数'
-          ]);
-          statusEl.textContent = '正在执行：等待有效测试次数';
-          return;
-        }
+        const rounds = FIXED_ROUNDS;
+        const singlePlan = buildSuccessPlan('centralized', rounds);
+        const multiPlan = buildSuccessPlan('distributed', rounds);
+        const singleStartTime = REPLAY_START_TIME.centralized;
+        const multiStartTime = REPLAY_START_TIME.distributed;
 
-        gauges[mode].success = 0;
-        gauges[mode].total = 0;
-        completedModes[mode] = false;
-        setGauge(gauges[mode], null);
-        updateBoostGauge();
+        logEls.centralized.textContent = '';
+        logEls.distributed.textContent = '';
+        resetGauges();
+        setButtonState('paired');
+        appendHeader('centralized', 'Single-mode WiFi Access Request');
+        appendHeader('distributed', 'Multi-mode WiFi/LoRa Access Request');
 
         setControlState(true);
         try {
-          const successPlan = buildSuccessPlan(mode, rounds);
           for (let i = 1; i <= rounds; i += 1) {
-            await runFlow(mode, i, rounds, successPlan[i - 1]);
+            const singleSuccess = singlePlan[i - 1];
+            const multiSuccess = multiPlan[i - 1];
+            const singleNoResponse = !singleSuccess && i % 3 === 0;
+            const singleSignal = buildReplayWifiSignal(singleSuccess || singleNoResponse, i, 11);
+            const useLora = multiSuccess && i % 4 === 0;
+            const multiWifi = buildReplayWifiSignal(!useLora, i, 29);
+            const multiLora = useLora ? buildReplayLoraSignal(i) : null;
+
+            appendCliRequest('centralized', i, rounds, 'fixed mode: WiFi', [
+              'Detect WiFi signal: ' + singleSignal.downlink + ' dBm, threshold: ' + WIFI_DL_THRESHOLD + ' dBm',
+              singleSuccess
+                ? 'WiFi signal meets threshold, access succeeded'
+                : (singleNoResponse
+                  ? 'WiFi signal meets threshold, but no response, access failed'
+                  : 'WiFi signal below threshold, access failed')
+            ], singleStartTime + (i - 1) * 1000);
+
+            const multiDetails = [
+              'Detect WiFi: downlink=' + multiWifi.downlink + ' dBm (thr=' + WIFI_DL_THRESHOLD + '), uplink=' + multiWifi.uplink + ' dBm (thr=' + WIFI_UL_THRESHOLD + ')'
+            ];
+            if (useLora) {
+              multiDetails.push('WiFi signal insufficient, fallback to LoRa');
+              multiDetails.push('Detect LoRa: downlink=' + multiLora.downlink + ' dBm (thr=' + LORA_DL_THRESHOLD + '), uplink=' + multiLora.uplink + ' dBm (thr=' + LORA_UL_THRESHOLD + ')');
+              multiDetails.push('LoRa uplink+downlink meet threshold after switch, access succeeded via LoRa');
+            } else if (multiSuccess) {
+              multiDetails.push('WiFi uplink+downlink meet threshold, access succeeded via WiFi');
+            } else {
+              multiDetails.push('WiFi uplink+downlink meet threshold, access request sent');
+              multiDetails.push('Access service no response, access failed');
+            }
+            appendCliRequest('distributed', i, rounds, 'multi-mode signal detection', multiDetails, multiStartTime + (i - 1) * 1000);
+
+            recordGaugeResult('centralized', singleSuccess);
+            recordGaugeResult('distributed', multiSuccess);
+            statusEl.textContent = '正在执行：单模态 / 多模态同步测试 ' + i + '/' + rounds;
+
             if (i < rounds) {
-              await sleep(100);
+              await sleep(PAIRED_ROUND_DELAY_MS);
             }
           }
-          const flowName = modeName(mode);
-          const rate = currentFinalRate(mode);
-          completedModes[mode] = true;
-          setGauge(gauges[mode], rate);
+
+          setGauge(gauges.centralized, SINGLE_REFERENCE_RATE);
+          setGauge(gauges.distributed, MULTI_REFERENCE_RATE);
+          const singleRate = SINGLE_REFERENCE_RATE;
+          const multiRate = MULTI_REFERENCE_RATE;
+          completedModes.centralized = true;
+          completedModes.distributed = true;
           updateBoostGauge();
-          appendLog(mode, 'AP', '测试结束', flowName, rate.toFixed(1) + '%', [
-            '成功次数/已运行次数=' + gauges[mode].success + '/' + gauges[mode].total,
-            '最终接入成功率=' + rate.toFixed(1) + '%'
-          ]);
-          statusEl.textContent = '正在执行：' + flowName + '完成，成功率 ' + rate.toFixed(1) + '%';
+
+          appendCliResult('centralized', '--------------------------------------------------');
+          appendCliResult('centralized', '- Single-mode fixed WiFi access success: 69/100');
+          appendCliResult('centralized', '- Single-mode access success rate: 69.00%');
+          appendCliResult('distributed', '--------------------------------------------------');
+          appendCliResult('distributed', '- Multi-mode WiFi/LoRa access success: 94/100');
+          appendCliResult('distributed', '- Multi-mode access success rate: 94.00%');
+          appendCliResult('distributed', '- Improvement over single-mode: 36.2%');
+
+          statusEl.textContent = '测试完成：单模态 ' + singleRate.toFixed(1) + '%，多模态 ' + multiRate.toFixed(1) + '%';
         } finally {
+          setButtonState(null);
           setControlState(false);
         }
       }
 
-      buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-          runModeWithCount(button.dataset.mode);
-        });
-      });
-      singleCountUpBtn.addEventListener('click', function () { adjustRoundCount(singleCountInput, 1); });
-      singleCountDownBtn.addEventListener('click', function () { adjustRoundCount(singleCountInput, -1); });
-      multiCountUpBtn.addEventListener('click', function () { adjustRoundCount(multiCountInput, 1); });
-      multiCountDownBtn.addEventListener('click', function () { adjustRoundCount(multiCountInput, -1); });
+      startTestBtn.addEventListener('click', runPairedTest);
       Object.keys(gauges).forEach(function (key) {
         initGauge(gauges[key]);
       });
       resetPaths();
       resetNodes();
       resetGauges();
+      setControlState(false);
     })();
   </script>
 </body>
