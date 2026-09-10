@@ -1008,8 +1008,10 @@
         </defs>
         <line class="m-line-success" x1="51" y1="21" x2="25" y2="43" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay)" />
         <line class="m-line-connect" x1="30" y1="51" x2="76" y2="47" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay)" />
-        <line class="m-line-attack" x1="74" y1="54" x2="30" y2="63" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
-        <line class="m-line-attack" x1="30" y1="68" x2="25" y2="89" stroke-width="1.5" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
+        <!-- 服务点返回接入点：Nonce 重复，拒绝响应 -->
+        <line class="m-line-attack" x1="75" y1="55" x2="30" y2="55" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
+        <!-- 服务点将重放攻击事件写入区块链 -->
+        <line class="m-line-attack" x1="75" y1="61" x2="70" y2="89" stroke-width="1.5" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
       </svg>
     </div>
   </div>
