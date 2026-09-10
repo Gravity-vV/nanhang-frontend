@@ -285,10 +285,8 @@
       display: contents;
     }
 
-    /* 左侧列容器：测试结果 + 测试控制，用 CSS 变量控制两者占比 */
+    /* 控制区按内容高度排列，测试结果填满左栏剩余空间。 */
     .left-col {
-      --gauges-flex: 0.62;    /* “网络接入测试结果”占比（约62%） */
-      --controls-flex: 0.38;  /* “测试参数与状态控制”占比（约38%） */
       grid-area: left;
       grid-row: 1 / 3;
       display: flex;
@@ -299,13 +297,13 @@
     }
 
     .controls {
-      flex: var(--controls-flex) 1 0;
+      flex: 0 0 auto;
       border: 1px solid rgba(34, 211, 238, 0.36);
       border-radius: 10px;
       background: rgba(3, 12, 28, 0.86);
       padding: 6px 14px;
       display: grid;
-      grid-template-rows: auto 1fr auto;
+      grid-template-rows: auto auto auto;
       gap: 7px;
       min-height: 0;
       overflow: visible;
@@ -506,7 +504,7 @@
     }
 
     .gauge-row {
-      flex: var(--gauges-flex) 1 0;
+      flex: 1 1 0;
       border: 1px solid #d1d5db;
       border-radius: 16px;
       background: #ffffff;

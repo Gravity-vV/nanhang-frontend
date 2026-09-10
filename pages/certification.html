@@ -1281,7 +1281,7 @@
       <div class="cert-top-layout">
         <aside class="latency-panel" aria-label="跨域认证效率数据">
           <section class="latency-card">
-            <p class="latency-label">集中式认证平均时延</p>
+            <p class="latency-label">集中式平均认证时延</p>
             <p class="latency-value" id="summary-centralized-value">--</p>
           </section>
           <section class="latency-card">
@@ -1534,7 +1534,7 @@
 
         <aside class="latency-panel" aria-label="跨域认证效率数据">
           <section class="latency-card">
-            <p class="latency-label">集中式认证平均时延</p>
+            <p class="latency-label">集中式平均认证时延</p>
             <p class="latency-value" id="summary-centralized-value-old">--</p>
           </section>
           <section class="latency-card">
@@ -1593,8 +1593,8 @@
         centralized: 149.93
       };
       const LATENCY_VARIATION_MS = {
-        distributed: 0.48,
-        centralized: 0.92
+        distributed: 25,
+        centralized: 25
       };
 
       const startBtn = document.getElementById('start-test-btn');
@@ -1886,9 +1886,25 @@
         sampleCountInput.value = String(nextValue);
       }
 
-      function createLatencyPlan(mode, sampleNo) {
-        const direction = sampleNo % 2 === 0 ? 1 : -1;
-        const targetMs = LATENCY_REFERENCE_MS[mode] + direction * LATENCY_VARIATION_MS[mode];
+      function createLatencySamples(mode, count) {
+        // 演示样本使用成对偏差并打乱顺序，总偏差为零，保证最终平均值不变。
+        // 以 0.01 ms 为单位生成，避免末轮人为覆盖平均值。
+        const reference = Math.round(LATENCY_REFERENCE_MS[mode] * 100);
+        const variation = Math.round(LATENCY_VARIATION_MS[mode] * 100);
+        const offsets = [];
+        for (let i = 0; i < Math.floor(count / 2); i += 1) {
+          const offset = Math.round(randomInRange(variation * 0.4, variation));
+          offsets.push(offset, -offset);
+        }
+        if (count % 2 !== 0) offsets.push(0);
+        for (let i = offsets.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [offsets[i], offsets[j]] = [offsets[j], offsets[i]];
+        }
+        return offsets.map((offset) => (reference + offset) / 100);
+      }
+
+      function createLatencyPlan(targetMs) {
         const playbackMs = Math.max(45, Math.round(targetMs * PLAYBACK_SCALE));
         const requestPathMs = Math.round(playbackMs * 0.16);
         const requestPulseMs = Math.round(playbackMs * 0.12);
@@ -1965,7 +1981,7 @@
             result: '通过',
             details: [
               '分布式认证平均时延=' + formatLatency(dAvg),
-              '集中式认证平均时延=' + formatLatency(cAvg),
+              '集中式平均认证时延=' + formatLatency(cAvg),
               '效率提升=' + improvement + '%'
             ]
           });
@@ -2157,8 +2173,8 @@
 
       function getModeAvg(mode) {
         const samples = state[mode].samples;
-        const sum = samples.reduce((acc, value) => acc + value, 0);
-        return sum / samples.length;
+        const sum = samples.reduce((acc, value) => acc + Math.round(value * 100000), 0);
+        return sum / (samples.length * 100000);
       }
 
       async function runModeBatch(mode, targetCountOverride) {
@@ -2200,12 +2216,13 @@
           details: ['scheme=' + (mode === 'distributed' ? 'blockchain' : 'centralized'), 'batch size=' + targetCount]
         });
 
+        const latencySamples = createLatencySamples(mode, targetCount);
         for (let i = 1; i <= targetCount; i += 1) {
           if (token !== state.animationToken) {
             return;
           }
 
-          const latencyPlan = createLatencyPlan(mode, i);
+          const latencyPlan = createLatencyPlan(latencySamples[i - 1]);
           const animateFlow = i === 1 || i === targetCount || i % FLOW_ANIMATION_INTERVAL === 0;
           const okRequest = await doRequestStage(mode, i, token, latencyPlan, animateFlow);
           if (!okRequest || token !== state.animationToken) {

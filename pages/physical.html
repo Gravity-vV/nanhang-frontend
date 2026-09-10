@@ -201,8 +201,6 @@
     }
 
     .left-col {
-      --gauges-flex: 0.62;
-      --controls-flex: 0.38;
       grid-area: left;
       grid-row: 1 / 3;
       display: flex;
@@ -369,9 +367,8 @@
       font-weight: 850;
       min-width: 0;
       line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      overflow-wrap: anywhere;
       text-shadow: none;
     }
 
@@ -1080,11 +1077,11 @@
     /* Match page 2: controls above gauges in one full-height left column. */
     .left-col .mode-buttons {
       order: 1;
-      flex: var(--controls-flex) 1 0;
+      flex: 0 0 auto;
       grid-area: auto;
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr auto;
+      grid-template-rows: auto auto auto;
       gap: 7px;
       padding: 6px 14px;
       border-radius: 10px;
@@ -1180,7 +1177,7 @@
 
     .left-col .gauge-row {
       order: 2;
-      flex: var(--gauges-flex) 1 0;
+      flex: 1 1 0;
       grid-area: auto;
     }
   </style>
@@ -1521,7 +1518,7 @@
             <h3 class="panel-header">测试参数与状态控制</h3>
             <div class="option-row">
               <div class="option-line">
-                <span class="option-item">统一测试参数</span>
+                <span class="option-item">单模态与多模态接入测试</span>
                 <label class="count-label" for="test-count">测试次数</label>
                 <div class="count-input-wrap">
                   <input id="test-count" class="count-input" type="text" inputmode="numeric" value="100" placeholder="固定100次" disabled aria-disabled="true" />
