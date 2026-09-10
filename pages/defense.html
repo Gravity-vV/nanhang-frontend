@@ -174,6 +174,11 @@
       z-index: 6;
     }
 
+    /* 上链箭头单独置于区块链图片上方，确保箭头尖端清晰可见 */
+    .chain-target-layer {
+      z-index: 11;
+    }
+
     .chain-action {
       position: absolute;
       left: 50%;
@@ -192,6 +197,10 @@
       text-align: center;
       white-space: nowrap;
       box-shadow: 0 0 12px rgba(34, 211, 238, 0.24);
+    }
+
+    .replay-canvas .chain-action {
+      bottom: 28%;
     }
 
     .shared-chain-base {
@@ -991,27 +1000,38 @@
       <img src="../assets/sec-uav.png" class="element" style="position:absolute; top:5%; right:35%; width:110px;" alt="UAV" />
       <img src="../assets/接入点.png" class="element" style="position:absolute; top:34%; left:8%; width:110px;" alt="接入点" />
       <img src="../assets/database.png" class="element" style="position:absolute; top:37%; right:10%; width:62px; filter:drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="链上Nonce记录" />
-      <img src="../assets/sec-reject.png" class="element" style="position:absolute; bottom:40%; left:20%; width:58px; z-index:9;" alt="拒绝响应" />
+      <img src="../assets/sec-reject.png" class="element" style="position:absolute; bottom:35%; left:22%; width:44px; z-index:9;" alt="拒绝响应" />
       <div style="position:absolute; top:21%; left:29%; font-weight:bold; text-align:center; white-space:nowrap;">复用已用Nonce</div>
       <div style="position:absolute; top:33%; left:8%; font-weight:bold; white-space:nowrap;">接入点</div>
-      <div style="position:absolute; top:32%; right:4%; font-weight:bold; text-align:center; white-space:nowrap; color:#67e8f9 !important;">链上Nonce查重</div>
-      <div style="position:absolute; top:43%; right:3%; z-index:12; color:#f87171 !important; font-weight:bold; text-align:center; white-space:nowrap;">Nonce重复<br>拒绝响应</div>
+      <div style="position:absolute; top:37%; left:52%; transform:translateX(-50%); font-weight:bold; text-align:center; white-space:nowrap; color:#67e8f9 !important;">链上Nonce查重</div>
+      <div style="position:absolute; top:48%; left:54%; transform:translateX(-50%); z-index:12; color:#f87171 !important; font-weight:bold; text-align:center; white-space:nowrap;">Nonce重复，拒绝响应</div>
       <div class="chain-action">重放事件上链</div>
       <svg class="connection-svg" viewBox="0 0 100 100">
         <defs>
           <marker id="arrowhead-replay" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
             <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
           </marker>
+          <marker id="arrowhead-replay-connect" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
+            <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#dbeafe" />
+          </marker>
           <marker id="arrowhead-replay-fail" markerWidth="4" markerHeight="2.4" refX="3" refY="1.2" orient="auto">
             <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
           </marker>
         </defs>
         <line class="m-line-success" x1="51" y1="21" x2="25" y2="43" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay)" />
-        <line class="m-line-connect" x1="30" y1="51" x2="76" y2="47" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay)" />
+        <!-- 接入点请求服务点执行链上 Nonce 查重 -->
+        <line class="m-line-connect" x1="30" y1="46" x2="75" y2="46" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-connect)" />
         <!-- 服务点返回接入点：Nonce 重复，拒绝响应 -->
         <line class="m-line-attack" x1="75" y1="55" x2="30" y2="55" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
-        <!-- 服务点将重放攻击事件写入区块链 -->
-        <line class="m-line-attack" x1="75" y1="61" x2="70" y2="89" stroke-width="1.5" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
+      </svg>
+      <!-- 服务点将重放攻击事件写入右侧可见区块链节点 -->
+      <svg class="connection-svg chain-target-layer" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <marker id="arrowhead-replay-chain" markerWidth="4" markerHeight="2.4" refX="3" refY="1.2" orient="auto">
+            <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
+          </marker>
+        </defs>
+        <line class="m-line-attack" x1="82" y1="52" x2="25" y2="89" stroke-width="1.5" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-chain)" />
       </svg>
     </div>
   </div>
