@@ -204,8 +204,9 @@
     }
 
     .selfish-canvas .chain-action {
-      bottom: 30%;
-      left: 55%;
+      bottom: 32%;
+      left: 77%;
+      min-width: 44%;
     }
 
     .highfreq-canvas .chain-action {
@@ -935,13 +936,14 @@
     <div class="panel-header">自私接入</div>
     <div class="canvas selfish-canvas">
         <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:4%; left:29%; width:120px;" alt="UAV"/>
-        <img src="../assets/接入点.png" class="element" style="position: absolute; top:39%; left:5%; width:95px;" alt="接入点">
-        <img src="../assets/sec-reject.png" class="element" style="position: absolute; top:40%; right:8%; width:66px;" alt="拒绝接入">
-        <img src="../assets/sec-cert.png" class="element" style="position: absolute; top:35%; left:45%; width:34px;" alt="身份校验">
-        <div style="position: absolute; top: 36%; left: 11.5%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">接入点</div>
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:34%; left:5%; width:95px;" alt="接入点">
+        <img src="../assets/sec-reject.png" class="element" style="position: absolute; top:40%; right:8%; width:16%;" alt="拒绝接入">
+        <img src="../assets/sec-cert.png" class="element" style="position: absolute; top:38%; left:49%; width:34px;" alt="身份校验">
+        <div style="position: absolute; top: 31%; left: 11.5%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">接入点</div>
         <div style="position: absolute; top: 22%; left: 42%; font-weight: bold; white-space: nowrap; text-align: center;">非法ID接入请求</div>
-        <div style="position: absolute; top: 50%; left: 34%; font-weight: bold; white-space: nowrap; color:#67e8f9 !important;">链上白名单校验</div>
+        <div style="position: absolute; top: 49%; left: 53.5%; transform:translateX(-50%); font-weight: bold; white-space: nowrap; color:#f87171 !important;">信息不匹配</div>
         <div style="position: absolute; top: 33%; right: 7%; font-weight: bold; white-space: nowrap; color:#f87171 !important;">拒绝接入</div>
+        <div style="position: absolute; top: 68%; left: 16%; width:24%; font-size:13px !important; line-height:1.25; font-weight: bold; white-space: normal; text-align:center; color:#e0f2fe !important;">查询链上ID/公钥<br>返回匹配结果</div>
         <div class="chain-action">自私接入事件上链</div>
         <!-- 左图连线层 -->
         <svg class="connection-svg" viewBox="0 0 100 100">
@@ -960,7 +962,7 @@
             </marker>
           </defs>
           <!-- 非法ID请求到达接入点 -->
-          <line class="m-line-success" x1="40" y1="19" x2="28" y2="37" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-l)"/>
+          <line class="m-line-success" x1="40" y1="19" x2="28" y2="32" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-l)"/>
           <!-- 白名单校验后拒绝接入，证书图标保留在线路上 -->
           <line class="m-line-attack" x1="32" y1="47" x2="75" y2="47" stroke-width="1.3" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-l)"/>
         </svg>
@@ -970,7 +972,14 @@
             <marker id="arrowhead-selfish-chain" markerWidth="4" markerHeight="2.4" refX="3" refY="1.2" orient="auto">
               <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
             </marker>
+            <marker id="arrowhead-selfish-query" markerWidth="5" markerHeight="3" refX="4" refY="1.5" orient="auto">
+              <polygon points="0 0, 5 1.5, 0 3" fill="#dbeafe" />
+            </marker>
           </defs>
+          <!-- 接入点查询链上ID/公钥信息 -->
+          <line class="m-line-connect" x1="29" y1="60" x2="74" y2="80" stroke-width="1.2" stroke-dasharray="4 1" marker-end="url(#arrowhead-selfish-query)"/>
+          <!-- 区块链向接入点返回匹配结果 -->
+          <line class="m-line-connect" x1="65" y1="80" x2="29" y2="64" stroke-width="1.2" stroke-dasharray="4 1" marker-end="url(#arrowhead-selfish-query)"/>
           <line class="m-line-attack" x1="84" y1="56" x2="84" y2="80" stroke-width="1.5" stroke-dasharray="4 1" marker-end="url(#arrowhead-selfish-chain)"/>
         </svg>
     </div>
@@ -1022,7 +1031,7 @@
     <div class="canvas replay-canvas">
       <img src="../assets/sec-uav.png" class="element" style="position:absolute; top:5%; right:35%; width:110px;" alt="UAV" />
       <img src="../assets/接入点.png" class="element" style="position:absolute; top:34%; left:8%; width:95px;" alt="接入点" />
-      <img src="../assets/database.png" class="element" style="position:absolute; top:37%; right:10%; width:62px; filter:drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="链上Nonce记录" />
+      <img src="../assets/database.png" class="element" style="position:absolute; top:37%; right:10%; width:15%; filter:drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="链上Nonce记录" />
       <img src="../assets/sec-reject.png" class="element" style="position:absolute; bottom:35%; left:22%; width:44px; z-index:9;" alt="拒绝响应" />
       <div style="position:absolute; top:21%; left:29%; font-weight:bold; text-align:center; white-space:nowrap;">复用已用Nonce</div>
       <div style="position:absolute; top:33%; left:8%; font-weight:bold; white-space:nowrap;">接入点</div>
@@ -1045,7 +1054,7 @@
         <!-- 接入点请求服务点执行链上 Nonce 查重 -->
         <line class="m-line-connect" x1="36" y1="42" x2="70" y2="42" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-connect)" />
         <!-- 服务点返回接入点：Nonce 重复，拒绝响应 -->
-        <line class="m-line-attack" x1="74" y1="52" x2="34" y2="52" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
+        <line class="m-line-attack" x1="72" y1="52" x2="34" y2="52" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
       </svg>
       <!-- 服务点将重放攻击事件写入右侧可见区块链节点 -->
       <svg class="connection-svg chain-target-layer" viewBox="0 0 100 100" aria-hidden="true">
