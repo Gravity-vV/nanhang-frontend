@@ -186,11 +186,11 @@
   .right-canvas .base-station { bottom: 45%; right: 39%; width: 82px; height: 108px; }
   /* 右图攻击者图标：bottom=45%, left=23.5%, width=40px, height=40px */
   .right-canvas .hacker { bottom: 46%; left: 21.5%; width: 38px; height: 38px; }
-  /* 右图区块链平台：bottom=5%, left=15%, right=15%, height=80px */
+  /* 右图区块链横幅贴齐画布左右边缘。 */
   .right-canvas .blockchain {
     bottom: 5%;
-    left: 6%;
-    right: 6%;
+    left: 0;
+    right: 0;
     height: 80px;
     display: flex;
     align-items: center;
@@ -874,7 +874,7 @@
     }
 
     .right-canvas .blockchain img {
-      filter: brightness(1) contrast(1.08) saturate(1) drop-shadow(0 0 8px rgba(34, 211, 238, 0.12));
+      filter: none;
       opacity: 1;
       mix-blend-mode: normal;
       width: 100% !important;
@@ -955,6 +955,12 @@
 
     .gauge-mark {
       font-size: 10px !important;
+    }
+    /* 四页共用同一张半透明区块链底座。 */
+    .right-canvas .blockchain {
+      background: url("../assets/blockchain-panel.svg") center / 100% 100% no-repeat !important;
+      border: 0;
+      box-shadow: none !important;
     }
   </style>
 </head>
@@ -1136,26 +1142,6 @@
 <img src="../assets/接入点.png" class="element base-station" alt="基站" />
 <!-- 右图攻击者图标：位置和大小由 .hacker 控制。 -->
 <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
-      <!-- 右图三角块 1：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/blockchain-block.svg"
-class="element icon-tri"
-          style="top:20%; right:10%; transform: scale(0.8);"
-          alt="区块链">
-      <!-- 右图三角块 2：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/blockchain-block.svg"
-class="element icon-tri"
-          style="top: 9%;  left: 34%; transform: scale(0.8);"
-          alt="区块链">
-      <!-- 右图三角块 3：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/blockchain-block.svg"
-class="element icon-tri"
-          style="top: 13%; left: 21%; transform: scale(0.8);"
-          alt="区块链">
-      <!-- 右图三角块 4：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/blockchain-block.svg"
-class="element icon-tri"
-          style="top: 25%; left: 11%; transform: scale(0.8);"
-          alt="区块链">
       <!-- 右图三角块 5：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
       <img src="../assets/blockchain-block.svg"
 class="element icon-tri"
@@ -1203,7 +1189,7 @@ class="element icon-tri"
 <!-- 右图区块链平台块：位置和大小由 .blockchain 控制。 -->
 <div class="element blockchain">
 <!-- 区块链平台内部图片：修改 width/height/transform 可调整贴合方式。 -->
-<img src="../assets/blockchain-dark.svg"
+<img src="../assets/blockchain-glass-strip.svg"
             alt="区块链"
             style="width: 100%;
                     height: 100%;
@@ -1261,19 +1247,7 @@ class="element icon-tri"
         节点容错生效<br>验证反馈正常
       </div>
 
-      <!-- 右图红色攻击高亮框：修改 top/left/width/height 可调整位置和大小。 -->
-      <div style="position: absolute;
-            top: 76%;
-            left: 21%;
-            width: 11%;
-            height: 11%;
-            z-index: 4;
-            background-color: #ef4444;
-            opacity: 0.5;
-            border: none;
-            border-radius: 4px;
-            pointer-events: none;"></div>
-    </div>
+</div>
   </div>
 </div>
 
