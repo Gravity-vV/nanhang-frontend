@@ -5,7 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>物理层接入测试</title>
   <style>
-    * { box-sizing: border-box; }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(2, 6, 23, 0.6);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.35);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(56, 189, 248, 0.55);
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(56, 189, 248, 0.35) rgba(2, 6, 23, 0.6);
+      box-sizing: border-box;
+    }
 
     html,
     body {
@@ -1007,6 +1030,10 @@
       text-shadow: none;
     }
 
+    .physical-card-svg .retreat-label {
+      fill: #ffffff !important;
+    }
+
     .physical-card-svg--right text {
       fill: #dbeafe !important;
     }
@@ -1221,42 +1248,42 @@
                   <!-- 左上 WiFi 干扰图标 -->
                   <image href="../assets/wi-fi.png" x="172" y="78" width="46" height="46" />
                   <!-- 左上“物理层屏蔽”文字 -->
-                  <text x="160" y="124" fill="#c1121f" font-size="16" font-weight="700">物理层屏蔽</text>
+                  <text x="160" y="124" fill="#c1121f" font-size="15" font-weight="700">物理层屏蔽</text>
                   <!-- 左上从攻击者指向接入点的红色攻击虚线箭头 -->
-                  <line x1="132" y1="136" x2="260" y2="136" stroke="#ef4444" stroke-width="5" stroke-dasharray="16 4" marker-end="url(#left-arrow-attack)" />
+                  <line x1="132" y1="136" x2="260" y2="136" stroke="#ef4444" stroke-width="3.4" stroke-dasharray="16 4" marker-end="url(#left-arrow-attack)" />
 
                   <!-- 左上接入点塔台图片 -->
                   <image href="../assets/physics/access-point.png" x="254" y="44" width="130" height="231" preserveAspectRatio="xMidYMid meet" />
                   <!-- 左上接入点文字标签 -->
-                  <text x="319" y="78" font-size="17" font-weight="700" text-anchor="middle" style="fill:#dbeafe !important;">接入点</text>
+                  <text x="319" y="78" font-size="15.5" font-weight="700" text-anchor="middle" style="fill:#dbeafe !important;">接入点</text>
 
 
                   <!-- 左上 WiFi 干扰图标 -->
                   <image href="../assets/wi-fi.png" x="132" y="152" width="46" height="46" />
                   <!-- 左上橙色告警标题：认证屏蔽 -->
-                  <text x="182" y="182" font-size="17" font-weight="700" style="fill:#fb923c !important;">接入失败</text>
+                  <text x="182" y="182" font-size="15.5" font-weight="700" style="fill:#fb923c !important;">接入失败</text>
 
                                     <!-- 左上第一行失败说明：随机退避 -->
-                  <text x="240" y="319" font-size="15" style="fill:#dbeafe !important;">同步接入</text>
+                  <text x="240" y="319" font-size="14" style="fill:#dbeafe !important;">同步接入</text>
                   <!-- 左上第二行失败说明：接入失败 -->
-                  <text x="240" y="339" font-size="15" style="fill:#dbeafe !important;">失败记录</text>
+                  <text x="240" y="339" font-size="14" style="fill:#dbeafe !important;">失败记录</text>
 
                   <!-- 左上 UAV-1 小图 -->
                   <image href="../assets/physics/drone-small.png" x="164" y="238" width="82" height="56" />
                   <!-- 左上 UAV-1 标题文字 -->
-                  <text x="205" y="235" font-size="16" font-weight="700" text-anchor="middle" style="fill:#dbeafe !important;">UAV-1</text>
+                  <text x="205" y="235" font-size="15" font-weight="700" text-anchor="middle" style="fill:#dbeafe !important;">UAV-1</text>
 
-                  <line x1="205" y1="210" x2="270" y2="160" stroke="#dd6b20" stroke-width="4.5" stroke-dasharray="16 4" marker-end="url(#left-arrow-orange)" />
+                  <line x1="205" y1="210" x2="270" y2="160" stroke="#dd6b20" stroke-width="3" stroke-dasharray="16 4" marker-end="url(#left-arrow-orange)" />
 
                   <!-- 左上 UAV-1 向下同步记录的黑色虚线箭头 -->
-                  <line x1="205" y1="300" x2="205" y2="350" stroke="#fbbf24" stroke-width="4.5" stroke-dasharray="16 4" marker-end="url(#left-arrow-neutral)" />
+                  <line x1="205" y1="300" x2="205" y2="350" stroke="#fbbf24" stroke-width="3" stroke-dasharray="16 4" marker-end="url(#left-arrow-neutral)" />
                   <!-- 左上同步说明第一行文字 -->
-                  <text x="246" y="381" font-size="14" style="fill:#dbeafe !important;">同步接入点</text>
+                  <text x="246" y="381" font-size="13" style="fill:#dbeafe !important;">同步接入点</text>
                   <!-- 左上同步说明第二行文字 -->
-                  <text x="246" y="398" font-size="14" style="fill:#dbeafe !important;">屏蔽记录</text>
+                  <text x="246" y="398" font-size="13" style="fill:#dbeafe !important;">屏蔽记录</text>
 
                   <!-- 左上无人机群组外框 -->
-                  <rect x="380" y="114" width="280" height="155" rx="26" fill="rgba(8, 47, 73, 0.56)" stroke="#22d3ee" stroke-width="2.5" />
+                  <rect x="380" y="114" width="280" height="155" rx="26" fill="rgba(8, 47, 73, 0.56)" stroke="#22d3ee" stroke-width="2" />
                   <!-- 左上 UAV-1 小图 -->
                   <image href="../assets/physics/drone-small.png" x="408" y="174" width="82" height="56" />
                   <!-- 左上 UAV-2 小图 -->
@@ -1264,25 +1291,25 @@
                   <!-- 左上 UAV-3 小图 -->
                   <image href="../assets/physics/drone-small.png" x="580" y="128" width="82" height="56" />
                   <!-- 左上 UAV-1 名称 -->
-                  <text x="453" y="242" font-size="18" text-anchor="middle" style="fill:#dbeafe !important;">UAV-1</text>
+                  <text x="453" y="242" font-size="16" text-anchor="middle" style="fill:#dbeafe !important;">UAV-1</text>
                   <!-- 左上 UAV-2 名称 -->
-                  <text x="551" y="264" font-size="18" text-anchor="middle" style="fill:#dbeafe !important;">UAV-2</text>
+                  <text x="551" y="264" font-size="16" text-anchor="middle" style="fill:#dbeafe !important;">UAV-2</text>
                   <!-- 左上 UAV-3 名称 -->
-                  <text x="625" y="196" font-size="18" text-anchor="middle" style="fill:#dbeafe !important;">UAV-3</text>
+                  <text x="625" y="196" font-size="16" text-anchor="middle" style="fill:#dbeafe !important;">UAV-3</text>
 
                   <!-- 左上接入点到 UAV-1 的灰色虚线箭头 -->
-                  <line x1="375" y1="132" x2="420" y2="176" stroke="#38bdf8" stroke-width="4.5" stroke-dasharray="16 4" marker-end="url(#left-arrow-soft)" opacity="0.82" />
+                  <line x1="375" y1="132" x2="420" y2="176" stroke="#38bdf8" stroke-width="3" stroke-dasharray="16 4" marker-end="url(#left-arrow-soft)" opacity="0.82" />
                   <!-- 左上接入点到 UAV-2 的灰色虚线箭头 -->
-                  <line x1="375" y1="114" x2="544" y2="196" stroke="#38bdf8" stroke-width="4.5" stroke-dasharray="16 4" marker-end="url(#left-arrow-soft)" opacity="0.82" />
+                  <line x1="375" y1="114" x2="544" y2="196" stroke="#38bdf8" stroke-width="3" stroke-dasharray="16 4" marker-end="url(#left-arrow-soft)" opacity="0.82" />
                   <!-- 左上接入点到 UAV-3 的灰色虚线箭头 -->
-                  <line x1="375" y1="100" x2="586" y2="156" stroke="#38bdf8" stroke-width="4.5" stroke-dasharray="16 4" marker-end="url(#left-arrow-soft)" opacity="0.82" />
+                  <line x1="375" y1="100" x2="586" y2="156" stroke="#38bdf8" stroke-width="3" stroke-dasharray="16 4" marker-end="url(#left-arrow-soft)" opacity="0.82" />
 
                   <!-- 左上无人机群回传平台的黑色虚线箭头 -->
-                  <line x1="486" y1="350" x2="486" y2="272" stroke="#fbbf24" stroke-width="4.5" stroke-dasharray="16 4" marker-end="url(#left-arrow-neutral)" />
+                  <line x1="486" y1="350" x2="486" y2="272" stroke="#fbbf24" stroke-width="3" stroke-dasharray="16 4" marker-end="url(#left-arrow-neutral)" />
                   <!-- 左上回传说明第一行文字 -->
-                  <text x="508" y="301" fill="#111827" font-size="14">查询到失败记录，</text>
+                  <text class="retreat-label" x="508" y="301" fill="#ffffff" font-size="13">查询到失败记录，</text>
                   <!-- 左上回传说明第二行文字 -->
-                  <text x="508" y="321" fill="#111827" font-size="14">主动退避接入</text>
+                  <text class="retreat-label" x="508" y="321" fill="#ffffff" font-size="13">主动退避接入</text>
 
                   <!-- 左上图内蓝色平台条容器 -->
                   <foreignObject x="92" y="352" width="506" height="58">
@@ -1312,7 +1339,7 @@
           <article class="diagram-panel">
             <!-- 右侧卡片标题：区块链增强的多模态接入 -->
             <div class="panel-header">区块链增强的多模态接入</div>
-            <div class="physical-canvas">
+            <div class="physical-canvas physical-canvas--chain">
               <!-- 右侧卡片 SVG 画布：物理层区块链增强多模态接入场景 -->
               <svg class="physical-card-svg physical-card-svg--right" viewBox="724 48 848 560" xmlns="http://www.w3.org/2000/svg" aria-label="物理层区块链增强多模态接入场景">
                 <defs>
@@ -1338,14 +1365,14 @@
                 <!-- 右侧攻击者图标 -->
                 <image href="../assets/physics/attacker.png" x="752" y="116" width="74" height="74" />
                 <!-- 右侧”物理层屏蔽”文字 -->
-                <text x=”944” y=”150” fill=”#c1121f” font-size=”18” font-weight=”700”>物理层屏蔽</text>
+                <text x="944" y="150" fill="#c1121f" font-size="16" font-weight="700">物理层屏蔽</text>
                 <!-- 右侧从攻击者指向接入点的红色攻击虚线箭头 -->
-                <line x1="876" y1="162" x2="1122" y2="162" stroke="#fb7185" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-attack)" />
+                <line x1="876" y1="162" x2="1122" y2="162" stroke="#fb7185" stroke-width="3.4" stroke-dasharray="16 4" marker-end="url(#right-arrow-attack)" />
 
                 <!-- 右侧接入点塔台图片 -->
                 <image href="../assets/physics/access-point.png" x="1148" y="60" width="100" height="178" preserveAspectRatio="xMidYMid meet" />
                 <!-- 右侧接入点文字标签 -->
-                <text x="1198" y="72" fill="#111827" font-size="19" font-weight="700" text-anchor="middle">接入点</text>
+                <text x="1198" y="72" fill="#111827" font-size="18" font-weight="700" text-anchor="middle">接入点</text>
 
                 <!-- 右侧 WiFi 图标 -->
                 <image href="../assets/wi-fi.png" x="962" y="84" width="46" height="46" />
@@ -1355,7 +1382,7 @@
                 <image href="../assets/wi-fi.png" x="1288" y="162" width="46" height="46" />
 
                 <!-- 右侧模式切换提示文字 -->
-                <text x="1000" y="214" fill="#dd6b20" font-size="20" font-weight="700">发起接入请求</text>
+                <text x="1000" y="214" fill="#dd6b20" font-size="17" font-weight="700">发起接入请求</text>
                 <!-- 右侧橙色闪电效果图 -->
                 <image
                   class="keep-transform svg-center-transform"
@@ -1368,31 +1395,31 @@
                 />
 
                 <!-- 右侧失效 WiFi 图标 -->
-                <image href="../assets/wi-fi.png" x="859" y="228" width="66" height="66" />
+                <image href="../assets/wi-fi.png" x="859" y="228" width="50" height="50" />
                 <!-- 右侧 WiFi 失效红色 X 标记（右下角小尺寸） -->
-                <line x1="900" y1="268" x2="920" y2="288" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round" />
-                <line x1="920" y1="268" x2="900" y2="288" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round" />
+                <line x1="920" y1="268" x2="940" y2="288" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+                <line x1="940" y1="268" x2="920" y2="288" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
 
                 <!-- 右侧 LoRa 图标 -->
                 <image href="../assets/physics/LoRa (2).png" x="858" y="346" width="48" height="48" />
                 <!-- 右侧成功勾选图标 -->
-                <image href="../assets/physics/correct.png" x="902" y="364" width="42" height="42" />
+                <image href="../assets/physics/correct.png" x="910" y="364" width="35" height="35" />
 
-                <image href="../assets/physics/downga.png" x="862" y="300" width="42" height="42" />
+                <image href="../assets/physics/downga.png" x="862" y="280" width="42" height="60" />
 
                 <!-- 右侧 UAV-1 小图 -->
-                <image href="../assets/physics/drone-small.png" x="985" y="288" width="86" height="60" />
+                <image href="../assets/physics/drone-small.png" x="985" y="288" width="95" height="66" />
                 <!-- 右侧 UAV-1 标题文字 -->
-                <text x="1028" y="284" fill="#111827" font-size="18" font-weight="700" text-anchor="middle">UAV-1</text>
+                <text x="1028" y="284" fill="#111827" font-size="16" font-weight="700" text-anchor="middle">UAV-1</text>
 
                 <!-- 右侧 UAV-1 向上获取可用通信模式列表的橙色虚线箭头 -->
-                <line x1="1030" y1="462" x2="1030" y2="376" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
+                <line x1="1030" y1="462" x2="1030" y2="376" stroke="#fbbf24" stroke-width="3.2" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
                 <!-- 右侧获取可用通信模式列表说明文字 -->
-                <text x="1050" y="422" fill="#111827" font-size="19">获取可用通</text>
-                <text x="1050" y="455" fill="#111827" font-size="19">信模式列表</text>
+                <text x="1050" y="422" fill="#111827" font-size="16.5">获取可用通</text>
+                <text x="1050" y="455" fill="#111827" font-size="16.5">信模式列表</text>
 
                 <!-- 右侧无人机群组外框 -->
-                <rect x="1278" y="204" width="245" height="135" rx="26" fill="rgba(8, 47, 73, 0.56)" stroke="#22d3ee" stroke-width="2.5" />
+                <rect x="1278" y="204" width="245" height="135" rx="26" fill="rgba(8, 47, 73, 0.56)" stroke="#22d3ee" stroke-width="2" />
                 <!-- 右侧 UAV-1 小图 -->
                 <image href="../assets/physics/drone-small.png" x="1260" y="250" width="86" height="60" />
                 <!-- 右侧 UAV-2 小图 -->
@@ -1406,11 +1433,11 @@
                 <!-- 右侧 UAV-3 附近的区块链标记 -->
                 <image href="../assets/blockchain-block.svg" x="1492" y="229" width="22" height="22" />
                 <!-- 右侧 UAV-1 名称 +47+80-->
-                <text x="1307" y="332" fill="#111827" font-size="20" text-anchor="middle">UAV-1</text>
+                <text x="1307" y="332" fill="#111827" font-size="18" text-anchor="middle">UAV-1</text>
                 <!-- 右侧 UAV-2 名称 -->
-                <text x="1430" y="352" fill="#111827" font-size="20" text-anchor="middle">UAV-2</text>
+                <text x="1430" y="352" fill="#111827" font-size="18" text-anchor="middle">UAV-2</text>
                 <!-- 右侧 UAV-3 名称 -->
-                <text x="1488" y="282" fill="#111827" font-size="20" text-anchor="middle">UAV-3</text>
+                <text x="1488" y="282" fill="#111827" font-size="18" text-anchor="middle">UAV-3</text>
 
                 <!-- 右侧底部区块链条带：底框与安全防御页区块链底框同款 -->
                 <rect x="858" y="488" width="600" height="118" rx="10" fill="url(#layer1-bg)" stroke="#22d3ee" stroke-opacity="0.38" stroke-width="1.2" />
@@ -1454,13 +1481,13 @@
                 <image href="../assets/physics/LoRa (2).png" x="1208" y="256" width="34" height="34" opacity="0.95" />
 
                 <!-- 右侧无人机群回传区块链平台的黑色虚线箭头 -->
-                <line x1="1350" y1="368" x2="1350" y2="454" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
+                <line x1="1350" y1="368" x2="1350" y2="454" stroke="#fbbf24" stroke-width="3.2" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
                 <!-- 右侧回传说明第一行文字 -->
-                <text x="1390" y="420" fill="#111827" font-size="19">下行信道状态上链</text>
-                <line x1="1180" y1="288" x2="1180" y2="454" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
+                <text x="1390" y="420" fill="#111827" font-size="16.5">下行信道状态上链</text>
+                <line x1="1180" y1="288" x2="1180" y2="454" stroke="#fbbf24" stroke-width="3.2" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
                 <!-- 右侧回传说明第一行文字 -->
-                <text x="1220" y="410" fill="#111827" font-size="19">上行信道</text>
-                <text x="1220" y="440" fill="#111827" font-size="19">状态上链</text>
+                <text x="1220" y="410" fill="#111827" font-size="16.5">上行信道</text>
+                <text x="1220" y="440" fill="#111827" font-size="16.5">状态上链</text>
                 </g>
               </svg>
             </div>

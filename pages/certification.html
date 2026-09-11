@@ -84,6 +84,7 @@
       height: auto;
       display: grid;
       grid-template-columns: minmax(0, 4.35fr) 72px minmax(0, 7.6fr);
+      grid-template-rows: minmax(0, 1fr);
       gap: 8px;
       align-items: stretch;
       overflow: visible;
@@ -91,7 +92,7 @@
 
     .hero-left-stack {
       display: grid;
-      grid-template-rows: auto auto;
+      grid-template-rows: minmax(0, 1fr) auto;
       gap: 8px;
     }
 
@@ -128,15 +129,26 @@
     }
 
     .hero-left .hero-diagram {
-      height: 300px;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .hero-left {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      min-height: 0;
     }
 
     .hero-right .hero-diagram {
       height: 100%;
+      min-height: 0;
       aspect-ratio: 860 / 420;
     }
 
     .hero-right {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      min-height: 0;
       width: 100%;
       height: 100%;
       justify-self: stretch;
@@ -1412,7 +1424,6 @@
             </defs>
             <ellipse cx="232" cy="148" rx="212" ry="130" fill="rgba(14, 116, 144, 0.28)" stroke="#22d3ee" stroke-width="1.5" /> <!-- 椭圆 -->
 
-            <text x="20" y="-40" font-size="26" font-weight="700">Layer 2 &#26080;&#20154;&#26426;</text> <!-- Layer2标题基线起点(20,34) -->
 
             <g stroke="#38bdf8" stroke-width="3" stroke-dasharray="10 8">
               <line x1="252" y1="120" x2="172" y2="83" /> <!-- 连线起点(272,160) 终点(146,106) -->
@@ -1422,14 +1433,14 @@
             <image href="../assets/certification/icons/radio.png" x="258" y="108" width="78" height="78" /> <!-- 接入点图标左上角(268,148)，尺�?8x58 -->
             <text x="278" y="98" font-size="20">&#25509;&#20837;&#28857;</text> <!-- 接入点文字基线起�?274,158) -->
 
-            <image href="../assets/certification/icons/drone-m210.png" x="112" y="64" width="70" height="43" /> <!-- UAV-1图标左上�?112,104)，尺�?8x36 -->
+            <image href="../assets/certification/icons/drone-m210-clean.svg" x="112" y="64" width="70" height="43" /> <!-- UAV-1图标左上�?112,104)，尺�?8x36 -->
             <text x="116" y="56" font-size="22">UAV-1</text> <!-- UAV-1标签基线起点(114,83) -->
-            <image href="../assets/certification/icons/drone-m210.png" x="84" y="168" width="70" height="43" /> <!-- UAV-2图标左上�?94,218)，尺�?8x36 -->
+            <image href="../assets/certification/icons/drone-m210-clean.svg" x="84" y="168" width="70" height="43" /> <!-- UAV-2图标左上�?94,218)，尺�?8x36 -->
             <text x="96" y="230" font-size="22">UAV-2</text> <!-- UAV-2标签基线起点(96,250) -->
-            <image href="../assets/certification/icons/drone-m210.png" x="372" y="164" width="70" height="43" /> <!-- UAV-3图标左上�?402,214)，尺�?8x36 -->
+            <image href="../assets/certification/icons/drone-m210-clean.svg" x="372" y="164" width="70" height="43" /> <!-- UAV-3图标左上�?402,214)，尺�?8x36 -->
             <text x="383" y="160" font-size="22">UAV-3</text> <!-- UAV-3标签基线起点(392,198) -->
 
-            <image href="../assets/certification/icons/drone-m210.png" x="536" y="26" width="82" height="82" /> <!-- UAV-1图标放大 -->
+            <image href="../assets/certification/icons/drone-m210-clean.svg" x="536" y="26" width="82" height="82" /> <!-- UAV-1图标放大 -->
             <text x="552" y="26" font-size="22">UAV-1</text> <!-- UAV-1标签基线起点(592,86) -->
             <line x1="340" y1="135" x2="530" y2="78" stroke="#3c74c9" stroke-width="3.8" marker-end="url(#right-arrow-blue)" /> <!-- 跨域认证线起�?330,168) 终点(618,138) -->
             <text x="430" y="102" font-size="22" font-weight="700" transform="rotate(-17 430 112)">
@@ -2135,7 +2146,7 @@
         appendBothLogs({
           role: 'blockchain_service',
           action: 'cert_issue',
-          object: 'UAV-1',
+          object: 'UAV',
           result: '结果：证书颁发成功',
           details: ['签发方=RootCA2/SubCA2', '合约=certificate_manager']
         });
@@ -2148,9 +2159,9 @@
         appendBothLogs({
           role: 'blockchain_service',
           action: 'cert_query',
-          object: 'UAV-1',
+          object: 'UAV',
           result: '结果：证书查询成功',
-          details: ['设备ID=UAV-1']
+          details: ['设备ID=UAV']
         });
         setStatus('步骤1完成：可点击”开始认证测试”，系统将先执行区块链增强跨域认证，再执行集中式跨域认证。');
 
@@ -2163,12 +2174,12 @@
         const modeLabel = mode === 'distributed' ? '区块链增强' : '集中式';
         if (shouldLogSample(sampleNo, targetCount)) {
           appendLog(mode, {
-            role: 'UAV-1',
+            role: 'UAV',
             action: 'send_auth_request',
             object: 'auth-' + sampleNo,
             result: '已发送',
             details: [
-              '设备ID=UAV-1，源域=domain-1，目标域=domain-2',
+              '设备ID=UAV，源域=domain-1，目标域=domain-2',
               '发送目标=access_point-2，scheme=' + (mode === 'distributed' ? 'blockchain' : 'centralized'),
               '认证通过，latency=' + latencyPlan.targetMs.toFixed(2) + 'ms'
             ]
@@ -2241,7 +2252,7 @@
             : 'Blockchain Service: Centralized Auth Latency Statistics'
         );
         appendLog(mode, {
-          role: 'UAV-1',
+          role: 'UAV',
           action: 'auth_request_group',
           object: 'UUID-' + state.session.roundId + '-' + mode,
           result: '批次开始',
@@ -2301,7 +2312,7 @@
           details: ['方案=' + (mode === 'distributed' ? 'blockchain' : 'centralized'), '样本数=' + targetCount]
         });
         appendLog(mode, {
-          role: 'UAV-1',
+          role: 'UAV',
           action: 'auth_request_group',
           object: 'UUID-' + state.session.roundId + '-' + mode,
           result: '批次完成',

@@ -200,7 +200,10 @@
     }
 
     .replay-canvas .chain-action {
-      bottom: 28%;
+      bottom: 25%;
+      min-width: 52%;
+      padding: 5px 10px;
+      font-size: 13px !important;
     }
 
     .selfish-canvas .chain-action {
@@ -210,7 +213,10 @@
     }
 
     .highfreq-canvas .chain-action {
-      bottom: 30%;
+      bottom: 27%;
+      min-width: 58%;
+      padding: 5px 10px;
+      font-size: 13px !important;
     }
 
     .shared-chain-base {
@@ -934,7 +940,6 @@
   <div class="diagram-panel">
     <div class="panel-header">自私接入</div>
     <div class="canvas selfish-canvas">
-        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:4%; left:29%; width:58px;" alt="UAV"/>
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:34%; left:5%; width:48px;" alt="接入点">
         <img src="../assets/sec-reject.png" class="element" style="position: absolute; top:35.5%; right:8%; width:9%;" alt="拒绝接入">
         <img src="../assets/sec-cert.png" class="element" style="position: absolute; top:35%; left:49%; width:20px;" alt="身份校验">
@@ -946,6 +951,7 @@
         <div class="chain-action">自私接入事件上链</div>
         <!-- 左图连线层 -->
         <svg class="connection-svg" viewBox="0 0 100 100">
+          <image href="../assets/sec-uav.png" x="28" y="3" width="24" height="16" preserveAspectRatio="xMidYMax meet" role="img" aria-label="UAV" />
           <defs>
             <marker id="arrowhead-success-l" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
               <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
@@ -988,7 +994,6 @@
   <div class="diagram-panel">
     <div class="panel-header">高频重接入</div>
     <div class="canvas highfreq-canvas">
-        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:4%; right:39%; width:58px;" alt="UAV"/>
         <img src="../assets/接入点.png" class="element" style="position: absolute; top:30%; right:5%; width:48px;" alt="接入点">
         <img src="../assets/database.png" class="element" style="position: absolute; top:37%; left:8%; width:34px; filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.45));" alt="database">
         <div style="position: absolute; top: 27%; right: 15%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">接入点</div>
@@ -999,6 +1004,7 @@
         <div style="position: absolute; top: 17%; right:43%; color: #2e54a1; font-size: 19px !important; font-weight: bold; white-space: nowrap; z-index: 100;">❌</div>
         <!-- 右图连线层 -->
         <svg class="connection-svg" viewBox="0 0 100 100">
+          <image href="../assets/sec-uav.png" x="34" y="2" width="24" height="16" preserveAspectRatio="xMidYMax meet" role="img" aria-label="UAV" />
           <defs>
             <marker id="arrowhead-success-r" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
               <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
@@ -1028,7 +1034,6 @@
   <div class="diagram-panel">
     <div class="panel-header">重放攻击</div>
     <div class="canvas replay-canvas">
-      <img src="../assets/sec-uav.png" class="element" style="position:absolute; top:5%; right:35%; width:56px;" alt="UAV" />
       <img src="../assets/接入点.png" class="element" style="position:absolute; top:34%; left:8%; width:48px;" alt="接入点" />
       <img src="../assets/database.png" class="element" style="position:absolute; top:37%; right:10%; width:8.5%; filter:drop-shadow(0 0 6px rgba(34, 211, 238, 0.45));" alt="链上Nonce记录" />
       <img src="../assets/sec-reject.png" class="element" style="position:absolute; bottom:42%; left:22%; width:26px; z-index:9;" alt="拒绝响应" />
@@ -1038,6 +1043,7 @@
       <div style="position:absolute; top:44%; left:56%; transform:translateX(-50%); z-index:12; color:#f87171 !important; font-weight:bold; text-align:center; white-space:nowrap;">Nonce重复，拒绝响应</div>
       <div class="chain-action">重放事件上链</div>
       <svg class="connection-svg" viewBox="0 0 100 100">
+          <image href="../assets/sec-uav.png" x="40" y="4" width="24" height="16" preserveAspectRatio="xMidYMax meet" role="img" aria-label="UAV" />
         <defs>
           <marker id="arrowhead-replay" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
             <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />

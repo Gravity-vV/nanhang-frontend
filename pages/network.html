@@ -874,7 +874,7 @@
     }
 
     .right-canvas .blockchain img {
-      filter: brightness(1) contrast(1.08) saturate(1) drop-shadow(0 0 8px rgba(34, 211, 238, 0.12));
+      filter: none;
       opacity: 1;
       mix-blend-mode: normal;
       width: 100% !important;
@@ -884,35 +884,33 @@
 
     .gauge-card {
       background:
-        linear-gradient(90deg, rgba(8, 47, 73, 0.86), rgba(2, 6, 23, 0.78)),
-        radial-gradient(circle at 100% 50%, rgba(34, 211, 238, 0.12), transparent 36%) !important;
-      border-color: rgba(125, 211, 252, 0.28) !important;
-      box-shadow:
-        inset 0 0 18px rgba(34, 211, 238, 0.06),
-        0 0 0 1px rgba(15, 23, 42, 0.22);
+        linear-gradient(135deg, rgba(8, 47, 73, 0.76), rgba(2, 6, 23, 0.82)),
+        radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.12), transparent 38%) !important;
+      border-color: rgba(125, 211, 252, 0.25) !important;
+      box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.06);
     }
 
     .gauge-title {
       color: #dbeafe !important;
-      border: 0 !important;
-      background: transparent !important;
       text-shadow: none;
-      box-shadow: none !important;
-    }
-
-    .gauge-title::before {
-      background: linear-gradient(180deg, #fbbf24, #22d3ee);
-      box-shadow: 0 0 12px rgba(251, 191, 36, 0.48);
     }
 
     .gauge-value {
-      color: #fef3c7 !important;
+      color: #67e8f9 !important;
       text-shadow: none;
     }
 
+    .gauge-track {
+      stroke: rgba(125, 211, 252, 0.28) !important;
+    }
+
+    .gauge-progress {
+      stroke: #0ea5e9 !important;
+      filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.54));
+    }
+
     .gauge-mark {
-      fill: #dbeafe !important;
-      text-shadow: none;
+      fill: #93c5fd !important;
     }
 
     .log-box:nth-child(1) {
@@ -945,17 +943,8 @@
       font-size: 17px !important;
     }
 
-    .gauge-title {
-      font-size: 15px !important;
-    }
 
-    .gauge-value {
-      font-size: 21px !important;
-    }
 
-    .gauge-mark {
-      font-size: 10px !important;
-    }
   </style>
 </head>
 <body>
