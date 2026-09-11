@@ -1202,15 +1202,40 @@ class="element icon-tri"
 
 <!-- 右图区块链平台块：位置和大小由 .blockchain 控制。 -->
 <div class="element blockchain">
-<!-- 区块链平台内部图片：修改 width/height/transform 可调整贴合方式。 -->
-<img src="../assets/blockchain-dark.svg"
-            alt="区块链"
+<!-- 区块链链图：与安全防御页 shared-chain-image 同款 -->
+<svg viewBox="0 0 520 72" role="img" aria-label="区块链"
             style="width: 100%;
                     height: 100%;
-                    object-fit: contain;
                     background: transparent;
-                    transform: scaleX(1);
-                    transform-origin: center;" />
+                    filter: drop-shadow(0 0 7px rgba(34, 211, 238, 0.3));">
+      <defs>
+        <g id="chain-block">
+          <polygon points="0,-15 30,0 0,15 -30,0" fill="#0e7490" stroke="#22d3ee" stroke-width="2" stroke-linejoin="round" />
+          <polygon points="-30,0 0,15 0,37 -30,22" fill="#082f49" stroke="#38bdf8" stroke-width="1.5" stroke-linejoin="round" />
+          <polygon points="0,15 30,0 30,22 0,37" fill="#0c4a6e" stroke="#22d3ee" stroke-width="1.5" stroke-linejoin="round" />
+          <circle cx="0" cy="0" r="2.6" fill="#67e8f9" />
+        </g>
+        <polygon id="chain-node" points="0,-4.5 4.5,0 0,4.5 -4.5,0" fill="#67e8f9" />
+      </defs>
+      <!-- 区块间的链式连接线与节点 -->
+      <g stroke="#38bdf8" stroke-width="2">
+        <line x1="140" y1="44" x2="180" y2="44" />
+        <line x1="240" y1="44" x2="280" y2="44" />
+        <line x1="340" y1="44" x2="380" y2="44" />
+      </g>
+      <g fill="#67e8f9">
+        <use href="#chain-node" x="160" y="44" />
+        <use href="#chain-node" x="260" y="44" />
+        <use href="#chain-node" x="360" y="44" />
+      </g>
+      <!-- 四个等距深色区块：节点1（受攻击）位于攻击箭头竖直正下方，链图整体在底框内居中；区块几何与安全防御页同款 -->
+      <use href="#chain-block" x="110" y="26" />
+      <use href="#chain-block" x="210" y="26" />
+      <use href="#chain-block" x="310" y="26" />
+      <use href="#chain-block" x="410" y="26" />
+      <!-- DDoS 攻击高亮：红框精确盖在受攻击的节点1上，随链图等比缩放保持对齐 -->
+      <rect x="80" y="11" width="60" height="52" rx="4" fill="#ef4444" opacity="0.5" />
+    </svg>
       </div>
 <!-- 右图 SVG 连线层：包含区块链查询、反馈和攻击路径虚线。 -->
 <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -1224,9 +1249,9 @@ class="element icon-tri"
               x1="50" y1="55" x2="50" y2="74"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-black)" />
-<!-- 右图攻击链路：修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
+<!-- 右图攻击链路：竖直向下，起点在攻击者图标正下方，终点对准链图节点1（受攻击节点）顶部中心。修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-attack"
-              x1="25.5" y1="56" x2="25" y2="82"
+              x1="24.6" y1="56" x2="24.6" y2="80"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-attack)" />
       </svg>
@@ -1261,18 +1286,6 @@ class="element icon-tri"
         节点容错生效<br>验证反馈正常
       </div>
 
-      <!-- 右图红色攻击高亮框：修改 top/left/width/height 可调整位置和大小。 -->
-      <div style="position: absolute;
-            top: 76%;
-            left: 21%;
-            width: 11%;
-            height: 11%;
-            z-index: 4;
-            background-color: #ef4444;
-            opacity: 0.5;
-            border: none;
-            border-radius: 4px;
-            pointer-events: none;"></div>
     </div>
   </div>
 </div>
