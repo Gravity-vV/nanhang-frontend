@@ -122,42 +122,42 @@
 
     .canvas div[style] {
       color: #e0f2fe !important;
-      font-size: 15px !important;
+      font-size: 13px !important;
       text-shadow: none;
       z-index: 8;
-      padding: 2px 5px;
+      padding: 1px 4px;
       border-radius: 5px;
       background: rgba(2, 6, 23, 0.7);
     }
 
-    .canvas div[style*="font-size: 25px"] {
+    .canvas div[style*="font-size: 19px"] {
       padding: 0;
       background: transparent;
     }
 
     .m-line-fail {
       stroke: #f97316;
-      stroke-width: 1;
-      filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.58));
+      stroke-width: 0.65;
+      filter: drop-shadow(0 0 2.5px rgba(249, 115, 22, 0.58));
     }
 
     /* 成功连线样式*/
     .m-line-success {
       stroke: #38bdf8;
-      stroke-width: 1;
-      filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.58));
+      stroke-width: 0.65;
+      filter: drop-shadow(0 0 2.5px rgba(56, 189, 248, 0.58));
     }
 
     .m-line-connect {
       stroke: #dbeafe;
-      stroke-width: 1;
-      filter: drop-shadow(0 0 4px rgba(219, 234, 254, 0.5));
+      stroke-width: 0.65;
+      filter: drop-shadow(0 0 2.5px rgba(219, 234, 254, 0.5));
     }
 
     .m-line-attack {
       stroke: #a91f23;
-      stroke-width: 1;
-      filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.62));
+      stroke-width: 0.65;
+      filter: drop-shadow(0 0 2.5px rgba(239, 68, 68, 0.62));
     }
 
     .element {
@@ -200,7 +200,10 @@
     }
 
     .replay-canvas .chain-action {
-      bottom: 28%;
+      bottom: 25%;
+      min-width: 52%;
+      padding: 5px 10px;
+      font-size: 13px !important;
     }
 
     .selfish-canvas .chain-action {
@@ -210,7 +213,10 @@
     }
 
     .highfreq-canvas .chain-action {
-      bottom: 30%;
+      bottom: 27%;
+      min-width: 58%;
+      padding: 5px 10px;
+      font-size: 13px !important;
     }
 
     .shared-chain-base {
@@ -230,12 +236,11 @@
 
     .shared-chain-image {
       position: absolute;
-      left: 21%;
-      bottom: 4.8%;
-      width: 58%;
-      height: 13.5%;
+      left: 18%;
+      bottom: 4.5%;
+      width: 64%;
+      height: 15%;
       z-index: 10;
-      object-fit: fill;
       filter: drop-shadow(0 0 7px rgba(34, 211, 238, 0.3));
       pointer-events: none;
     }
@@ -935,18 +940,18 @@
   <div class="diagram-panel">
     <div class="panel-header">自私接入</div>
     <div class="canvas selfish-canvas">
-        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:4%; left:29%; width:120px;" alt="UAV"/>
-        <img src="../assets/接入点.png" class="element" style="position: absolute; top:34%; left:5%; width:95px;" alt="接入点">
-        <img src="../assets/sec-reject.png" class="element" style="position: absolute; top:40%; right:8%; width:16%;" alt="拒绝接入">
-        <img src="../assets/sec-cert.png" class="element" style="position: absolute; top:38%; left:49%; width:34px;" alt="身份校验">
-        <div style="position: absolute; top: 31%; left: 11.5%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">接入点</div>
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:34%; left:5%; width:48px;" alt="接入点">
+        <img src="../assets/sec-reject.png" class="element" style="position: absolute; top:35.5%; right:8%; width:9%;" alt="拒绝接入">
+        <img src="../assets/sec-cert.png" class="element" style="position: absolute; top:35%; left:49%; width:20px;" alt="身份校验">
+        <div style="position: absolute; top: 30%; left: 8%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">接入点</div>
         <div style="position: absolute; top: 22%; left: 42%; font-weight: bold; white-space: nowrap; text-align: center;">非法ID接入请求</div>
-        <div style="position: absolute; top: 49%; left: 53.5%; transform:translateX(-50%); font-weight: bold; white-space: nowrap; color:#f87171 !important;">信息不匹配</div>
-        <div style="position: absolute; top: 33%; right: 7%; font-weight: bold; white-space: nowrap; color:#f87171 !important;">拒绝接入</div>
-        <div style="position: absolute; top: 68%; left: 16%; width:24%; font-size:13px !important; line-height:1.25; font-weight: bold; white-space: normal; text-align:center; color:#e0f2fe !important;">查询链上ID/公钥<br>返回匹配结果</div>
+        <div style="position: absolute; top: 42%; left: 53.5%; transform:translateX(-50%); font-weight: bold; white-space: nowrap; color:#f87171 !important;">信息不匹配</div>
+        <div style="position: absolute; top: 28%; right: 7%; font-weight: bold; white-space: nowrap; color:#f87171 !important;">拒绝接入</div>
+        <div style="position: absolute; top: 62%; left: 12%; width:24%; font-size:12px !important; line-height:1.25; font-weight: bold; white-space: normal; text-align:center; color:#e0f2fe !important;">查询链上ID/公钥<br>返回匹配结果</div>
         <div class="chain-action">自私接入事件上链</div>
         <!-- 左图连线层 -->
         <svg class="connection-svg" viewBox="0 0 100 100">
+          <image href="../assets/sec-uav.png" x="28" y="3" width="24" height="16" preserveAspectRatio="xMidYMax meet" role="img" aria-label="UAV" />
           <defs>
             <marker id="arrowhead-success-l" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
               <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
@@ -962,9 +967,9 @@
             </marker>
           </defs>
           <!-- 非法ID请求到达接入点 -->
-          <line class="m-line-success" x1="40" y1="19" x2="28" y2="32" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-l)"/>
+          <line class="m-line-success" x1="34.4" y1="11.4" x2="20" y2="31" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-success-l)"/>
           <!-- 白名单校验后拒绝接入，证书图标保留在线路上 -->
-          <line class="m-line-attack" x1="32" y1="47" x2="75" y2="47" stroke-width="1.3" stroke-dasharray="4 1" marker-end="url(#arrowhead-attack-l)"/>
+          <line class="m-line-attack" x1="20" y1="40" x2="80" y2="40" stroke-width="0.7" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-attack-l)"/>
         </svg>
         <!-- 拒绝节点将自私接入事件写入区块链 -->
         <svg class="connection-svg chain-target-layer" viewBox="0 0 100 100" aria-hidden="true">
@@ -977,10 +982,10 @@
             </marker>
           </defs>
           <!-- 接入点查询链上ID/公钥信息 -->
-          <line class="m-line-connect" x1="29" y1="60" x2="74" y2="80" stroke-width="1.2" stroke-dasharray="4 1" marker-end="url(#arrowhead-selfish-query)"/>
+          <line class="m-line-connect" x1="17" y1="49" x2="74" y2="80" stroke-width="0.7" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-selfish-query)"/>
           <!-- 区块链向接入点返回匹配结果 -->
-          <line class="m-line-connect" x1="65" y1="80" x2="29" y2="64" stroke-width="1.2" stroke-dasharray="4 1" marker-end="url(#arrowhead-selfish-query)"/>
-          <line class="m-line-attack" x1="84" y1="56" x2="84" y2="80" stroke-width="1.5" stroke-dasharray="4 1" marker-end="url(#arrowhead-selfish-chain)"/>
+          <line class="m-line-connect" x1="65" y1="80" x2="17" y2="53" stroke-width="0.7" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-selfish-query)"/>
+          <line class="m-line-attack" x1="84" y1="52" x2="84" y2="80" stroke-width="0.75" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-selfish-chain)"/>
         </svg>
     </div>
   </div>
@@ -989,17 +994,17 @@
   <div class="diagram-panel">
     <div class="panel-header">高频重接入</div>
     <div class="canvas highfreq-canvas">
-        <img src="../assets/sec-uav.png" class="element" style="position: absolute; top:4%; right:39%; width:120px;" alt="UAV"/>
-        <img src="../assets/接入点.png" class="element" style="position: absolute; top:30%; right:5%; width:95px;" alt="接入点">
-        <img src="../assets/database.png" class="element" style="position: absolute; top:37%; left:8%; width:60px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="database">
-        <div style="position: absolute; top: 27%; right: 15%; color: #000000; font-size: 18px; font-weight: bold; white-space: nowrap;">接入点</div>
+        <img src="../assets/接入点.png" class="element" style="position: absolute; top:30%; right:5%; width:48px;" alt="接入点">
+        <img src="../assets/database.png" class="element" style="position: absolute; top:37%; left:8%; width:34px; filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.45));" alt="database">
+        <div style="position: absolute; top: 27%; right: 15%; color: #000000; font-size: 15px; font-weight: bold; white-space: nowrap;">接入点</div>
         <div style="position: absolute; top: 29%; left: 4%; font-weight: bold; white-space: nowrap; text-align: center;">接入记录</div>
         <div style="position: absolute; top: 18%; left: 76%; transform:translateX(-50%); font-weight: bold; white-space: nowrap; text-align: center;">反复连接与断开</div>
-        <div style="position: absolute; top: 48%; left: 27%; font-weight: bold; white-space: nowrap; text-align: center; color:#f87171 !important;">短时间内多次接入</div>
+        <div style="position: absolute; top: 43%; left: 27%; font-weight: bold; white-space: nowrap; text-align: center; color:#f87171 !important;">短时间内多次接入</div>
         <div class="chain-action">恶意接入行为处置结果上链</div>
-        <div style="position: absolute; top: 21%; right:43%; color: #2e54a1; font-size: 25px !important; font-weight: bold; white-space: nowrap; z-index: 100;">❌</div>
+        <div style="position: absolute; top: 17%; right:43%; color: #2e54a1; font-size: 19px !important; font-weight: bold; white-space: nowrap; z-index: 100;">❌</div>
         <!-- 右图连线层 -->
         <svg class="connection-svg" viewBox="0 0 100 100">
+          <image href="../assets/sec-uav.png" x="34" y="2" width="24" height="16" preserveAspectRatio="xMidYMax meet" role="img" aria-label="UAV" />
           <defs>
             <marker id="arrowhead-success-r" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
               <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
@@ -1009,9 +1014,9 @@
             </marker>
           </defs>
           <!-- UAV到接入点 -->
-          <line class="m-line-success" x1="40" y1="19" x2="66" y2="28" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-r)"/>
+          <line class="m-line-success" x1="54.4" y1="11.4" x2="66" y2="28" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-success-r)"/>
           <!-- 查询设备接入记录 -->
-          <line class="m-line-success" x1="70" y1="45" x2="28" y2="45" stroke-dasharray="4 1" marker-end="url(#arrowhead-success-r)"/>
+          <line class="m-line-success" x1="81" y1="39" x2="20" y2="39" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-success-r)"/>
         </svg>
         <!-- 接入记录节点将恶意接入行为处置结果写入区块链 -->
         <svg class="connection-svg chain-target-layer" viewBox="0 0 100 100" aria-hidden="true">
@@ -1020,7 +1025,7 @@
               <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
             </marker>
           </defs>
-          <line class="m-line-attack" x1="30" y1="56" x2="52" y2="80" stroke-width="1.5" stroke-dasharray="4 1" marker-end="url(#arrowhead-highfreq-chain)" />
+          <line class="m-line-attack" x1="24" y1="49" x2="52" y2="80" stroke-width="0.75" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-highfreq-chain)" />
         </svg>
     </div>
   </div>
@@ -1029,16 +1034,16 @@
   <div class="diagram-panel">
     <div class="panel-header">重放攻击</div>
     <div class="canvas replay-canvas">
-      <img src="../assets/sec-uav.png" class="element" style="position:absolute; top:5%; right:35%; width:110px;" alt="UAV" />
-      <img src="../assets/接入点.png" class="element" style="position:absolute; top:34%; left:8%; width:95px;" alt="接入点" />
-      <img src="../assets/database.png" class="element" style="position:absolute; top:37%; right:10%; width:15%; filter:drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));" alt="链上Nonce记录" />
-      <img src="../assets/sec-reject.png" class="element" style="position:absolute; bottom:35%; left:22%; width:44px; z-index:9;" alt="拒绝响应" />
+      <img src="../assets/接入点.png" class="element" style="position:absolute; top:34%; left:8%; width:48px;" alt="接入点" />
+      <img src="../assets/database.png" class="element" style="position:absolute; top:37%; right:10%; width:8.5%; filter:drop-shadow(0 0 6px rgba(34, 211, 238, 0.45));" alt="链上Nonce记录" />
+      <img src="../assets/sec-reject.png" class="element" style="position:absolute; bottom:42%; left:22%; width:26px; z-index:9;" alt="拒绝响应" />
       <div style="position:absolute; top:21%; left:29%; font-weight:bold; text-align:center; white-space:nowrap;">复用已用Nonce</div>
       <div style="position:absolute; top:33%; left:8%; font-weight:bold; white-space:nowrap;">接入点</div>
-      <div style="position:absolute; top:35%; left:52%; transform:translateX(-50%); font-weight:bold; text-align:center; white-space:nowrap; color:#67e8f9 !important;">链上Nonce查重</div>
-      <div style="position:absolute; top:45%; left:54%; transform:translateX(-50%); z-index:12; color:#f87171 !important; font-weight:bold; text-align:center; white-space:nowrap;">Nonce重复，拒绝响应</div>
+      <div style="position:absolute; top:35%; left:60%; transform:translateX(-50%); font-weight:bold; text-align:center; white-space:nowrap; color:#67e8f9 !important;">链上Nonce查重</div>
+      <div style="position:absolute; top:44%; left:56%; transform:translateX(-50%); z-index:12; color:#f87171 !important; font-weight:bold; text-align:center; white-space:nowrap;">Nonce重复，拒绝响应</div>
       <div class="chain-action">重放事件上链</div>
       <svg class="connection-svg" viewBox="0 0 100 100">
+          <image href="../assets/sec-uav.png" x="40" y="4" width="24" height="16" preserveAspectRatio="xMidYMax meet" role="img" aria-label="UAV" />
         <defs>
           <marker id="arrowhead-replay" markerWidth="5.2" markerHeight="3.2" refX="4.4" refY="1.6" orient="auto">
             <polygon points="0 0, 5.2 1.6, 0 3.2" fill="#38bdf8" />
@@ -1050,11 +1055,11 @@
             <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
           </marker>
         </defs>
-        <line class="m-line-success" x1="51" y1="21" x2="32" y2="32" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay)" />
+        <line class="m-line-success" x1="59.1" y1="12.2" x2="22" y2="32" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-replay)" />
         <!-- 接入点请求服务点执行链上 Nonce 查重 -->
-        <line class="m-line-connect" x1="36" y1="42" x2="70" y2="42" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-connect)" />
+        <line class="m-line-connect" x1="24" y1="39" x2="76" y2="39" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-replay-connect)" />
         <!-- 服务点返回接入点：Nonce 重复，拒绝响应 -->
-        <line class="m-line-attack" x1="72" y1="52" x2="34" y2="52" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-fail)" />
+        <line class="m-line-attack" x1="78" y1="47" x2="30" y2="47" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-replay-fail)" />
       </svg>
       <!-- 服务点将重放攻击事件写入右侧可见区块链节点 -->
       <svg class="connection-svg chain-target-layer" viewBox="0 0 100 100" aria-hidden="true">
@@ -1063,14 +1068,52 @@
             <polygon points="0 0, 4 1.2, 0 2.4" fill="#a91f23" />
           </marker>
         </defs>
-        <line class="m-line-attack" x1="78" y1="56" x2="25" y2="80" stroke-width="1.5" stroke-dasharray="4 1" marker-end="url(#arrowhead-replay-chain)" />
+        <line class="m-line-attack" x1="76" y1="49" x2="25" y2="80" stroke-width="0.75" stroke-dasharray="1.8 1.4" marker-end="url(#arrowhead-replay-chain)" />
       </svg>
     </div>
   </div>
 
   <!-- 横跨三类行为的统一链上存证底座 -->
   <div class="shared-chain-base"></div>
-  <img src="../assets/sec-blockchain.png" class="shared-chain-image" alt="区块链可信存证节点">
+  <svg class="shared-chain-image" viewBox="0 0 840 72" preserveAspectRatio="none" role="img" aria-label="区块链可信存证节点">
+    <defs>
+      <g id="chain-block">
+        <polygon points="0,-15 30,0 0,15 -30,0" fill="#0e7490" stroke="#22d3ee" stroke-width="2" stroke-linejoin="round" />
+        <polygon points="-30,0 0,15 0,37 -30,22" fill="#082f49" stroke="#38bdf8" stroke-width="1.5" stroke-linejoin="round" />
+        <polygon points="0,15 30,0 30,22 0,37" fill="#0c4a6e" stroke="#22d3ee" stroke-width="1.5" stroke-linejoin="round" />
+        <circle cx="0" cy="0" r="2.6" fill="#67e8f9" />
+      </g>
+      <polygon id="chain-node" points="0,-4.5 4.5,0 0,4.5 -4.5,0" fill="#67e8f9" />
+    </defs>
+    <!-- 区块间的链式连接线与节点 -->
+    <g stroke="#38bdf8" stroke-width="2">
+      <line x1="100" y1="44" x2="140" y2="44" />
+      <line x1="200" y1="44" x2="240" y2="44" />
+      <line x1="300" y1="44" x2="340" y2="44" />
+      <line x1="400" y1="44" x2="440" y2="44" />
+      <line x1="500" y1="44" x2="540" y2="44" />
+      <line x1="600" y1="44" x2="640" y2="44" />
+      <line x1="700" y1="44" x2="740" y2="44" />
+    </g>
+    <g fill="#67e8f9">
+      <use href="#chain-node" x="120" y="44" />
+      <use href="#chain-node" x="220" y="44" />
+      <use href="#chain-node" x="320" y="44" />
+      <use href="#chain-node" x="420" y="44" />
+      <use href="#chain-node" x="520" y="44" />
+      <use href="#chain-node" x="620" y="44" />
+      <use href="#chain-node" x="720" y="44" />
+    </g>
+    <!-- 八个等距深色区块 -->
+    <use href="#chain-block" x="70" y="26" />
+    <use href="#chain-block" x="170" y="26" />
+    <use href="#chain-block" x="270" y="26" />
+    <use href="#chain-block" x="370" y="26" />
+    <use href="#chain-block" x="470" y="26" />
+    <use href="#chain-block" x="570" y="26" />
+    <use href="#chain-block" x="670" y="26" />
+    <use href="#chain-block" x="770" y="26" />
+  </svg>
 </div>
 
     <!-- 其余三块模块的结构容器：实际位置由 CSS grid-area 决定 -->

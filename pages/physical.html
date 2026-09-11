@@ -1007,6 +1007,10 @@
       text-shadow: none;
     }
 
+    .physical-card-svg .retreat-label {
+      fill: #ffffff !important;
+    }
+
     .physical-card-svg--right text {
       fill: #dbeafe !important;
     }
@@ -1312,14 +1316,15 @@
           <article class="diagram-panel">
             <!-- 右侧卡片标题：区块链增强的多模态接入 -->
             <div class="panel-header">区块链增强的多模态接入</div>
-            <div class="physical-canvas">
+            <div class="physical-canvas physical-canvas--chain">
               <!-- 右侧卡片 SVG 画布：物理层区块链增强多模态接入场景 -->
               <svg class="physical-card-svg physical-card-svg--right" viewBox="724 48 848 560" xmlns="http://www.w3.org/2000/svg" aria-label="物理层区块链增强多模态接入场景">
                 <defs>
-                  <linearGradient id="layer1-bg" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#2a5a6a" />
-                    <stop offset="50%" stop-color="#3a7a8a" />
-                    <stop offset="100%" stop-color="#2a5a6a" />
+                  <!-- 区块链底框渐变：与安全防御页区块链底框同款 -->
+                  <linearGradient id="layer1-bg" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#082f49" stop-opacity="0.9" />
+                    <stop offset="50%" stop-color="#0e7490" stop-opacity="0.72" />
+                    <stop offset="100%" stop-color="#082f49" stop-opacity="0.9" />
                   </linearGradient>
                   <!-- 右侧红色攻击箭头的箭头定义 -->
                   <marker id="right-arrow-attack" markerWidth="4.8" markerHeight="2.88" refX="3.6" refY="1.44" orient="auto">
@@ -1399,11 +1404,11 @@
                 <!-- 右侧 UAV-3 小图 -->
                 <image href="../assets/physics/drone-small.png" x="1445" y="200" width="86" height="60" />
                 <!-- 右侧 UAV-1 附近的区块链标记 +42 +4-->
-                <image href="../assets/physics/blockchain.png" x="1312" y="279" width="22" height="22" />
+                <image href="../assets/blockchain-block.svg" x="1312" y="279" width="22" height="22" />
                 <!-- 右侧 UAV-2 附近的区块链标记 -->
-                <image href="../assets/physics/blockchain.png" x="1435" y="299" width="22" height="22" />
+                <image href="../assets/blockchain-block.svg" x="1435" y="299" width="22" height="22" />
                 <!-- 右侧 UAV-3 附近的区块链标记 -->
-                <image href="../assets/physics/blockchain.png" x="1492" y="229" width="22" height="22" />
+                <image href="../assets/blockchain-block.svg" x="1492" y="229" width="22" height="22" />
                 <!-- 右侧 UAV-1 名称 +47+80-->
                 <text x="1307" y="332" fill="#111827" font-size="20" text-anchor="middle">UAV-1</text>
                 <!-- 右侧 UAV-2 名称 -->
@@ -1411,9 +1416,9 @@
                 <!-- 右侧 UAV-3 名称 -->
                 <text x="1488" y="282" fill="#111827" font-size="20" text-anchor="middle">UAV-3</text>
 
-                <!-- 右侧底部区块链条带 -->
-                <rect x="858" y="488" width="600" height="118" rx="12" fill="url(#layer1-bg)" />
-                <image href="../assets/blockchain.png" x="858" y="488" width="600" height="118" preserveAspectRatio="none" />
+                <!-- 右侧底部区块链条带：底框与安全防御页区块链底框同款 -->
+                <rect x="858" y="488" width="600" height="118" rx="10" fill="url(#layer1-bg)" stroke="#22d3ee" stroke-opacity="0.38" stroke-width="1.2" />
+                <image href="../assets/blockchain-dark.svg" x="858" y="488" width="600" height="118" preserveAspectRatio="xMidYMid meet" />
 
                 <!-- 右侧第一道绿色闪电效果 -->
                 <image

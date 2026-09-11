@@ -4,7 +4,8 @@
       "Bash(pip install *)",
       "Bash(python3 -c ' *)",
       "Bash(python3 *)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; foreach \\($f in @\\('assets\\\\blockchain.png','assets\\\\physics\\\\blockchain.png','assets\\\\physics\\\\blockchain1.png'\\)\\) { $img = [System.Drawing.Image]::FromFile\\(\\(Resolve-Path $f\\)\\); Write-Output \\(\"$f : \" + $img.Width + \"x\" + $img.Height\\); $img.Dispose\\(\\) })"
     ]
   }
 }
