@@ -2107,7 +2107,7 @@
         appendBothLogs({
           role: 'blockchain_service',
           action: 'cert_issue',
-          object: 'UAV-1',
+          object: 'UAV',
           result: '结果：证书颁发成功',
           details: ['签发方=RootCA2/SubCA2', '合约=certificate_manager']
         });
@@ -2120,9 +2120,9 @@
         appendBothLogs({
           role: 'blockchain_service',
           action: 'cert_query',
-          object: 'UAV-1',
+          object: 'UAV',
           result: '结果：证书查询成功',
-          details: ['设备ID=UAV-1']
+          details: ['设备ID=UAV']
         });
         setStatus('步骤1完成：可点击”开始认证测试”，系统将先执行区块链增强跨域认证，再执行集中式跨域认证。');
 
@@ -2135,12 +2135,12 @@
         const modeLabel = mode === 'distributed' ? '区块链增强' : '集中式';
         if (shouldLogSample(sampleNo, targetCount)) {
           appendLog(mode, {
-            role: 'UAV-1',
+            role: 'UAV',
             action: 'send_auth_request',
             object: 'auth-' + sampleNo,
             result: '已发送',
             details: [
-              '设备ID=UAV-1，源域=domain-1，目标域=domain-2',
+              '设备ID=UAV，源域=domain-1，目标域=domain-2',
               '发送目标=access_point-2，scheme=' + (mode === 'distributed' ? 'blockchain' : 'centralized'),
               '认证通过，latency=' + latencyPlan.targetMs.toFixed(2) + 'ms'
             ]
@@ -2213,7 +2213,7 @@
             : 'Blockchain Service: Centralized Auth Latency Statistics'
         );
         appendLog(mode, {
-          role: 'UAV-1',
+          role: 'UAV',
           action: 'auth_request_group',
           object: 'UUID-' + state.session.roundId + '-' + mode,
           result: '批次开始',
@@ -2273,7 +2273,7 @@
           details: ['方案=' + (mode === 'distributed' ? 'blockchain' : 'centralized'), '样本数=' + targetCount]
         });
         appendLog(mode, {
-          role: 'UAV-1',
+          role: 'UAV',
           action: 'auth_request_group',
           object: 'UUID-' + state.session.roundId + '-' + mode,
           result: '批次完成',
