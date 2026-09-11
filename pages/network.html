@@ -189,8 +189,9 @@
   /* 右图区块链平台：bottom=5%, left=15%, right=15%, height=80px */
   .right-canvas .blockchain {
     bottom: 5%;
-    left: 6%;
-    right: 6%;
+    left: 0;
+    right: 0;
+    padding: 6px 3%;
     height: 80px;
     display: flex;
     align-items: center;
@@ -945,7 +946,10 @@
 
 
 
-  </style>
+  /* Match page 3 diagram labels without extra transform magnification. */
+    .image-wrap .canvas > div[style*="font-size"] { font-size: 13px !important; transform: none !important; }
+    .image-wrap .uav-label { font-size: 13px !important; }
+    </style>
 </head>
 <body>
   <main class="page">
@@ -1125,26 +1129,6 @@
 <img src="../assets/接入点.png" class="element base-station" alt="基站" />
 <!-- 右图攻击者图标：位置和大小由 .hacker 控制。 -->
 <img src="../assets/攻击1.png" class="element hacker" alt="攻击者" />
-      <!-- 右图三角块 1：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/blockchain-block.svg"
-class="element icon-tri"
-          style="top:20%; right:10%; transform: scale(0.8);"
-          alt="区块链">
-      <!-- 右图三角块 2：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/blockchain-block.svg"
-class="element icon-tri"
-          style="top: 9%;  left: 34%; transform: scale(0.8);"
-          alt="区块链">
-      <!-- 右图三角块 3：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/blockchain-block.svg"
-class="element icon-tri"
-          style="top: 13%; left: 21%; transform: scale(0.8);"
-          alt="区块链">
-      <!-- 右图三角块 4：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
-      <img src="../assets/blockchain-block.svg"
-class="element icon-tri"
-          style="top: 25%; left: 11%; transform: scale(0.8);"
-          alt="区块链">
       <!-- 右图三角块 5：修改行内 top/left/right 和 scale 可调整位置与大小。 -->
       <img src="../assets/blockchain-block.svg"
 class="element icon-tri"
@@ -1191,40 +1175,7 @@ class="element icon-tri"
 
 <!-- 右图区块链平台块：位置和大小由 .blockchain 控制。 -->
 <div class="element blockchain">
-<!-- 区块链链图：与安全防御页 shared-chain-image 同款 -->
-<svg viewBox="0 0 520 72" role="img" aria-label="区块链"
-            style="width: 100%;
-                    height: 100%;
-                    background: transparent;
-                    filter: drop-shadow(0 0 7px rgba(34, 211, 238, 0.3));">
-      <defs>
-        <g id="chain-block">
-          <polygon points="0,-15 30,0 0,15 -30,0" fill="#0e7490" stroke="#22d3ee" stroke-width="2" stroke-linejoin="round" />
-          <polygon points="-30,0 0,15 0,37 -30,22" fill="#082f49" stroke="#38bdf8" stroke-width="1.5" stroke-linejoin="round" />
-          <polygon points="0,15 30,0 30,22 0,37" fill="#0c4a6e" stroke="#22d3ee" stroke-width="1.5" stroke-linejoin="round" />
-          <circle cx="0" cy="0" r="2.6" fill="#67e8f9" />
-        </g>
-        <polygon id="chain-node" points="0,-4.5 4.5,0 0,4.5 -4.5,0" fill="#67e8f9" />
-      </defs>
-      <!-- 区块间的链式连接线与节点 -->
-      <g stroke="#38bdf8" stroke-width="2">
-        <line x1="140" y1="44" x2="180" y2="44" />
-        <line x1="240" y1="44" x2="280" y2="44" />
-        <line x1="340" y1="44" x2="380" y2="44" />
-      </g>
-      <g fill="#67e8f9">
-        <use href="#chain-node" x="160" y="44" />
-        <use href="#chain-node" x="260" y="44" />
-        <use href="#chain-node" x="360" y="44" />
-      </g>
-      <!-- 四个等距深色区块：节点1（受攻击）位于攻击箭头竖直正下方，链图整体在底框内居中；区块几何与安全防御页同款 -->
-      <use href="#chain-block" x="110" y="26" />
-      <use href="#chain-block" x="210" y="26" />
-      <use href="#chain-block" x="310" y="26" />
-      <use href="#chain-block" x="410" y="26" />
-      <!-- DDoS 攻击高亮：红框精确盖在受攻击的节点1上，随链图等比缩放保持对齐 -->
-      <rect x="80" y="11" width="60" height="52" rx="4" fill="#ef4444" opacity="0.5" />
-    </svg>
+<img src="../assets/blockchain-glass-strip.svg" alt="区块链" />
       </div>
 <!-- 右图 SVG 连线层：包含区块链查询、反馈和攻击路径虚线。 -->
 <svg class="connection-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -1274,20 +1225,6 @@ class="element icon-tri"
                   text-align:center; white-space:nowrap; transform: scale(1.1);">
         节点容错生效<br>验证反馈正常
       </div>
-
-      <!-- 右图红色攻击高亮框：修改 top/left/width/height 可调整位置和大小。 
-      <div style="position: absolute;
-            top: 74%;
-            left: 21%;
-            width: 11%;
-            height: 11%;
-            z-index: 4;
-            background-color: #ef4444;
-            opacity: 0.5;
-            border: none;
-            border-radius: 4px;
-            pointer-events: none;"></div>
-            -->
     </div>
   </div>
 </div>
@@ -1829,5 +1766,6 @@ class="element icon-tri"
       testCountDownBtn.addEventListener('click', function () { adjustRoundCount(testCountInput, -1); });
     })();
   </script>
+  <script src="../scripts/diagram-scale.js?v=3"></script>
 </body>
 </html>

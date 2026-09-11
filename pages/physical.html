@@ -107,6 +107,28 @@
       font-weight: 700;
     }
 
+    .right-elements-boost .chain-contact-arrow { transform: none; }
+
+    .physical-chain-strip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 3%;
+      height: 19%;
+      box-sizing: border-box;
+      padding: 6px 3%;
+      display: flex;
+      align-items: center;
+      border: 1px solid rgba(34, 211, 238, 0.38);
+      border-radius: 10px;
+      background: linear-gradient(90deg, rgba(8,47,73,.9), rgba(14,116,144,.72), rgba(8,47,73,.9));
+    }
+    .physical-chain-strip img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
     .physical-canvas {
       position: relative;
       flex: 1;
@@ -1241,9 +1263,9 @@
                   <text x="182" y="182" font-size="17" font-weight="700" style="fill:#fb923c !important;">接入失败</text>
 
                                     <!-- 左上第一行失败说明：随机退避 -->
-                  <text x="240" y="319" font-size="15" style="fill:#dbeafe !important;">同步接入</text>
+                  <text data-label-group="physical-0" data-label-line="0" text-anchor="end" x="185" y="313" font-size="15" style="fill:#dbeafe !important;">同步接入</text>
                   <!-- 左上第二行失败说明：接入失败 -->
-                  <text x="240" y="339" font-size="15" style="fill:#dbeafe !important;">失败记录</text>
+                  <text data-label-group="physical-0" data-label-line="1" text-anchor="end" x="185" y="340.5" font-size="15" style="fill:#dbeafe !important;">失败记录</text>
 
                   <!-- 左上 UAV-1 小图 -->
                   <image href="../assets/physics/drone-small.png" x="164" y="238" width="82" height="56" />
@@ -1255,9 +1277,9 @@
                   <!-- 左上 UAV-1 向下同步记录的黑色虚线箭头 -->
                   <line x1="205" y1="300" x2="205" y2="350" stroke="#fbbf24" stroke-width="4.5" stroke-dasharray="16 4" marker-end="url(#left-arrow-neutral)" />
                   <!-- 左上同步说明第一行文字 -->
-                  <text x="246" y="381" font-size="14" style="fill:#dbeafe !important;">同步接入点</text>
+                  <text data-label-group="physical-1" data-label-line="0" x="228" y="313" font-size="14" style="fill:#dbeafe !important;">同步接入点</text>
                   <!-- 左上同步说明第二行文字 -->
-                  <text x="246" y="398" font-size="14" style="fill:#dbeafe !important;">屏蔽记录</text>
+                  <text data-label-group="physical-1" data-label-line="1" x="228" y="340.5" font-size="14" style="fill:#dbeafe !important;">屏蔽记录</text>
 
                   <!-- 左上无人机群组外框 -->
                   <rect x="380" y="114" width="280" height="155" rx="26" fill="rgba(8, 47, 73, 0.56)" stroke="#22d3ee" stroke-width="2.5" />
@@ -1284,9 +1306,9 @@
                   <!-- 左上无人机群回传平台的黑色虚线箭头 -->
                   <line x1="486" y1="350" x2="486" y2="272" stroke="#fbbf24" stroke-width="4.5" stroke-dasharray="16 4" marker-end="url(#left-arrow-neutral)" />
                   <!-- 左上回传说明第一行文字 -->
-                  <text x="508" y="301" fill="#111827" font-size="14">查询到失败记录，</text>
+                  <text data-label-group="physical-2" data-label-line="0" class="retreat-label" x="508" y="301" fill="#ffffff" font-size="14">查询到失败记录，</text>
                   <!-- 左上回传说明第二行文字 -->
-                  <text x="508" y="321" fill="#111827" font-size="14">主动退避接入</text>
+                  <text data-label-group="physical-2" data-label-line="1" class="retreat-label" x="508" y="321" fill="#ffffff" font-size="14">主动退避接入</text>
 
                   <!-- 左上图内蓝色平台条容器 -->
                   <foreignObject x="92" y="352" width="506" height="58">
@@ -1390,10 +1412,10 @@
                 <text x="1028" y="284" fill="#111827" font-size="18" font-weight="700" text-anchor="middle">UAV-1</text>
 
                 <!-- 右侧 UAV-1 向上获取可用通信模式列表的橙色虚线箭头 -->
-                <line x1="1030" y1="462" x2="1030" y2="376" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
+                <line x1="1030" y1="440" x2="1030" y2="376" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
                 <!-- 右侧获取可用通信模式列表说明文字 -->
-                <text x="1050" y="422" fill="#111827" font-size="19">获取可用通</text>
-                <text x="1050" y="455" fill="#111827" font-size="19">信模式列表</text>
+                <text data-label-group="physical-3" data-label-line="0" x="1050" y="402" fill="#111827" font-size="19">获取可用通</text>
+                <text data-label-group="physical-3" data-label-line="1" x="1050" y="435" fill="#111827" font-size="19">信模式列表</text>
 
                 <!-- 右侧无人机群组外框 -->
                 <rect x="1278" y="204" width="245" height="135" rx="26" fill="rgba(8, 47, 73, 0.56)" stroke="#22d3ee" stroke-width="2.5" />
@@ -1403,12 +1425,6 @@
                 <image href="../assets/physics/drone-small.png" x="1383" y="270" width="86" height="60" />
                 <!-- 右侧 UAV-3 小图 -->
                 <image href="../assets/physics/drone-small.png" x="1445" y="200" width="86" height="60" />
-                <!-- 右侧 UAV-1 附近的区块链标记 +42 +4-->
-                <image href="../assets/blockchain-block.svg" x="1312" y="279" width="22" height="22" />
-                <!-- 右侧 UAV-2 附近的区块链标记 -->
-                <image href="../assets/blockchain-block.svg" x="1435" y="299" width="22" height="22" />
-                <!-- 右侧 UAV-3 附近的区块链标记 -->
-                <image href="../assets/blockchain-block.svg" x="1492" y="229" width="22" height="22" />
                 <!-- 右侧 UAV-1 名称 +47+80-->
                 <text x="1307" y="332" fill="#111827" font-size="20" text-anchor="middle">UAV-1</text>
                 <!-- 右侧 UAV-2 名称 -->
@@ -1416,9 +1432,6 @@
                 <!-- 右侧 UAV-3 名称 -->
                 <text x="1488" y="282" fill="#111827" font-size="20" text-anchor="middle">UAV-3</text>
 
-                <!-- 右侧底部区块链条带：底框与安全防御页区块链底框同款 -->
-                <rect x="858" y="488" width="600" height="118" rx="10" fill="url(#layer1-bg)" stroke="#22d3ee" stroke-opacity="0.38" stroke-width="1.2" />
-                <image href="../assets/blockchain-dark.svg" x="858" y="488" width="600" height="118" preserveAspectRatio="xMidYMid meet" />
 
                 <!-- 右侧第一道绿色闪电效果 -->
                 <image
@@ -1458,15 +1471,16 @@
                 <image href="../assets/physics/LoRa (2).png" x="1208" y="256" width="34" height="34" opacity="0.95" />
 
                 <!-- 右侧无人机群回传区块链平台的黑色虚线箭头 -->
-                <line x1="1350" y1="368" x2="1350" y2="454" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
+                <line class="chain-contact-arrow" x1="1350" y1="368" x2="1350" y2="454" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
                 <!-- 右侧回传说明第一行文字 -->
                 <text x="1390" y="420" fill="#111827" font-size="19">下行信道状态上链</text>
-                <line x1="1180" y1="288" x2="1180" y2="454" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
+                <line class="chain-contact-arrow" x1="1180" y1="288" x2="1180" y2="454" stroke="#fbbf24" stroke-width="6" stroke-dasharray="16 4" marker-end="url(#right-arrow-neutral)" />
                 <!-- 右侧回传说明第一行文字 -->
-                <text x="1220" y="410" fill="#111827" font-size="19">上行信道</text>
-                <text x="1220" y="440" fill="#111827" font-size="19">状态上链</text>
+                <text data-label-group="physical-4" data-label-line="0" x="1220" y="410" fill="#111827" font-size="19">上行信道</text>
+                <text data-label-group="physical-4" data-label-line="1" x="1220" y="440" fill="#111827" font-size="19">状态上链</text>
                 </g>
               </svg>
+              <div class="physical-chain-strip"><img src="../assets/blockchain-glass-strip.svg" alt="区块链" /></div>
             </div>
           </article>
         </div>
@@ -2260,5 +2274,6 @@
       setControlState(false);
     })();
   </script>
+  <script src="../scripts/diagram-scale.js?v=3"></script>
 </body>
 </html>

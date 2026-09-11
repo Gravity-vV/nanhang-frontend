@@ -235,6 +235,7 @@
     }
 
     .shared-chain-image {
+      object-fit: contain;
       position: absolute;
       left: 18%;
       bottom: 4.5%;
@@ -1075,45 +1076,7 @@
 
   <!-- 横跨三类行为的统一链上存证底座 -->
   <div class="shared-chain-base"></div>
-  <svg class="shared-chain-image" viewBox="0 0 840 72" preserveAspectRatio="none" role="img" aria-label="区块链可信存证节点">
-    <defs>
-      <g id="chain-block">
-        <polygon points="0,-15 30,0 0,15 -30,0" fill="#0e7490" stroke="#22d3ee" stroke-width="2" stroke-linejoin="round" />
-        <polygon points="-30,0 0,15 0,37 -30,22" fill="#082f49" stroke="#38bdf8" stroke-width="1.5" stroke-linejoin="round" />
-        <polygon points="0,15 30,0 30,22 0,37" fill="#0c4a6e" stroke="#22d3ee" stroke-width="1.5" stroke-linejoin="round" />
-        <circle cx="0" cy="0" r="2.6" fill="#67e8f9" />
-      </g>
-      <polygon id="chain-node" points="0,-4.5 4.5,0 0,4.5 -4.5,0" fill="#67e8f9" />
-    </defs>
-    <!-- 区块间的链式连接线与节点 -->
-    <g stroke="#38bdf8" stroke-width="2">
-      <line x1="100" y1="44" x2="140" y2="44" />
-      <line x1="200" y1="44" x2="240" y2="44" />
-      <line x1="300" y1="44" x2="340" y2="44" />
-      <line x1="400" y1="44" x2="440" y2="44" />
-      <line x1="500" y1="44" x2="540" y2="44" />
-      <line x1="600" y1="44" x2="640" y2="44" />
-      <line x1="700" y1="44" x2="740" y2="44" />
-    </g>
-    <g fill="#67e8f9">
-      <use href="#chain-node" x="120" y="44" />
-      <use href="#chain-node" x="220" y="44" />
-      <use href="#chain-node" x="320" y="44" />
-      <use href="#chain-node" x="420" y="44" />
-      <use href="#chain-node" x="520" y="44" />
-      <use href="#chain-node" x="620" y="44" />
-      <use href="#chain-node" x="720" y="44" />
-    </g>
-    <!-- 八个等距深色区块 -->
-    <use href="#chain-block" x="70" y="26" />
-    <use href="#chain-block" x="170" y="26" />
-    <use href="#chain-block" x="270" y="26" />
-    <use href="#chain-block" x="370" y="26" />
-    <use href="#chain-block" x="470" y="26" />
-    <use href="#chain-block" x="570" y="26" />
-    <use href="#chain-block" x="670" y="26" />
-    <use href="#chain-block" x="770" y="26" />
-  </svg>
+  <img class="shared-chain-image" src="../assets/blockchain-glass-strip.svg" alt="八个青色玻璃区块连接的区块链" />
 </div>
 
     <!-- 其余三块模块的结构容器：实际位置由 CSS grid-area 决定 -->
@@ -1680,5 +1643,6 @@
       resetMetrics();
     })();
   </script>
+  <script src="../scripts/diagram-scale.js?v=3"></script>
 </body>
 </html>
