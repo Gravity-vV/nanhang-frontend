@@ -137,28 +137,6 @@
       background: #ffffff;
     }
 
-    .physical-chain-strip {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 21.1%;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 3%;
-      background: url("../assets/blockchain-panel.svg") center / 100% 100% no-repeat;
-      pointer-events: none;
-    }
-
-    .physical-chain-strip img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
     .physical-canvas--summary {
       padding: 20px 22px;
       display: grid;
@@ -1365,6 +1343,12 @@
               <!-- 右侧卡片 SVG 画布：物理层区块链增强多模态接入场景 -->
               <svg class="physical-card-svg physical-card-svg--right" viewBox="724 48 848 560" xmlns="http://www.w3.org/2000/svg" aria-label="物理层区块链增强多模态接入场景">
                 <defs>
+                  <!-- 区块链底框渐变：与安全防御页区块链底框同款 -->
+                  <linearGradient id="layer1-bg" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#082f49" stop-opacity="0.9" />
+                    <stop offset="50%" stop-color="#0e7490" stop-opacity="0.72" />
+                    <stop offset="100%" stop-color="#082f49" stop-opacity="0.9" />
+                  </linearGradient>
                   <!-- 右侧红色攻击箭头的箭头定义 -->
                   <marker id="right-arrow-attack" markerWidth="4.8" markerHeight="2.88" refX="3.6" refY="1.44" orient="auto">
                     <!-- 右侧红色攻击箭头的三角箭头形状 -->
@@ -1442,6 +1426,12 @@
                 <image href="../assets/physics/drone-small.png" x="1383" y="270" width="86" height="60" />
                 <!-- 右侧 UAV-3 小图 -->
                 <image href="../assets/physics/drone-small.png" x="1445" y="200" width="86" height="60" />
+                <!-- 右侧 UAV-1 附近的区块链标记 +42 +4-->
+                <image href="../assets/blockchain-block.svg" x="1312" y="279" width="22" height="22" />
+                <!-- 右侧 UAV-2 附近的区块链标记 -->
+                <image href="../assets/blockchain-block.svg" x="1435" y="299" width="22" height="22" />
+                <!-- 右侧 UAV-3 附近的区块链标记 -->
+                <image href="../assets/blockchain-block.svg" x="1492" y="229" width="22" height="22" />
                 <!-- 右侧 UAV-1 名称 +47+80-->
                 <text x="1307" y="332" fill="#111827" font-size="18" text-anchor="middle">UAV-1</text>
                 <!-- 右侧 UAV-2 名称 -->
@@ -1449,7 +1439,9 @@
                 <!-- 右侧 UAV-3 名称 -->
                 <text x="1488" y="282" fill="#111827" font-size="18" text-anchor="middle">UAV-3</text>
 
-                <!-- 右侧底部区块链条带 -->
+                <!-- 右侧底部区块链条带：底框与安全防御页区块链底框同款 -->
+                <rect x="858" y="488" width="600" height="118" rx="10" fill="url(#layer1-bg)" stroke="#22d3ee" stroke-opacity="0.38" stroke-width="1.2" />
+                <image href="../assets/blockchain-dark.svg" x="858" y="488" width="600" height="118" preserveAspectRatio="xMidYMid meet" />
 
                 <!-- 右侧第一道绿色闪电效果 -->
                 <image
@@ -1498,9 +1490,6 @@
                 <text x="1220" y="440" fill="#111827" font-size="16.5">状态上链</text>
                 </g>
               </svg>
-              <div class="physical-chain-strip">
-                <img src="../assets/blockchain-glass-strip.svg" alt="八个青色玻璃区块连接的区块链" />
-              </div>
             </div>
           </article>
         </div>
