@@ -141,7 +141,7 @@
 /* 调整字体大小 */
 .uav-label {
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-top: 4px;
   position: relative;
@@ -185,7 +185,7 @@
   /* 右图接入点/基站图标：bottom=40%, right=37%, width=90px, height=120px */
   .right-canvas .base-station { bottom: 45%; right: 39%; width: 82px; height: 108px; }
   /* 右图攻击者图标：bottom=45%, left=23.5%, width=40px, height=40px */
-  .right-canvas .hacker { bottom: 46%; left: 21.5%; width: 38px; height: 38px; }
+  .right-canvas .hacker { bottom: 44%; left: 21.5%; width: 40px; height: 40px; }
   /* 右图区块链平台：bottom=5%, left=15%, right=15%, height=80px */
   .right-canvas .blockchain {
     bottom: 5%;
@@ -238,27 +238,27 @@
     /* 失败连线样式*/
     .m-line-fail {
       stroke: #f97316;
-      stroke-width: 1;
-      filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.58));
+      stroke-width: 0.6;
+      filter: drop-shadow(0 0 2.4px rgba(249, 115, 22, 0.58));
     }
 
     /* 成功连线样式*/
     .m-line-success {
       stroke: #38bdf8;
-      stroke-width: 1;
-      filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.58));
+      stroke-width: 0.6;
+      filter: drop-shadow(0 0 2.4px rgba(56, 189, 248, 0.58));
     }
 
     .m-line-connect {
       stroke: #dbeafe;
-      stroke-width: 1;
-      filter: drop-shadow(0 0 4px rgba(219, 234, 254, 0.5));
+      stroke-width: 0.6;
+      filter: drop-shadow(0 0 2.4px rgba(219, 234, 254, 0.5));
     }
 
     .m-line-attack {
       stroke: #a91f23;
-      stroke-width: 1;
-      filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.62));
+      stroke-width: 0.6;
+      filter: drop-shadow(0 0 2.4px rgba(239, 68, 68, 0.62));
     }
 
     .image-wrap {
@@ -936,11 +936,11 @@
     }
 
     .image-wrap .uav-label {
-      font-size: 12px !important;
+      font-size: 11px !important;
     }
 
     .left-canvas .platform {
-      font-size: 17px !important;
+      font-size: 15px !important;
     }
 
 
@@ -957,7 +957,7 @@
     <div class="canvas left-canvas">
 <!-- 左图无人机群边界框：修改 top/left/width/height 可调整位置和大小。 -->
 <div class="uav-cluster-frame" style="position:absolute; top:4%; left:4%; width:40%; height:40%;
-            border: 2px solid #64748b;
+            border: 1.5px solid #64748b;
             border-radius: 12px;
             background: transparent;
             pointer-events: none;"></div>
@@ -993,32 +993,32 @@
 <div class="element platform">集中式信息共享与验证平台</div>
 <div style="position:absolute; top: 35%; right: 8%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#f97316 !important;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         接入请求失败 ❌
       </div>
 <!-- 左图 DDoS 攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:67%; left:6%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#ef4444 !important;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         DDoS攻击
       </div>
 <!-- 左图验证请求文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:70%; left:37%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         验证请求
       </div>
 <!-- 左图验证失败说明文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:70%; left:60%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         验证节点受攻击<br>
         <span style="color:#f97316;">接入失败</span>
       </div>
 <!-- 左图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:27%; left:50%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         接入点
       </div>
 
@@ -1097,7 +1097,7 @@
     <div class="canvas right-canvas">
 <!-- 右图无人机群边界框：修改 top/left/width/height 可调整位置和大小。 -->
 <div class="uav-cluster-frame" style="position:absolute; top:4%; left:4%; width:40%; height:40%;
-            border: 2px solid #64748b;
+            border: 1.5px solid #64748b;
             border-radius: 12px;
             background: transparent;
             pointer-events: none;"></div>
@@ -1240,41 +1240,54 @@ class="element icon-tri"
               marker-end="url(#arrowhead-black)" />
 <!-- 右图攻击链路：竖直向下，起点在攻击者图标正下方，终点对准链图节点1（受攻击节点）顶部中心。修改 x1/y1/x2/y2 可调整线段起点和终点。 -->
 <line class="m-line-attack"
-              x1="24.6" y1="56" x2="24.6" y2="80"
+              x1="25.5" y1="58" x2="25.5" y2="78"
               stroke-dasharray="4 1"
               marker-end="url(#arrowhead-attack)" />
       </svg>
 <!-- 右图区块链节点攻击说明文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top: 38%; right: 10%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#10b981 !important;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         获得验证反馈<br>成功接入 ✅
       </div>
 
 <div style="position:absolute; top:58%; left:8.5%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#ef4444 !important;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         对区块链<br>节点的<br>DDoS攻击
       </div>
 <!-- 右图验证请求文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:64%; left:37%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         验证请求
       </div>
 <!-- 右图接入点文字标签：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:17%; left:50%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         接入点
       </div>
 <!-- 右图区块链容错说明文字：修改 top/left/font-size/scale 可调整。 -->
 <div style="position:absolute; top:63%; left:61%; transform:translateX(-50%);
                   font-size:13px; font-weight:bold; color:#000;
-                  text-align:center; white-space:nowrap; transform: scale(1.33);">
+                  text-align:center; white-space:nowrap; transform: scale(1.1);">
         节点容错生效<br>验证反馈正常
       </div>
 
+      <!-- 右图红色攻击高亮框：修改 top/left/width/height 可调整位置和大小。 
+      <div style="position: absolute;
+            top: 74%;
+            left: 21%;
+            width: 11%;
+            height: 11%;
+            z-index: 4;
+            background-color: #ef4444;
+            opacity: 0.5;
+            border: none;
+            border-radius: 4px;
+            pointer-events: none;"></div>
+            -->
     </div>
   </div>
 </div>
